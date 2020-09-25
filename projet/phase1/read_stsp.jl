@@ -94,7 +94,7 @@ end
 function read_edges(header::Dict{String}{String}, filename::String)
 
   edges = []
-  weights = [] # tableau des poids des arêtes
+  weights = [] # liste des poids des arêtes
   edge_weight_format = header["EDGE_WEIGHT_FORMAT"]
   known_edge_weight_formats = ["FULL_MATRIX", "UPPER_ROW", "LOWER_ROW",
   "UPPER_DIAG_ROW", "LOWER_DIAG_ROW", "UPPER_COL", "LOWER_COL",
@@ -113,7 +113,6 @@ function read_edges(header::Dict{String}{String}, filename::String)
   i = 0
   n_to_read = n_nodes_to_read(edge_weight_format, k, dim)
   flag = false
-  count_lower_diag_row = 0 # pour afficher les poids du format LOWER_DIAG_ROW
 
   for line in eachline(file)
     line = strip(line)
@@ -129,37 +128,24 @@ function read_edges(header::Dict{String}{String}, filename::String)
         start = 0
         while n_data > 0
           n_on_this_line = min(n_to_read, n_data)
-
           for j = start : start + n_on_this_line - 1
-            data_int = parse.(Int64, data) # interprète data comme un tableau d'entiers
+            weight = parse(Int64, data[j+1]) # lecture du poids de l'arête courrante
             n_edges = n_edges + 1
             if edge_weight_format in ["UPPER_ROW", "LOWER_COL"]
               edge = (k+1, i+k+2)
-              weight = data_int[i+1]
             elseif edge_weight_format in ["UPPER_DIAG_ROW", "LOWER_DIAG_COL"]
               edge = (k+1, i+k+1)
-              # aucune instance de ce format ne se trouve dans le dossier 'instances'
             elseif edge_weight_format in ["UPPER_COL", "LOWER_ROW"]
               edge = (i+k+2, k+1)
-              # aucune instance de ce format ne se trouve dans le dossier 'instances'
             elseif edge_weight_format in ["UPPER_DIAG_COL", "LOWER_DIAG_ROW"]
               edge = (i+1, k+1)
-              weight = data_int[1]
-              count_lower_diag_row += 1
-              index = count_lower_diag_row%length(data_int)
-              if index > 0
-                weight = data_int[index]
-              else 
-                weight = data_int[length(data_int)]
-              end
             elseif edge_weight_format == "FULL_MATRIX"
               edge = (k+1, i+1)
-              weight = data_int[i+1]
             else
               warn("Unknown format - function read_edges")
             end
             push!(edges, edge)
-            push!(weights, weight)
+            push!(weights, weight) # ajout du poids dans la liste
             i += 1
           end
 

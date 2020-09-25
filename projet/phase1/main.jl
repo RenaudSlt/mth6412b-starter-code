@@ -6,7 +6,9 @@ include("read_stsp.jl")
 ### Se placer dans le répertoire 'mth6412b-starter-code'
 
 # Choix de l'instance
-FileName = "dantzig42.tsp"
+#FileName = "bayg29.tsp"   # upper row
+FileName = "gr17.tsp"     # lower diag row
+#FileName = "swiss42.tsp"  # full matrix
 
 # Nom et dimension
 headers_ = read_header(string("./instances/stsp/", FileName))

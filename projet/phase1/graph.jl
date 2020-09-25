@@ -29,7 +29,7 @@ function add_node!(graph::Graph{T}, node::Node{T}) where T
   graph
 end
 
-""" Fonction auxiliaire de la fonction 'add_edge!' permettant de dire si un noeud est dans un vector de noeuds en comparant les champs."""
+""" Fonction auxiliaire de la fonction 'add_edge!' permettant de dire si un noeud est dans un vecteur de noeuds en comparant les champs."""
 function node_in_nodes(node::Node{T}, nodes::Vector{Node{T}}) where T
   for i in 1:length(nodes)
     if name(node) == name(nodes[i]) && data(node) == data(nodes[i])
@@ -39,7 +39,7 @@ function node_in_nodes(node::Node{T}, nodes::Vector{Node{T}}) where T
   return false
 end
 
-"""Ajoute une arête au graphe en s'assurant qu'elle relie bien deux noeux du graphe."""
+""" Ajoute une arête au graphe en s'assurant qu'elle relie bien deux noeux appartenant au graphe. """
 function add_edge!(graph::Graph{T}, edge::Edge{T}) where T
   if !(node_in_nodes(Node1(edge), nodes(graph))) || !(node_in_nodes(Node2(edge), nodes(graph)))
     @error("Impossible to add edge.\nAt least one of the following nodes is not in the graph :", Node1(edge), Node2(edge))
