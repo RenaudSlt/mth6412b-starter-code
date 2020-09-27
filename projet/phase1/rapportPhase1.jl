@@ -21,11 +21,11 @@ md" ***"
 md"### Structure d'arête "
 
 # ╔═╡ f98a9030-ff47-11ea-2a99-85269f4e5595
-md" Dans notre projet, un objet `edge` contient trois champs :\
+md" Dans notre projet, le type `edge` contient trois champs :\
 
-* un premier noeud de type T
-* un deuxième noeud de type T
-* un poids de type Number 
+* un premier noeud de paramètre T
+* un deuxième noeud de paramètre T
+* un poids de paramètre Number 
 
 Le type `edge` est implémenté dans le fichier `edge.jl`."
 
@@ -41,10 +41,10 @@ mutable struct Edge{T} <: AbstractEdge{T}
 end
 
 # ╔═╡ a1f036d0-ff5c-11ea-29a8-f79234ff41ef
-md" Le type du champ `weight` est gardé le plus abstrait possible de façon à pouvoir utiliser des poids entiers ou flottants."
+md" Le paramètre `Number` du champ `weight` est gardé le plus abstrait possible de façon à pouvoir utiliser des poids entiers ou flottants."
 
 # ╔═╡ 01b71ac0-ff5d-11ea-21d2-cfce9ca9079f
-md" Comme pour un objet `node`, des fonctions permettent d'accéder aux champs d'un objet `edge`. Une fonction `show` permet d'afficher une arête."
+md" Comme pour le type `node`, nous avons défini des méthodes qui permettent d'accéder aux champs d'un objet de type `edge`. Une méthode `show` permet d'afficher une arête."
 
 # ╔═╡ 2b42a210-ff5d-11ea-0d17-d90f7498b751
 md"
@@ -85,7 +85,7 @@ md" *** "
 md"### Intégration dans un graphe"
 
 # ╔═╡ 92bcf57e-ff5d-11ea-3e2c-1fb4b6d0f84e
-md" Nous avons ajouté un champ `edges` au type `Graph` dans le fichier `graph.jl`. Ce champ est un vecteur d'arêtes. Cela permet d'ajouter simplement une arête à un graphe. "
+md" Nous avons ajouté un champ `edges` au type `Graph` dans le fichier `graph.jl`. Ce champ est un vecteur d'arêtes. Cela permet d'ajouter facilement une arête à un graphe. "
 
 # ╔═╡ 92a1a550-ff5d-11ea-1aa5-2b41185f82d1
 md"
@@ -97,10 +97,10 @@ mutable struct Graph{T} <: AbstractGraph{T}
 end
 
 # ╔═╡ 9bdd1030-ff64-11ea-22d5-e3986346011a
-md" La fonction `add_nodes!` est inchangée. Nous avons ajouté la fonction `add_edges!` qui permet d'ajouter une arête à un graphe existant en s'assurant que cette arête reliet bien deux sommets appartenant au graphe."
+md" La fonction `add_nodes!` est inchangée. Nous avons ajouté la fonction `add_edges!` qui permet d'ajouter une arête à un graphe existant en s'assurant que cette arête relie bien deux sommets appartenant au graphe."
 
 # ╔═╡ c922b950-ff64-11ea-1f4f-0323233a1ed7
-md" Par souci de lisibilité, nous avons créé une fonction auxiliaire `node_in_nodes` qui renvoie **true** si le nœud `node` se trouve dans le vecteur de nœuds `nodes`, et **false** sinon. Nous avions pensé utiliser simplement un test `node in nodes` mais cela ne fonctionne puisque deux nœuds différents ayant les mêmes champs ne sont pas perçus égaux pas le programme. Nous avons donc comparé directement les champs. "
+md" Par souci de lisibilité, nous avons créé une fonction auxiliaire `node_in_nodes` qui renvoie **true** si le nœud `node` se trouve dans le vecteur de nœuds `nodes`, et **false** sinon. Nous avions pensé utiliser simplement un test `node in nodes` mais cela ne fonctionne pas puisque deux nœuds différents mais ayant les mêmes noms et les mêmes données ne sont pas perçus égaux pas le programme. Nous avons donc comparé directement les champs. "
 
 # ╔═╡ d8b75f10-ff64-11ea-25c7-077f344966c5
 md"
@@ -117,7 +117,7 @@ end
 # ╔═╡ 602e3710-ff66-11ea-3598-29ef85f16383
 md" Ensuite la fonction `add_edges!` ajoute le nœuds en argument au vecteur des nœuds du graphe en argument.
 
-Nous avons choisi de *ne pas* tester si un nœud était redondant avec un nœud déjà dans le graphe car cette procédure est couteuse et cela devenait sensible sur les plus grandes instances."
+Nous avons choisi de *ne pas* tester si un nœud était redondant avec autre un nœud déjà dans le graphe car cette procédure est couteuse et cela devenait sensible sur les plus grandes instances."
 
 # ╔═╡ 7e2eba00-ff66-11ea-1c3c-6d9fa56f4b21
 md"
@@ -132,7 +132,7 @@ function add_edge!(graph::Graph{T}, edge::Edge{T}) where T
 end
 
 # ╔═╡ ae3f910e-ff66-11ea-2f9e-dd59e8189e87
-md" Nous avons également ajouté des fonctions permettant d'accéder aux arêtes et à leur nombre. "
+md" Nous avons également ajouté des méthodes permettant d'accéder aux arêtes et à leur nombre. "
 
 # ╔═╡ da6d6190-ff66-11ea-3eb8-157ab2c80c2a
 md"
@@ -356,7 +356,7 @@ md" ***"
 md" ### Programme principal "
 
 # ╔═╡ 0bb87740-ff70-11ea-2e9f-f9c800a60e8b
-md" Les instruction suivantes se trouvent dans le fichier `main.jl`. Elles permettent de lire une instance du dossier `instances` et de construire le graphe correspondant.
+md" Les instruction suivantes se trouvent dans le fichier `main.jl`. Elles permettent de lire une instance du dossier `instances` et de construire le graphe correspondant. Nous avons choisi comme paramètre du champ `data` le type `Nothing` puisque les noeuds des instances `.tsp` ne contiennent aucune information.
 
 Suivant le format des poids (EDGE\_WEIGHT\_FORMAT), certaines arêtes pourront être redondante.
 
@@ -370,20 +370,33 @@ include("edge.jl")
 include("graph.jl")
 include("read_stsp.jl")
 
-### Se placer dans le répertoire 'mth6412b-starter-code'
+### Se placer dans le répertoire 'mth6412b-starter-code/projet/phase1' ###
 
 # Choix de l'instance
 #FileName = "bayg29.tsp"   # upper row
 FileName = "gr17.tsp"     # lower diag row
 #FileName = "swiss42.tsp"  # full matrix
 
+# Sauvegarde du chemin du fichier contenant le data
+if Sys.iswindows()
+  working_directory = pwd()
+  cd("..\\..\\instances\\stsp\\")
+  data_dir = string(pwd(), "\\" , FileName)
+  cd(working_directory)  # retour au working directory
+else # Unix system
+  working_directory = pwd()
+  cd("../../instances/stsp/")
+  data_dir = string(pwd(), "/" , FileName)
+  cd(working_directory)
+end
+
 # Nom et dimension
-headers_ = read_header(string("./instances/stsp/", FileName))
+headers_ = read_header(data_dir)
 GraphName = headers_["NAME"]
 dim = parse(Int, headers_["DIMENSION"])
 
 # Création du graphe vide
-G = Graph(GraphName, Array{Node{Nothing}}(undef,0), Array{Edge{Nothing}}(undef,0))
+G = Graph(GraphName, Array{Node{Nothing}}(undef,0), Array{Edge{Nothing}}(undef,0))  
 
 # Ajout des noeuds (le champ data est égal à nothing)
 for i in 1:dim
@@ -392,7 +405,7 @@ for i in 1:dim
 end
 
 # Ajout des arêtes
-edges_, weights_ = read_edges(headers_, string("./instances/stsp/", FileName))
+edges_, weights_ = read_edges(headers_, data_dir) 
 for j in 1:length(edges_)
   local_node1 = Node(string(edges_[j][1]), nothing)
   local_node2 = Node(string(edges_[j][2]), nothing)
