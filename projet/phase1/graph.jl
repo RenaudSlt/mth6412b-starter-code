@@ -23,9 +23,22 @@ mutable struct Graph{T} <: AbstractGraph{T}
 end
 
 
-"""Constructeur supplémentaire : user-friendly"""
-#Graph{T}() where T = Graph("", Array{Node{T}}(undef,0), Array{Edge{T}}(undef,0))
+"""Constructeur supplémentaire : permet d'initialiser un graph en paramétrant seulement le graph
+
+Exemple : 
+    graph = Graph{Int}()  #les sommets du graph contiendront des Int comme type de data
+    graph = Graph{Float}()  #les sommets du graph contiendront des Float comme type de data
+
+Implémentation équivalente :
+    Graph{T}() where T = Graph("", Array{Node{T}}(undef,0), Array{Edge{T}}(undef,0))
+"""
 Graph{T}() where T = Graph("", Node{T}[], Edge{T}[])
+
+""" Méthode qui set le nom du graph : fonction à utiliser avec le constructeur supplémentaire """
+function set_name!(graph::Graph{T}, name_::String) where T
+  graph.name = name_
+  graph
+end
 
 
 """Ajoute un noeud au graphe."""
@@ -37,7 +50,8 @@ end
 """ Fonction auxiliaire de la fonction 'add_edge!' permettant de dire si un noeud est dans un vecteur de noeuds en comparant les champs."""
 function node_in_nodes(node::Node{T}, nodes::Vector{Node{T}}) where T
   for i in 1:length(nodes)
-    if name(node) == name(nodes[i]) && data(node) == data(nodes[i])
+    #if name(node) == name(nodes[i]) && data(node) == data(nodes[i])
+    if node==nodes[i]  
       return true
     end
   end
@@ -52,11 +66,6 @@ function add_edge!(graph::Graph{T}, edge::Edge{T}) where T
     push!(graph.edges, edge)
     graph
   end
-end
-
-""" allo """
-function set_name(graph::Graph{T}, name_::String) where T
-  graph.name = name_
 end
 
 
