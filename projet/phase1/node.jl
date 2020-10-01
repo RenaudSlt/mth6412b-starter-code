@@ -30,3 +30,6 @@ data(node::AbstractNode) = node.data
 function show(node::AbstractNode)
   println("Node ", name(node), ", data: ", data(node))
 end
+
+"""Surchage de l'opérateur =="""
+Base.:(==)(node1::AbstractNode, node2::AbstractNode) = (name(node1) == name(node2) && data(node1) == data(node2))

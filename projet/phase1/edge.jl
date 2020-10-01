@@ -37,3 +37,6 @@ weight(edge::AbstractEdge) = edge.weight
 function show(edge::AbstractEdge)
   println("Edge of weigth ", weight(edge), " between the nodes \"", name(Node1(edge)), "\" and \"", name(Node2(edge)), "\".")
 end
+
+"""Surcharge de l'opérateur <= pour les arcs d'un edge"""
+Base.:(<=)(edge1::AbstractEdge, edge2::AbstractEdge) = (weight(edge1) <= weight(edge2))

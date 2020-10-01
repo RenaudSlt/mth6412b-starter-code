@@ -31,7 +31,7 @@ dim = parse(Int, headers_["DIMENSION"])
 # Création du graphe vide
 #G = Graph(GraphName, Array{Node{Nothing}}(undef,0), Array{Edge{Nothing}}(undef,0))  
 G = Graph{Nothing}()
-set_name(G, GraphName)
+set_name!(G, GraphName)
 
 
 # Ajout des noeuds (le champ data est égal à nothing)
