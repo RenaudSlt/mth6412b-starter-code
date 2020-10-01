@@ -7,12 +7,12 @@ abstract type AbstractGraph{T} end
 
 Exemple :
 
-    node1 = Node("Joe", 3.14)
-    node2 = Node("Steve", exp(1))
-    node3 = Node("Jill", 4.12)
-    edge1 = Edge(node1, node2, 3.0)
-    edge2 = Edge(node2, node3, -1)
-    G = Graph("Ick", [node1, node2, node3], [edge1, edge2])
+    node_a = Node("Joe", 3.14)
+    node_b = Node("Steve", exp(1))
+    node_c = Node("Jill", 4.12)
+    edge1 = Edge(node_a, node_b, 3.0)
+    edge2 = Edge(node_b, node_c, -1)
+    G = Graph("Ick", [node_a, node_b, node_c], [edge1, edge2])
 
 Attention, tous les noeuds doivent avoir des données de même type.
 """
@@ -47,21 +47,10 @@ function add_node!(graph::Graph{T}, node::Node{T}) where T
   graph
 end
 
-""" Fonction auxiliaire de la fonction 'add_edge!' permettant de dire si un noeud est dans un vecteur de noeuds en comparant les champs."""
-function node_in_nodes(node::Node{T}, nodes::Vector{Node{T}}) where T
-  for i in 1:length(nodes)
-    #if name(node) == name(nodes[i]) && data(node) == data(nodes[i])
-    if node==nodes[i]  
-      return true
-    end
-  end
-  return false
-end
-
 """ Ajoute une arête au graphe en s'assurant qu'elle relie bien deux noeux appartenant au graphe. """
 function add_edge!(graph::Graph{T}, edge::Edge{T}) where T
-  if !(node_in_nodes(Node1(edge), nodes(graph))) || !(node_in_nodes(Node2(edge), nodes(graph)))
-    @error("Impossible to add edge.\nAt least one of the following nodes is not in the graph :", Node1(edge), Node2(edge))
+  if !(node1(edge) in nodes(graph)) || !(node2(edge) in nodes(graph))
+    @error("Impossible to add edge.\nAt least one of the following nodes is not in the graph :", node1(edge), node2(edge))
   else
     push!(graph.edges, edge)
     graph

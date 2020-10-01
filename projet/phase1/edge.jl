@@ -7,17 +7,17 @@ abstract type AbstractEdge{T} end
 
 Exemple:
 
-    node1 = Node("Joe", 3.14)
-    node2 = Node("Steve", exp(1))
-    node3 = Node("Lars", 2)
-    edge = Edge(node1, node2, 2.36)
-    edge = Edge(node2, node3, 0)
+    node_a = Node("Joe", 3.14)
+    node_b = Node("Steve", exp(1))
+    node_c = Node("Lars", 2)
+    edge = Edge(node_a, node_b, 2.36)
+    edge = Edge(node_b, node_c, 0)
 
 Attention, tous les noeuds doivent avoir des données de même type.
 """
 mutable struct Edge{T} <: AbstractEdge{T}
-  #node1::Node{T}
-  #node2::Node{T}
+  node1::Node{T}
+  node2::Node{T}
   weight::Number
 end
 
@@ -25,17 +25,17 @@ end
 # posséderont des champs `node1`, `node2` et `weight`.
 
 """Renvoie le noeud 1."""
-#Node1(edge::AbstractEdge) = edge.node1
+node1(edge::AbstractEdge) = edge.node1
 
 """Renvoie le noeud 2."""
-#Node2(edge::AbstractEdge) = edge.node2
+node2(edge::AbstractEdge) = edge.node2
 
 """Renvoie le poids de l'arête."""
-#weight(edge::AbstractEdge) = edge.weight
+weight(edge::AbstractEdge) = edge.weight
 
 """Affiche un noeud."""
 function show(edge::AbstractEdge)
-#  println("Edge of weigth ", weight(edge), " between the nodes \"", name(Node1(edge)), "\" and \"", name(Node2(edge)), "\".")
+  println("Edge of weigth ", weight(edge), " between the nodes \"", name(node1(edge)), "\" and \"", name(node2(edge)), "\".")
 end
 
 """Surcharge de l'opérateur <= pour les arcs d'un edge"""
