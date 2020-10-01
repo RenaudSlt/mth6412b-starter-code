@@ -136,6 +136,7 @@ md" Nous avons également ajouté des méthodes permettant d'accéder aux arête
 
 # ╔═╡ da6d6190-ff66-11ea-3eb8-157ab2c80c2a
 md"
+"""
 """Renvoie la liste des arêtes du graphe."""
 edges(graph::AbstractGraph) = graph.edges
 
