@@ -23,6 +23,11 @@ mutable struct Graph{T} <: AbstractGraph{T}
 end
 
 
+"""Constructeur supplémentaire : user-friendly"""
+#Graph{T}() where T = Graph("", Array{Node{T}}(undef,0), Array{Edge{T}}(undef,0))
+Graph{T}() where T = Graph("", Node{T}[], Edge{T}[])
+
+
 """Ajoute un noeud au graphe."""
 function add_node!(graph::Graph{T}, node::Node{T}) where T
   push!(graph.nodes, node)
@@ -48,6 +53,12 @@ function add_edge!(graph::Graph{T}, edge::Edge{T}) where T
     graph
   end
 end
+
+""" allo """
+function set_name(graph::Graph{T}, name_::String) where T
+  graph.name = name_
+end
+
 
 # on présume que tous les graphes dérivant d'AbstractGraph
 # posséderont des champs `name`, `nodes` et `edges`.
