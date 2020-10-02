@@ -3,11 +3,12 @@ include("edge.jl")
 include("graph.jl")
 include("kruskal_algorithm.jl")
 
+# Créer le graphe
 G = Graph{Nothing}()
 set_name!(G, "exemple de cours")
-nodes_names = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
 
 # Ajouter les noeuds
+nodes_names = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
 for i in 1:length(nodes_names)
   add_node!(G, Node(nodes_names[i], nothing))
 end
@@ -28,5 +29,5 @@ add_edge!( G, Edge(get_nodes(G)[5], get_nodes(G)[4], 9) )
 add_edge!( G, Edge(get_nodes(G)[6], get_nodes(G)[4], 14) )
 add_edge!( G, Edge(get_nodes(G)[6], get_nodes(G)[5], 10) )
 
-
+# Rouler l'algorithme de Kruskal
 kruskal_algorithm(G)
