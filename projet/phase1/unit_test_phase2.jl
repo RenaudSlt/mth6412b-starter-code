@@ -21,7 +21,6 @@ push!(edges_, edge_2)
 @test popfirst!(edges_) == edge_1
 popfirst!(edges_)
 
-<<<<<<< HEAD
 
 # TreeNode : get_root() 
 root = TreeNode(1) # where T=Int and (parent=nothing) by default
@@ -29,6 +28,3 @@ child_root = TreeNode(2, parent=root)
 child_of_child = TreeNode(3, parent=child_root)
 
 @test get_root(child_of_child)==root
-=======
-@test_throws ArgumentError popfirst!(edges_)
->>>>>>> 0096e1b18cb22ed89a0b0e50f77cacae71d86932
