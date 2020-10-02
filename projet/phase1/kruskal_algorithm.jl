@@ -2,13 +2,13 @@
 input : graph connexe
 output : arbre de recouvrement minimal
 """
-function kruskal_algorithm(graph)
+function kruskal_algorithm(graph::AbstractGraph)
     
     # Extirpe structure interne graph
-    edges_array = edges(graph)
-    nodes_graph = nodes(graph)
+    edges_array = copy(get_edges(graph))
+    nodes_graph = get_nodes(graph)
 
-    # Genere vecteur un de TreeNode à partir des noeuds du Graph
+    # Genere un vecteur de TreeNode à partir des noeuds du Graph
     tree_nodes_array = TreeNode{T}[]  #WARNING : changement d'attribut sur ces TreeNode directement
     for i = 1:nb_nodes(graph)
         append!(tree_nodes_array, TreeNode(nodes_graph[i]))
