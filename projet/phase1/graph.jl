@@ -25,7 +25,6 @@ mutable struct Graph{T} <: AbstractGraph{T}
 end
 
 """Constructeur supplémentaire : permet d'initialiser un graph en paramétrant seulement le graph
-
 Exemple : 
     graph = Graph{Int}()  #les sommets du graph contiendront des Int comme type de data
     graph = Graph{Float}()  #les sommets du graph contiendront des Float comme type de data

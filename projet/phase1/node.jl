@@ -14,18 +14,24 @@ Exemple:
 
 """
 mutable struct Node{T} <: AbstractNode{T}
-  name::String
-  data::T
+  name_::String
+  data_::T
 end
+
+""" Constructeur simplifié : on obligatoirement doit spécifier le type de data en argument """
+function Node{T}(data_::T; name_::String="") where T
+    return Node(data_, name_)
+end
+
 
 # on présume que tous les noeuds dérivant d'AbstractNode
 # posséderont des champs `name` et `data`.
 
 """Renvoie le nom du noeud."""
-get_name(node::AbstractNode) = node.name
+get_name(node::AbstractNode) = node.name_
 
 """Renvoie les données contenues dans le noeud."""
-get_data(node::AbstractNode) = node.data
+get_data(node::AbstractNode) = node.data_
 
 """Affiche un noeud."""
 function show(node::AbstractNode)

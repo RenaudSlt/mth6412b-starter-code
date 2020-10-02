@@ -2,7 +2,6 @@ include("graph.jl")
 include("node.jl")
 include("nodeTree.jl")
 
-
 """ 
 input : graph connexe ayant des sommets et des arcs
 output : arbre de recouvrement minimal
@@ -18,7 +17,7 @@ function kruskal_algorithm(graph::AbstractGraph)
     tree_nodes_array = NodeTree{T}[] 
     for i = 1:nb_nodes(graph)
         # Ensemble disjoints de NodeTree, puisque parent=nothing pour tous
-        append!(tree_nodes_array, NodeTree{T}(get_data(nodes_graph[i]), name_=get_name(nodes_graph[i]), parent_=nothing) )
+        append!(tree_nodes_array, NodeTree{T}(get_data(nodes_graph[i]), name_=get_name(nodes_graph[i]), parent_=nothing))
     end
 
     # Core Algo Kruskal
@@ -29,10 +28,10 @@ function kruskal_algorithm(graph::AbstractGraph)
         temp_edge = popfirst!(edges_array)
         
         # On va chercher les Nodes associes aux sommets de l'Arrete
-        temp_node1 = get_node1(temp_edge)
+        temp_node1 = get_node1(temp_edge) 
         temp_node2 = get_node2(temp_edge)
 
-        # On va chercher les index des NodeTrees associés aux Nodes
+        # On va chercher les index des NodeTree associés aux Nodes
         idx1 = findfirst(x -> x == temp_node1, tree_nodes_array)
         idx2 = findfirst(x -> x == temp_node2, tree_nodes_array)
 
@@ -44,6 +43,8 @@ function kruskal_algorithm(graph::AbstractGraph)
             root_temp2 = get_root(tree_nodes_array[idx2])
             idx_root1 = findfirst(x -> x == root_temp1, tree_nodes_array)
             idx_root2 = findfirst(x -> x == root_temp2, tree_nodes_array)
+
+            
 
             set_parent!(tree_nodes_array[idx_root1], tree_nodes_array[idx_root2] )
             
