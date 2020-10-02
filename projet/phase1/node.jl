@@ -1,4 +1,5 @@
 import Base.show
+import Base.==
 
 """Type abstrait dont d'autres types de noeuds dériveront."""
 abstract type AbstractNode{T} end
@@ -21,15 +22,15 @@ end
 # posséderont des champs `name` et `data`.
 
 """Renvoie le nom du noeud."""
-name(node::AbstractNode) = node.name
+get_name(node::AbstractNode) = node.name
 
 """Renvoie les données contenues dans le noeud."""
-data(node::AbstractNode) = node.data
+get_data(node::AbstractNode) = node.data
 
 """Affiche un noeud."""
 function show(node::AbstractNode)
-  println("Node ", name(node), ", data: ", data(node))
+  println("Node ", get_name(node), ", data: ", get_data(node))
 end
 
 """Surchage de l'opérateur =="""
-Base.:(==)(node1::AbstractNode, node2::AbstractNode) = (name(node1) == name(node2) && data(node1) == data(node2))
+==(node1::AbstractNode, node2::AbstractNode) = (get_name(node1) == get_name(node2) && get_data(node1) == get_data(node2))

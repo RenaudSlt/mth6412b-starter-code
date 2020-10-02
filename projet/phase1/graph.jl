@@ -48,8 +48,8 @@ end
 
 """ Ajoute une arête au graphe en s'assurant qu'elle relie bien deux noeux appartenant au graphe. """
 function add_edge!(graph::Graph{T}, edge::Edge{T}) where T
-  if !(node1(edge) in nodes(graph)) || !(node2(edge) in nodes(graph))
-    @error("Impossible to add edge.\nAt least one of the following nodes is not in the graph :", node1(edge), node2(edge))
+  if !(get_node1(edge) in get_nodes(graph)) || !(get_node2(edge) in get_nodes(graph))
+    @error("Impossible to add edge.\nAt least one of the following nodes is not in the graph :", get_node1(edge), get_node2(edge))
   else
     push!(graph.edges, edge)
     graph
@@ -61,13 +61,13 @@ end
 # posséderont des champs `name`, `nodes` et `edges`.
 
 """Renvoie le nom du graphe."""
-name(graph::AbstractGraph) = graph.name
+get_name(graph::AbstractGraph) = graph.name
 
 """Renvoie la liste des noeuds du graphe."""
-nodes(graph::AbstractGraph) = graph.nodes
+get_nodes(graph::AbstractGraph) = graph.nodes
 
 """Renvoie la liste des arêtes du graphe."""
-edges(graph::AbstractGraph) = graph.edges
+get_edges(graph::AbstractGraph) = graph.edges
 
 """Renvoie le nombre de noeuds du graphe."""
 nb_nodes(graph::AbstractGraph) = length(graph.nodes)
@@ -77,13 +77,13 @@ nb_edges(graph::AbstractGraph) = length(graph.edges)
 
 """Affiche un graphe"""
 function show(graph::Graph)
-  println("Graph ", name(graph), " has ", nb_nodes(graph), " nodes and ", nb_edges(graph), " edges.")
+  println("Graph ", get_name(graph), " has ", nb_nodes(graph), " nodes and ", nb_edges(graph), " edges.")
   println("\nNodes :")
-  for node in nodes(graph)
+  for node in get_nodes(graph)
     show(node)
   end
   println("\nEdges :")
-  for edge in edges(graph)
+  for edge in get_edges(graph)
     show(edge)
   end
 end
