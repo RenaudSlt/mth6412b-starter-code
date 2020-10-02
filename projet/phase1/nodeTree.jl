@@ -5,6 +5,7 @@ mutable struct NodeTree{T} <: AbstractNode{T}
     data_::T
     name_::String
     parent_::Union{NodeTree{T}, Nothing} 
+    
 end
 
 
@@ -32,17 +33,6 @@ Output :
     -Si (node_temp === nothing) => le noeud est une racine
 """
 function get_root(node::NodeTree{T}) where T 
-
-    # Construction par copie pour éviter de modifier la structure interne
-    #temp_node = NodeTree{T}(get_data(node), parent_ = get_parent(node))
-
-    #if get_parent(temp_node) === nothing  # Il est une racine
-    #    return temp_node 
-    #else
-    #    temp_parent = get_parent(temp_node)
-    #    temp_node = NodeTree{T}( get_data(temp_parent), parent_=get_parent(temp_parent) )
-    #    get_root(temp_node)
-    #end
 
     if get_parent(node) === nothing  # Il est une racine
         return node 

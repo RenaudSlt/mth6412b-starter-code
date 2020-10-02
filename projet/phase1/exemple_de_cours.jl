@@ -10,7 +10,7 @@ set_name!(G, "exemple de cours")
 # Ajouter les noeuds
 nodes_names = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
 for i in 1:length(nodes_names)
-  add_node!(G, Node(nodes_names[i], nothing))
+  add_node!(G, Node(nothing, nodes_names[i]))
 end
 
 # Ajouter les arêtes
@@ -30,4 +30,4 @@ add_edge!( G, Edge(get_nodes(G)[6], get_nodes(G)[4], 14) )
 add_edge!( G, Edge(get_nodes(G)[6], get_nodes(G)[5], 10) )
 
 # Rouler l'algorithme de Kruskal
-kruskal_algorithm(G)
+arcs_minimaux = kruskal_algorithm(G)

@@ -14,8 +14,8 @@ Exemple:
 
 """
 mutable struct Node{T} <: AbstractNode{T}
-  name_::String
   data_::T
+  name_::String
 end
 
 """ Constructeur simplifié : on obligatoirement doit spécifier le type de data en argument """

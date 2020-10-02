@@ -1,7 +1,10 @@
+include("node.jl")
+
 import Base.show
 import Base.popfirst!
 import Base.sort
 import Base.isless
+import Base.==
 
 """Type abstrait dont d'autres types d'arêtes dériveront."""
 abstract type AbstractEdge{T} end
@@ -58,13 +61,18 @@ end
 #Base.:(<=)(edge1::AbstractEdge, edge2::AbstractEdge) = (weight(edge1) <= weight(edge2))
 isless(edge1::AbstractEdge, edge2::AbstractEdge) = isless(get_weight(edge1), get_weight(edge2))
 
+
 """Surcharge de `sort` pour les edges : le sort est en ordre croissant et il est effectuée à partir des valeurs de weights"""
-sort(array_edges::Array{AbstractEdge}) = sort(array_edges::Array{AbstractEdge})
+sort(array_edges::Array{AbstractEdge}) = sort(array_edges)
+#popfirst!(array_edges::Array{AbstractEdge}) = popfirst!(array_edges)
+
 
 """ Retire et renvoie l'arête de poids minimal dans un vecteur d'arêtes """
-function popfirst!(edges::Array{AbstractEdge})
-  min = minimum(edges)
-  idx = findfirst(x -> x == min, edges)
+function popfirst!(edges::Vector{Edge{T}}) where T  
+  min_edge = minimum(edges)
+  show(min_edge)
+  idx = findfirst(x -> x == min_edge, edges)
   deleteat!(edges, idx)
-  min
+  min_edge
 end
+
