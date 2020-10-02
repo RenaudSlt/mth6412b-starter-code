@@ -16,7 +16,7 @@ mutable struct NodeTree{T} <: AbstractNode{T}
 end
 
 
-""" Constructeur simplifié
+""" Constructeur :
     -Argument obligatoire : data_
     -Argument facultatif : name_  et parent_
         name_ = "", par défaut

@@ -30,7 +30,11 @@ end
 # on présume que toutes les arêtes dérivant d'AbstractEdge
 # posséderont des champs `node1`, `node2` et `weight`.
 
-""" Constructeur simplifié """
+""" Constructeur :
+    -Argument obligatoire : node1_ et node_2
+    -Argument facultatif : weight_
+        name_ = 0, par défaut
+"""
 function Edge{T}(node1_::T, node2_::T; weight_::Number=0) where T
     return Edge(node1_, node2_, weight_)
 end

@@ -29,7 +29,6 @@ function kruskal_algorithm(graph::Graph{T}) where T
         # Ensemble disjoints de NodeTree, puisque parent=nothing pour tous
         push!(tree_nodes_array, NodeTree{T}(get_data(nodes_graph[i]), name_=get_name(nodes_graph[i]), parent_=nothing))
     end
-    show(tree_nodes_array[1])
 
     ### Algorithme ### 
 
@@ -42,7 +41,6 @@ function kruskal_algorithm(graph::Graph{T}) where T
         # On va chercher les Nodes associes aux sommets de l'ârrete minimal
         graph_node1 = get_node1(edge_min)
         graph_node2 = get_node2(edge_min) 
-        show(graph_node1)
 
 
         # On va chercher les index des NodeTree associés aux Nodes

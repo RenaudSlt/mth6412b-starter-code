@@ -44,4 +44,4 @@ end
 show(G)
 
 # Algorithme de Kruskal
-#kruskal_algorithm(G)
+kruskal_algorithm(G)

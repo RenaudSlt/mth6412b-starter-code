@@ -17,9 +17,9 @@ mutable struct Node{T} <: AbstractNode{T}
 end
 
 """ Constructeur  
-  -Argument obligatoire : data_
-  -Argument facultatif : name_ 
-    name_ = "", par défaut
+      -Argument obligatoire : data_
+      -Argument facultatif : name_ 
+          name_ = "", par défaut
 """
 function Node{T}(data_::T; name_::String="") where T
     return Node(data_, name_)
