@@ -36,8 +36,7 @@ set_name!(G, GraphName)
 
 # Ajout des noeuds (le champ data est égal à nothing)
 for i in 1:dim
-  node = Node(string(i), nothing)
-  add_node!(G, node)
+  add_node!(G, Node(string(i), nothing))
 end
 
 # Ajout des arêtes
@@ -45,8 +44,7 @@ edges_, weights_ = read_edges(headers_, data_dir)
 for j in 1:length(edges_)
   local_node1 = Node(string(edges_[j][1]), nothing)
   local_node2 = Node(string(edges_[j][2]), nothing)
-  local_edge = Edge(local_node1, local_node2, weights_[j])
-  add_edge!(G, local_edge)
+  add_edge!(G, Edge(local_node1, local_node2, weights_[j]))
 end
 
 # Affichage du graphe
