@@ -16,9 +16,16 @@ child_of_child2 = NodeTree{Int}(4, parent_=child_root)
 
 @test same_tree(child_of_child1, child_of_child2)
 
-# NodeTree : set_parent
+# NodeTree : set_parent!()
 root = NodeTree{Int}(1) 
 child_root = NodeTree{Int}(2, parent_=nothing)
-set_parent(child_root, root)
+set_parent!(child_root, root)
 
 @test get_parent(child_root)==root
+
+
+# NodeTree : operateur ==
+a = NodeTree{Int}(1, name_="SpongeBob")
+b = a
+
+@test a==b
