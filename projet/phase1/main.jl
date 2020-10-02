@@ -12,17 +12,11 @@ FileName = "gr17.tsp"     # lower diag row
 #FileName = "swiss42.tsp"  # full matrix
 
 # Sauvegarde du chemin du fichier contenant le data
-if Sys.iswindows()
-  working_directory = pwd()
-  cd("..\\..\\instances\\stsp\\")
-  data_dir = string(pwd(), "\\" , FileName)
-  cd(working_directory)  # retour au working directory
-else # Unix system
-  working_directory = pwd()
-  cd("../../instances/stsp/")
-  data_dir = string(pwd(), "/" , FileName)
-  cd(working_directory)
-end
+working_directory = pwd()
+cd("..\\..\\instances\\stsp\\")
+data_dir = joinpath(pwd(), FileName)  # NOTE : devrait fonctionner avec Windows et Unix, cependant Unix pas testé!!! 
+cd(working_directory)  # retour au working directory
+
 
 # Nom et dimension
 headers_ = read_header(data_dir)
@@ -33,22 +27,21 @@ dim = parse(Int, headers_["DIMENSION"])
 G = Graph{Nothing}()
 set_name!(G, GraphName)
 
-
 # Ajout des noeuds (le champ data est égal à nothing)
 for i in 1:dim
-  add_node!(G, Node(string(i), nothing))
+  add_node!(G, Node{Nothing}(nothing, string(i)))
 end
 
 # Ajout des arêtes
 edges_, weights_ = read_edges(headers_, data_dir) 
 for j in 1:length(edges_)
-  local_node1 = Node(string(edges_[j][1]), nothing)
-  local_node2 = Node(string(edges_[j][2]), nothing)
-  add_edge!(G, Edge(local_node1, local_node2, weights_[j]))
+  local_node1 = Node{Nothing}(nothing, string(edges_[j][1]))
+  local_node2 = Node{Nothing}(nothing, string(edges_[j][2]))
+  add_edge!(G, Edge{Nothing}(local_node1, local_node2, weights_[j]))
 end
 
 # Affichage du graphe
-#show(G)
+show(G)
 
 # Algorithme de Kruskal
-kruskal_algorithm(G)
+#kruskal_algorithm(G)
