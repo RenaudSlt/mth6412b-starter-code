@@ -33,6 +33,19 @@ get_node1(edge::AbstractEdge) = edge.node1
 """Renvoie le noeud 2."""
 get_node2(edge::AbstractEdge) = edge.node2
 
+"""Set le noeud 1."""
+function set_node1!(edge::AbstractEdge, node::Node) 
+  edge.node1 = node
+  return edge
+end
+
+"""Set le noeud 2."""
+function set_node1!(edge::AbstractEdge, node::Node) 
+  edge.node2 = node
+  return edge
+end
+
+
 """Renvoie le poids de l'arête."""
 get_weight(edge::AbstractEdge) = edge.weight
 

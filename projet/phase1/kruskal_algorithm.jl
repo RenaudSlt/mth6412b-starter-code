@@ -4,7 +4,7 @@ include("nodeTree.jl")
 
 
 """ 
-input : graph connexe
+input : graph connexe ayant des sommets et des arcs
 output : arbre de recouvrement minimal
 """
 function kruskal_algorithm(graph::AbstractGraph)
@@ -12,7 +12,7 @@ function kruskal_algorithm(graph::AbstractGraph)
     # Extirpe structure interne graph
     edges_array = copy(get_edges(graph))
     nodes_graph = get_nodes(graph)
-    const T = typeof(get_data(nodes_graph[i]))
+    T = typeof(get_data(nodes_graph[i]))
     
     # Genere un vecteur de NodeTree à partir des noeuds du Graph
     tree_nodes_array = NodeTree{T}[] 
