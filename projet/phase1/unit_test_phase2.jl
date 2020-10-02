@@ -28,3 +28,10 @@ child_root = TreeNode(2, parent=root)
 child_of_child = TreeNode(3, parent=child_root)
 
 @test get_root(child_of_child)==root
+
+# TreeNode : get_root() 
+root = TreeNode(1) # where T=Int and (parent=nothing) by default
+child_root = TreeNode(2, parent=root)
+child_of_child = TreeNode(3, parent=child_root)
+
+@test get_root(child_of_child)==root
