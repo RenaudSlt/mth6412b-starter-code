@@ -48,4 +48,7 @@ for j in 1:length(edges_)
 end
 
 # Affichage du graphe
-show(G)
+#show(G)
+
+# Algorithme de Kruskal
+kruskal_algorithm(G)
