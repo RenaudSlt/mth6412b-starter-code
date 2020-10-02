@@ -22,7 +22,6 @@ mutable struct Graph{T} <: AbstractGraph{T}
   edges::Vector{Edge{T}}
 end
 
-
 """Constructeur supplémentaire : permet d'initialiser un graph en paramétrant seulement le graph
 
 Exemple : 

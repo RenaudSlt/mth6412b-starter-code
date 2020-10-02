@@ -2,6 +2,7 @@ include("node.jl")
 include("edge.jl")
 include("graph.jl")
 include("read_stsp.jl")
+include("kruskal_algorithm.jl")
 
 ### Se placer dans le répertoire 'mth6412b-starter-code/projet/phase1' ###
 
