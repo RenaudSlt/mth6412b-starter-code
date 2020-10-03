@@ -14,22 +14,22 @@ cd("..\\..\\instances\\stsp\\")
 filenames = readdir()
 cd(working_directory)  # retour au working directory
 
+filter!(e -> e ≠ "pa561.tsp", filenames) # Retrait de l'instance pa561.tsp qui est trop grande
+
 dims = [] # Dimensions des instances
 times = [] # Temps d'exécution
-
-#filenames = ["gr17.tsp", "gr21.tsp", "gr24.tsp", "gr48.tsp"]
 
 for FileName in filenames
 
   # Sauvegarde du chemin du fichier contenant le data
   cd("..\\..\\instances\\stsp\\")
-  data_dir = joinpath(pwd(), FileName)  # NOTE : devrait fonctionner avec Windows et Unix, cependant Unix pas testé!!! 
+  local data_dir = joinpath(pwd(), FileName)  # NOTE : devrait fonctionner avec Windows et Unix, cependant Unix pas testé!!! 
   cd(working_directory)  # retour au working directory
 
   # Nom et dimension
-  headers_ = read_header(data_dir)
-  GraphName = headers_["NAME"]
-  dim = parse(Int, headers_["DIMENSION"])
+  local headers_ = read_header(data_dir)
+  local GraphName = headers_["NAME"]
+  local dim = parse(Int, headers_["DIMENSION"])
 
   push!(dims, dim)
 
@@ -54,7 +54,8 @@ for FileName in filenames
   push!(times, timeit(kruskal_algorithm, G; nruns=10))
 end
 
-plot(dims, times)
+# Plot
+plot(dims, log10.(times), seriestype = :scatter, legend=:topleft)
 xlabel!("Dimension")
-ylabel!("Temps moyen d'exécution")
-savefig("execution_time.png")
+ylabel!("Log(temps moyen d'exécution)")
+savefig("execution_time_log.png")

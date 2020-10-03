@@ -128,7 +128,7 @@ md" Le programme principal `main.jl` ci-dessous permet de lire une instance `.ts
 display("main.jl")
 
 # ╔═╡ b73e8750-0590-11eb-0d3a-8fc11056cbff
-md" Sur l'instance `gr17.tsp`, l'arbre de recouvrement est affiché comme suit : "
+md" Sur l'instance `gr17.tsp`, l'arbre de recouvrement est le suivant : "
 
 # ╔═╡ d077e540-0590-11eb-3122-83c78445f6a8
 md"
@@ -137,12 +137,40 @@ md"
 `>>> Edge{Nothing}(Node{Nothing}(nothing, \"7\"), Node{Nothing}(nothing, \"8\"), 29)`\
 `>>> Edge{Nothing}(Node{Nothing}(nothing, \"7\"), Node{Nothing}(nothing, \"17\"), 29)`\
 `>>> Edge{Nothing}(Node{Nothing}(nothing, \"6\"), Node{Nothing}(nothing, \"8\"), 34)`\
-`>>> ⋮`\
+`>>> Edge{Nothing}(Node{Nothing}(nothing, \"7\"), Node{Nothing}(nothing, \"13\"), 47)`\
+`>>> Edge{Nothing}(Node{Nothing}(nothing, \"3\"), Node{Nothing}(nothing, \"15\"), 53)`\
+`>>> Edge{Nothing}(Node{Nothing}(nothing, \"14\"), Node{Nothing}(nothing, \"15\"), 57)`\
+`>>> Edge{Nothing}(Node{Nothing}(nothing, \"5\"), Node{Nothing}(nothing, \"11\"), 61)`\
+`>>> Edge{Nothing}(Node{Nothing}(nothing, \"1\"), Node{Nothing}(nothing, \"13\"), 70)`\
+`>>> Edge{Nothing}(Node{Nothing}(nothing, \"9\"), Node{Nothing}(nothing, \"12\"), 95)`\
+`>>> Edge{Nothing}(Node{Nothing}(nothing, \"14\"), Node{Nothing}(nothing, \"17\"), 96)`\
+`>>> Edge{Nothing}(Node{Nothing}(nothing, \"3\"), Node{Nothing}(nothing, \"11\"), 110)`\
 `>>> Edge{Nothing}(Node{Nothing}(nothing, \"10\"), Node{Nothing}(nothing, \"11\"), 154)`\
 `>>> Edge{Nothing}(Node{Nothing}(nothing, \"12\"), Node{Nothing}(nothing, \"16\"), 157)`\
 `>>> Edge{Nothing}(Node{Nothing}(nothing, \"4\"), Node{Nothing}(nothing, \"9\"), 175)`\
 `>>> Edge{Nothing}(Node{Nothing}(nothing, \"2\"), Node{Nothing}(nothing, \"5\"), 227)`
 "
+
+# ╔═╡ 9f9f30e0-05bd-11eb-3a26-091d04addadb
+md" Nous avons enfin fait un graphique montrant l'évolution du temps d'exécution en fonction de la dimension de l'instance.
+
+Le temps d'exécution pour une instance donnée est le temps moyen sur dix exécutions.
+
+À cette fin, nous avons utilisé la fonction `timeit` introduite dans le cours et qui se trouve dans le fichier `timeit.jl' ci-dessous."
+
+# ╔═╡ aed0d9a0-05be-11eb-10dd-59286a805c94
+display("timeit.jl")
+
+# ╔═╡ bd907c1e-05be-11eb-0574-917b5e8f0dd0
+md" Le test est ensuite effectué dans le fichier `benchmark.jl` ci-dessous. Il consiste essentiellement à répéter les instruction du fichier principal `main.jl` sur toutes instances et à sauvegarder les résultats de la fonction `timeit` à chaque fois.
+
+L'instance `pa561.jl` n'a pas été prise en compte puisque que le résultat est trop long à calculer."
+
+# ╔═╡ d6a67390-05be-11eb-37fe-7b60de102e8e
+display("benchmark.jl")
+
+# ╔═╡ 1c93c1f0-05bf-11eb-3de6-9b8114a8b1c2
+md" Les résultats se trouve à la page suivante. Le premier graphe est en échelle normale et le second en échelle logarithmique. On voit que la tendance n'est pas linéaire, mais pas exponentielle non plus. "
 
 # ╔═╡ Cell order:
 # ╟─7140c6d0-04e3-11eb-0a12-53b3c375d2ce
@@ -179,3 +207,8 @@ md"
 # ╠═b0467890-0590-11eb-1353-21781028fc56
 # ╟─b73e8750-0590-11eb-0d3a-8fc11056cbff
 # ╟─d077e540-0590-11eb-3122-83c78445f6a8
+# ╟─9f9f30e0-05bd-11eb-3a26-091d04addadb
+# ╠═aed0d9a0-05be-11eb-10dd-59286a805c94
+# ╟─bd907c1e-05be-11eb-0574-917b5e8f0dd0
+# ╠═d6a67390-05be-11eb-37fe-7b60de102e8e
+# ╟─1c93c1f0-05bf-11eb-3de6-9b8114a8b1c2
