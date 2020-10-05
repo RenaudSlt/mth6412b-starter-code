@@ -10,7 +10,7 @@ include("timeit.jl")
 
 # Lecture des noms des instances
 working_directory = pwd()
-cd("..\\..\\instances\\stsp\\")
+cd("..\\instances\\stsp\\")
 filenames = readdir()
 cd(working_directory)  # retour au working directory
 
@@ -22,7 +22,7 @@ times = [] # Temps d'exécution
 for FileName in filenames
 
   # Sauvegarde du chemin du fichier contenant le data
-  cd("..\\..\\instances\\stsp\\")
+  cd("..\\instances\\stsp\\")
   local data_dir = joinpath(pwd(), FileName)  # NOTE : devrait fonctionner avec Windows et Unix, cependant Unix pas testé!!! 
   cd(working_directory)  # retour au working directory
 

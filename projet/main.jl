@@ -4,7 +4,7 @@ include("graph.jl")
 include("read_stsp.jl")
 include("kruskal_algorithm.jl")
 
-### Se placer dans le répertoire 'mth6412b-starter-code/projet/phase1' ###
+### Se placer dans le répertoire 'mth6412b-starter-code/projet' ###
 
 # Choix de l'instance
 #FileName = "bayg29.tsp"   # upper row
@@ -13,7 +13,7 @@ FileName = "gr17.tsp"     # lower diag row
 
 # Sauvegarde du chemin du fichier contenant le data
 working_directory = pwd()
-cd("..\\..\\instances\\stsp\\")
+cd("..\\instances\\stsp\\")
 data_dir = joinpath(pwd(), FileName)  # NOTE : devrait fonctionner avec Windows et Unix, cependant Unix pas testé!!! 
 cd(working_directory)  # retour au working directory
 
