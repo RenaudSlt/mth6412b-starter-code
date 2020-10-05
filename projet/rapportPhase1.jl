@@ -412,8 +412,8 @@ md" Le résultat de ce programme étant assez long, nous ne l'avons pas mis dans
 # ╟─b9164b50-ff3f-11ea-15c9-09c92b9d700f
 # ╟─db5b8360-ff6c-11ea-1217-496a57b3330f
 # ╟─31a25150-ff71-11ea-2f1a-c96935fd9a20
-# ╟─a157de80-ff48-11ea-33e7-6710b4fb5416
-# ╟─f98a9030-ff47-11ea-2a99-85269f4e5595
+# ╠═a157de80-ff48-11ea-33e7-6710b4fb5416
+# ╠═f98a9030-ff47-11ea-2a99-85269f4e5595
 # ╠═6de424fe-ff56-11ea-1d15-9f2ef8ce89dd
 # ╟─a1f036d0-ff5c-11ea-29a8-f79234ff41ef
 # ╟─01b71ac0-ff5d-11ea-21d2-cfce9ca9079f
@@ -421,7 +421,7 @@ md" Le résultat de ce programme étant assez long, nous ne l'avons pas mis dans
 # ╟─db326370-ff5f-11ea-2636-1d6774fde369
 # ╠═ec87f310-ff5f-11ea-264b-a7740dce4373
 # ╟─67f133c0-ff62-11ea-26db-8b8c6e88960b
-# ╟─9ef502be-ff5d-11ea-2cdf-11f25c835c5c
+# ╠═9ef502be-ff5d-11ea-2cdf-11f25c835c5c
 # ╟─92feb96e-ff5d-11ea-2e03-f96b885b2143
 # ╟─92bcf57e-ff5d-11ea-3e2c-1fb4b6d0f84e
 # ╠═92a1a550-ff5d-11ea-1aa5-2b41185f82d1

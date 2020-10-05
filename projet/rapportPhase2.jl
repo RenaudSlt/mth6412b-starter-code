@@ -20,6 +20,9 @@ md" Lien vers le dépôt de la phase 1 : [https://github.com/RenaudSlt/mth6412b-
 # ╔═╡ d49676d0-04e3-11eb-00c6-bb5a666d47c8
 md" ***"
 
+# ╔═╡ ecdbd8f0-05c1-11eb-1952-dded7022edc2
+
+
 # ╔═╡ 3679e742-04e6-11eb-1c51-51b1e1e95ccd
 md"### Structure des composantes connexes "
 
@@ -177,6 +180,7 @@ md" Les résultats se trouve à la page suivante. Le premier graphe est en éche
 # ╟─b32b2a90-04e3-11eb-33db-090692a410c0
 # ╟─d37130ae-04e3-11eb-2322-fd0f422aa7d5
 # ╟─d49676d0-04e3-11eb-00c6-bb5a666d47c8
+# ╟─ecdbd8f0-05c1-11eb-1952-dded7022edc2
 # ╠═6f2bfb20-04e4-11eb-27f5-13ab53bb3434
 # ╟─3679e742-04e6-11eb-1c51-51b1e1e95ccd
 # ╟─7c3995f0-04e6-11eb-2cb0-8f1cfbc6afe5
