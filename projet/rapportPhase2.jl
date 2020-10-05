@@ -15,7 +15,7 @@ md" Edward Hallé-Hannan 1843683\
 Renaud Saltet 2035899"
 
 # ╔═╡ d37130ae-04e3-11eb-2322-fd0f422aa7d5
-md" Lien vers le dépôt de la phase 1 : [https://github.com/RenaudSlt/mth6412b-starter-code/tree/phase2/projet/phase1](https://github.com/RenaudSlt/mth6412b-starter-code/tree/phase2/projet/phase1)"
+md" Lien vers le dépôt de la phase 2 : [https://github.com/RenaudSlt/mth6412b-starter-code/tree/phase2/projet](https://github.com/RenaudSlt/mth6412b-starter-code/tree/phase2/projet)"
 
 # ╔═╡ d49676d0-04e3-11eb-00c6-bb5a666d47c8
 md" ***"
