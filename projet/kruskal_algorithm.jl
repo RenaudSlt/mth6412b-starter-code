@@ -7,9 +7,9 @@ include("edge.jl")
     -Fonctionnement : 
         1) arcs de poids minimaux sont choisis itérativement,
         2) si les noeuds n1 et n2 de l'arc minimal n'appartiennent pas à la même composante connexe,
-         l'arc min est ajoutée à l'ensembe, sinon il est simplement delete
+         l'arc min est ajoutée à l'ensemble, sinon on passe à l'arête suivante
         NOTE : on vérifie que deux n1 et n2 appartiennent pas à la même composante connexe avec la structure
-        NodeTree{T}, c'est-à-dire qu'on compare les racines de des deux sommets n1 et n2
+        NodeTree{T}, c'est-à-dire qu'on compare les racines des deux sommets n1 et n2
 
     -Input : Graph connexe ayant des sommets et des arcs
     -Output : Ensemble d'arêtes formant le recouvrement minimal, poids de l'arbre recouvrant minimal
@@ -36,7 +36,7 @@ function kruskal_algorithm(graph::Graph{T}) where T
     weight = 0
     for i = 1 : nb_edges(graph)
         
-        # Ârrete de poids minimal   
+        # Arête de poids minimal   
         edge_min = popfirst!(edges_array)
 
         # On va chercher les Nodes associes aux sommets de l'ârrete minimal
@@ -61,9 +61,25 @@ function kruskal_algorithm(graph::Graph{T}) where T
             # Ajout du poids dans le poids total
             weight += get_weight(edge_min)
             
-            # La racine de tree_node1 devient l'enfant de la racine de  tree_node2
+            # La racine de tree_node1 devient l'enfant de la racine de tree_node2
             set_parent!(get_root(tree_node1), get_root(tree_node2) )
         end
+        
+        
+        # to remove
+        """
+        println("\nitération ",i)
+        for node in tree_nodes_array
+            print(get_name(node), " : ")
+            if get_parent(node) != nothing
+                println(get_name(get_parent(node)))
+            else
+                println(get_name(get_root(node)))
+            end
+        end
+        """
+        # to here
+        
 
     end
     
