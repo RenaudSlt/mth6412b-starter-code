@@ -51,12 +51,14 @@ Output :
     -Si !(node_temp === nothing) => le noeud a une racine
     -Si (node_temp === nothing) => le noeud est une racine
 """
+
 function get_root(node::NodeTree{T}) where T 
 
     if get_parent(node) === nothing  # Il est une racine
         return node 
     else
-        get_root(get_parent(node))
+        #set_parent!(node, get_root(get_parent(node)))  # avec la compression des chemins (NE FONCTIONNE PAS)
+        get_root(get_parent(node))                     # standard
     end
 
 end
