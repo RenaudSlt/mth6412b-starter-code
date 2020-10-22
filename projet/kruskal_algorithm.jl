@@ -12,7 +12,7 @@ include("edge.jl")
         NodeTree{T}, c'est-à-dire qu'on compare les racines de des deux sommets n1 et n2
 
     -Input : Graph connexe ayant des sommets et des arcs
-    -Output : Ensemble d'arêtes formant le recouvrement minimal
+    -Output : Ensemble d'arêtes formant le recouvrement minimal, poids de l'arbre recouvrant minimal
 """
 function kruskal_algorithm(graph::Graph{T}) where T
     
@@ -33,6 +33,7 @@ function kruskal_algorithm(graph::Graph{T}) where T
     ### Algorithme ### 
 
     edges_graph_min = Edge{T}[]
+    weight = 0
     for i = 1 : nb_edges(graph)
         
         # Ârrete de poids minimal   
@@ -56,6 +57,9 @@ function kruskal_algorithm(graph::Graph{T}) where T
         if !(same_tree(tree_node1, tree_node2))
             
             push!(edges_graph_min, edge_min)
+
+            # Ajout du poids dans le poids total
+            weight += get_weight(edge_min)
             
             # La racine de tree_node1 devient l'enfant de la racine de  tree_node2
             set_parent!(get_root(tree_node1), get_root(tree_node2) )
@@ -64,5 +68,5 @@ function kruskal_algorithm(graph::Graph{T}) where T
     end
     
     # Ensemble d'arêtes qui forme le recouvrement minimal
-    return edges_graph_min
+    return edges_graph_min, weight
 end
