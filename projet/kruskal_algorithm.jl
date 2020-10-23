@@ -61,25 +61,18 @@ function kruskal_algorithm(graph::Graph{T}) where T
             # Ajout du poids dans le poids total
             weight += get_weight(edge_min)
             
-            # La racine de tree_node1 devient l'enfant de la racine de tree_node2
-            set_parent!(get_root(tree_node1), get_root(tree_node2) )
-        end
-        
-        
-        # to remove
-        """
-        println("\nitération ",i)
-        for node in tree_nodes_array
-            print(get_name(node), " : ")
-            if get_parent(node) != nothing
-                println(get_name(get_parent(node)))
+            # Union via le rang
+            rank1 = get_rank(get_root!(tree_node1))
+            rank2 = get_rank(get_root!(tree_node2))
+            if rank1 > rank2
+                set_parent!(get_root!(tree_node2), get_root!(tree_node1))
             else
-                println(get_name(get_root(node)))
+                set_parent!(get_root!(tree_node1), get_root!(tree_node2))
+                if rank1 == rank2
+                    set_rank!(get_root!(tree_node2), rank2 + 1)
+                end
             end
         end
-        """
-        # to here
-        
 
     end
     
