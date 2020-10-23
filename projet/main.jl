@@ -13,7 +13,7 @@ FileName = "gr17.tsp"     # lower diag row
 
 # Sauvegarde du chemin du fichier contenant le data
 working_directory = pwd()
-cd("..\\instances\\stsp\\")
+cd(joinpath("..", "instances", "stsp"))
 data_dir = joinpath(pwd(), FileName)  # NOTE : devrait fonctionner avec Windows et Unix, cependant Unix pas testé!!! 
 cd(working_directory)  # retour au working directory
 
