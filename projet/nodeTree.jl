@@ -35,7 +35,7 @@ get_rank(node::NodeTree{T}) where T = node.rank_
 
 """Ajuste le noeud parent d'un noeud (node1) en tant qu'un autre noeud (node2)
 Input : 
-    -child : un NodeTree à lequel on affecte son attribut parent_ au NodeTree parent en argument
+    -child : un NodeTree auquel on affecte son attribut parent_ au NodeTree parent en argument
     -parent : le NodeTree qui est affecté à child
 Output:
     -le NodeTree child modifié
@@ -45,7 +45,13 @@ function set_parent!(child::NodeTree{T}, parent::NodeTree{T}) where T
    return child
 end
 
-""" todo """
+""" Modifie le rang du noeud en argument
+Input : 
+    -node : un NodeTree dont le rang sera modifié
+    -rank : le rang à affecter
+Output:
+    -le NodeTree node modifié
+"""
 function set_rank!(node::NodeTree{T}, rank::Int) where T
     node.rank_ = rank
     return node
@@ -61,19 +67,16 @@ Output :
     -Si !(node_temp === nothing) => le noeud a une racine
     -Si (node_temp === nothing) => le noeud est une racine
 """
-
 function get_root!(node::NodeTree{T}) where T 
-
     if get_parent(node) === nothing  # Il est une racine
         return node 
     else
-        #get_root!(get_parent(node))                    # standard
-        set_parent!(node, get_root!(get_parent(node)))  # avec la compression des chemins
+        #get_root!(get_parent(node))                    # Standard
+        
+        set_parent!(node, get_root!(get_parent(node)))  # Avec compression des chemins
         return get_parent(node)
     end
-
 end
-
 
 """Vérifie si deux noeuds appartiennent aux mêmes arbres en comparant leur noeud racine"""
 function same_tree(node1::NodeTree{T}, node2::NodeTree{T}) where T 
