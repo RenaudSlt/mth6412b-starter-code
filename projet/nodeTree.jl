@@ -13,6 +13,7 @@ mutable struct NodeTree{T} <: AbstractNode{T}
     data_::T
     name_::String
     parent_::Union{NodeTree{T}, Nothing} 
+    rank_::Int
 end
 
 
@@ -22,12 +23,15 @@ end
         name_ = "", par défaut
         parent_ = nothing, par défaut
 """
-function NodeTree{T}(data_::T; name_::String="", parent_::Union{NodeTree{T}, Nothing}=nothing) where T
-    return NodeTree(data_, name_, parent_)
+function NodeTree{T}(data_::T; name_::String="", parent_::Union{NodeTree{T}, Nothing}=nothing, rank_::Int=0) where T
+    return NodeTree(data_, name_, parent_, rank_)
 end
 
 """Accède au noeud parent d'un noeud"""
 get_parent(node::NodeTree{T}) where T = node.parent_
+
+""" Accède rang d'un noeud """
+get_rank(node::NodeTree{T}) where T = node.rank_
 
 """Ajuste le noeud parent d'un noeud (node1) en tant qu'un autre noeud (node2)
 Input : 
@@ -41,6 +45,12 @@ function set_parent!(child::NodeTree{T}, parent::NodeTree{T}) where T
    return child
 end
 
+""" todo """
+function set_rank!(node::NodeTree{T}, rank::Int) where T
+    node.rank_ = rank
+    return node
+end
+
 """Retourne le noeud racine d'une composante composante_connexe (NodeTree)
     -La méthode est recursive. C'est-à-dire qu'on appelle la fonction jusqu'à ce qu'on atteigne
     une racine (lorsque get_parent(node)==nothing).
@@ -52,13 +62,14 @@ Output :
     -Si (node_temp === nothing) => le noeud est une racine
 """
 
-function get_root(node::NodeTree{T}) where T 
+function get_root!(node::NodeTree{T}) where T 
 
     if get_parent(node) === nothing  # Il est une racine
         return node 
     else
-        #set_parent!(node, get_root(get_parent(node)))  # avec la compression des chemins (NE FONCTIONNE PAS)
-        get_root(get_parent(node))                     # standard
+        #get_root!(get_parent(node))                    # standard
+        set_parent!(node, get_root!(get_parent(node)))  # avec la compression des chemins
+        return get_parent(node)
     end
 
 end
@@ -66,7 +77,7 @@ end
 
 """Vérifie si deux noeuds appartiennent aux mêmes arbres en comparant leur noeud racine"""
 function same_tree(node1::NodeTree{T}, node2::NodeTree{T}) where T 
-    root_tree1 = get_root(node1)
-    root_tree2 = get_root(node2)
+    root_tree1 = get_root!(node1)
+    root_tree2 = get_root!(node2)
     return root_tree1 == root_tree2 
 end
