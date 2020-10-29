@@ -1,5 +1,9 @@
 include("node.jl")
 
+import Base.show
+import Base.popfirst!
+import Base.isless
+
 """Type représentant un noeud marqué avec une structure d'arbre
     - L'attribut min_weight_ a vocation à être le poids de l'arête de poids minimal connectant le noeud au sous arbre dans l'algorithme de Prim
     - Si parent_ == nothing => le NodeTree est une racine
@@ -53,8 +57,16 @@ end
 """ Affichage du noeud """
 show(node::MarkedNode) = println("node $(get_name(node)) of minimum weight to tree $(get_min_weight(node))")
 
+""" Surcharge de `isless` pour comparer les attributs min_weight_ de deux MarkedNodes """
+isless(node1::MarkedNode{T}, node2::MarkedNode{T}) where T = isless(get_min_weight(node1), get_min_weight(node2))
 
-
-test_node = MarkedNode(nothing)
-set_visited!(test_node)
-get_visited(test_node)
+""" Retire et renvoie le noeud d'attribut min_weight_ minimal dans un vecteur de MarkedNodes
+  - Input : vecteur de MarkedNodes
+  - Output : noeud d'attribut min_weight_ minimal 
+"""
+function popfirst!(nodes::Vector{MarkedNode{T}}) where T  
+  min_node = minimum(nodes)
+  idx = findfirst(x -> x == min_node, nodes)
+  deleteat!(nodes, idx)
+  min_node
+end
