@@ -9,7 +9,7 @@ include("prim_algorithm.jl")
 
 using Test
 
-### Se placer dans le répertoire 'mth6412b-starter-code/projet' ###
+### Se placer dans le répertoire 'mth6412b-starter-code ###
 
 
 ### Exemple du cours  ###
@@ -101,9 +101,6 @@ arcs_minimaux_P, poids_minimal_P = prim_algorithm(G, get_nodes(G)[1])
 files_name = ["bayg29.tsp", "gr17.tsp", "swiss42.tsp"]
 
 # Sauvegardes des chemin du fichier contenant le data
-#working_directory = pwd()
-#working_directory =  "C:\\Users\\Edward\\Desktop\\A20\\MTH6412B\\Projet\\mth6412b-starter-code\\projet"
-
 working_directory = pwd()
 cd(joinpath(working_directory, "instances", "stsp"))
 data_directories = [joinpath(pwd(), file) for file in files_name ]
