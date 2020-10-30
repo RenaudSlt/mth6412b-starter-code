@@ -4,7 +4,7 @@ include("graph.jl")
 include("read_stsp.jl")
 include("kruskal_algorithm.jl")
 
-### Se placer dans le répertoire 'mth6412b-starter-code/projet' ###
+### Se placer dans le répertoire 'mth6412b-starter-code' ###
 
 # Choix de l'instance
 #FileName = "bayg29.tsp"   # upper row
@@ -17,15 +17,6 @@ working_directory = pwd()
 cd(joinpath(working_directory, "instances", "stsp"))
 data_dir = joinpath(pwd(), FileName)  # NOTE : devrait fonctionner avec Windows et Unix, cependant Unix pas testé!!! 
 cd(working_directory)  # retour au working directory
-
-# MAUVAIS MAIS FONCTION : ED
-#working_directory = pwd()
-#println(working_directory)
-#cd("instances\\stsp")
-#data_dir = joinpath(pwd(), FileName)  # NOTE : devrait fonctionner avec Windows et Unix, cependant Unix pas testé!!! 
-#cd(working_directory)  # retour au working directory
-
-#"C:\\Users\\Edward\\Desktop\\A20\\MTH6412B\\Projet\\mth6412b-starter-code\\instances\\stsp"
 
 # Nom et dimension
 headers_ = read_header(data_dir)
