@@ -39,7 +39,6 @@ function prim_algorithm(graph::Graph{T}, source::Node{T}) where T
     end
 
     
-
     ### Algorithme ###
     edges_graph_min = Edge{T}[]
     weight_min = 0
@@ -50,38 +49,34 @@ function prim_algorithm(graph::Graph{T}, source::Node{T}) where T
       push!(visited_nodes, u)
       set_visited!(u)
       
-      #idx = findfirst(x -> x == u, get_nodes(graph))
-      #u_node = get_nodes(graph)[idx]
-      
-      #sub_edges = get_edges_from_node(graph, u_node)  
+      # On détermine les arcs associés au noeud u  
       sub_edges = get_edges_from_node(graph, u)
       edge_to_add = sub_edges[1]
 
       # Relaxation
       for edge in sub_edges
         
-        # On détermine le noeud associé à l'arête (u,v) ou (v,u) : on traite le cas [...]
-        #v_node = (u_node == get_node1(edge)) ?  get_node2(edge) :  get_node1(edge)
+        # On détermine le noeud associé à l'arête (u,v_node) ou (v_node,u) 
         v_node = (u == get_node1(edge)) ?  get_node2(edge) :  get_node1(edge)
 
-        # Retrouver le MarkedNode correspondant à v 
+        # On retrouve le MarkedNode v correspondant à v_node, qui est un simple Node (appartient au graph), puisque nous avons besoin d'accéder à ses attributs min_weight et parent
         idx = findfirst(x -> x == v_node, marked_nodes_queue) 
-        if idx === nothing
+        if idx === nothing  # Si idx est nothing, alors le marked_node v que l'on cherche est dans les noeuds déjà visités
           idx = findfirst(x -> x == v_node, visited_nodes)
           v = visited_nodes[idx]
         else
           v = marked_nodes_queue[idx]
         end
         
-
-        # On détermine l'arête légère
+        # On détermine l'arête légère 
         if  v == get_parent(u)
           edge_to_add = edge
         end
 
+        # Si v est deja visité, alors il n'est pas nécessaire d'ajuster ces attributs avec le test de relaxation
         is_visited(v) && continue 
         
-        # Test de relaxation 
+        # Test de relaxation et ajustement potentiellement du min_weight et du parent de v
         if get_weight(edge) < get_min_weight(v)
           set_min_weight!(v, get_weight(edge)) 
           set_parent!(v,u)
