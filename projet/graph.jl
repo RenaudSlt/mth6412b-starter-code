@@ -83,15 +83,27 @@ function show(graph::Graph{T}) where T
 end
 
 
-""" Allo """
+""" Fonction d'utilité : supporte la fonction prime_algorithm
+    -Retourne les arêtes qui sont associés à un noeud donné
+    
+    Input : noeud appartenant au graph 
+    Output :
+"""
 #function get_edges_from_node(graph::Graph{T}, node::Node{T}) where T
 function get_edges_from_node(graph::Graph{T}, node::AbstractNode{T}) where T
-  sub_edges = Edge{T}[]
-  for edge in get_edges(graph)
+  
+  if !(node is get_nodes(graph))
+    @error("The node doesn't belong to the graph")
+  else
+    
+    sub_edges = Edge{T}[]
+    for edge in get_edges(graph)
 
-    if (get_node1(edge) == node || get_node2(edge) == node)
-      push!(sub_edges, edge)
+      if (get_node1(edge) == node || get_node2(edge) == node)
+        push!(sub_edges, edge)
+      end
     end
+    return sub_edges
   end
-  return sub_edges
+
 end
