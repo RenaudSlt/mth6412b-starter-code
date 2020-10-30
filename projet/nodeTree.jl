@@ -9,7 +9,7 @@ import Base.==
     l'entremise d'un root
     -Si parent_ == nothing => le NodeTree est une racine
 """
-mutable struct NodeTree{T} <: AbstractNode{T}
+mutable struct NodeTree{T} <: AbstractNode{T} 
     data_::T
     name_::String
     parent_::Union{NodeTree{T}, Nothing} 

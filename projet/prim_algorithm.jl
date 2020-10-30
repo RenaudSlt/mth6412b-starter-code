@@ -6,13 +6,18 @@ include("edge.jl")
 
 
 """ Algorithme de Prim : supporté par une structure de donnée MarkedNode{T} dans markednode.jl 
+
     -Fonctionnement :
       1) arêtes légères sont choisis itérativement à partir d'un noeud source s::Node{T}
       2) l'arête légère doit associer un noeud n1, appartenant au sous-arbre de recouvrement, à un autre n2 qui n'appartient pas encore au sous-arbre de recouvrement  
-  Note : une arête légère est celle ayant le plus petit min_weight, qui une distance entre un n2 et le n1 le plus proche, où n appartient au sous-arbre 
+      Note : une arête légère est celle ayant le plus petit min_weight, qui une distance entre un n2 et le n1 le plus proche, où n appartient au sous-arbre 
 
-    Input : 1) Graph connexe ayant des sommets et des arcs 2) un noeud source
-    Output : 1) Ensemble d'arêtes formant le recouvrement minimal 2) poids de l'arbre recouvrant minimal
+    -Input : 
+      1) Graph connexe ayant des sommets et des arcs 
+      2) un noeud source
+    -Output : 
+      1) Ensemble d'arêtes formant le recouvrement minimal 
+      2) poids de l'arbre recouvrant minimal
 """
 function prim_algorithm(graph::Graph{T}, source::Node{T}) where T
     

@@ -92,7 +92,7 @@ end
 function get_edges_from_node(graph::Graph{T}, node::AbstractNode{T}) where T
   
   if !(node in get_nodes(graph))
-    @error("The node doesn't belong to the graph")
+    throw(error("The node doesn't belong to the graph"))
   end
 
   sub_edges = Edge{T}[]

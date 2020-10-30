@@ -72,7 +72,7 @@ function popfirst!(nodes::Vector{MarkedNode{T}}) where T
   
   # Si le vecteur est vide, on lance directement l'erreur : permet d'éviter que l'erreur se propage à minimum, findfirst, etc. (plus difficile à déboguer) 
   if (isempty(nodes))
-    @error("The vector is empty.") 
+    throw(error("The vector is empty."))
   end
 
   min_node = minimum(nodes)
