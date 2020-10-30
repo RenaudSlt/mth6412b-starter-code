@@ -40,11 +40,4 @@ arcs_minimaux_K, poids_minimal_K = kruskal_algorithm(G)
 arcs_minimaux_P, poids_minimal_P = prim_algorithm(G, get_nodes(G)[1])
 
 # Test
-
-#for edge in arcs_minimaux_P
-#  println(edge)
-#end
-
-println(poids_minimal_P==poids_minimal_K)
-
 @test poids_minimal_P==poids_minimal_K
