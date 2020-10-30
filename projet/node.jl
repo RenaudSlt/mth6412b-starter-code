@@ -32,7 +32,7 @@ end
 get_name(node::AbstractNode{T}) where T = node.name_
 
 """Accède les données contenues dans le noeud."""
-get_data(node::AbstractNode{T} where T) = node.data_
+get_data(node::AbstractNode{T}) where T = node.data_
 
 """Affiche un noeud."""
 function show(node::AbstractNode{T}) where T

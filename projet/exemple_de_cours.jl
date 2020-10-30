@@ -31,11 +31,7 @@ add_edge!( G, Edge{Nothing}(get_nodes(G)[5], get_nodes(G)[4], 9) )
 add_edge!( G, Edge{Nothing}(get_nodes(G)[6], get_nodes(G)[4], 14) )
 add_edge!( G, Edge{Nothing}(get_nodes(G)[6], get_nodes(G)[5], 10) )
 
-# Test get_edges_from node
-#sub_edges = get_edges_from_node(G, get_nodes(G)[1]) 
-#for edge in sub_edges
-#    println(edge)
-#end
+
 
 # Rouler l'algorithme de Kruskal
 arcs_minimaux_K, poids_minimal_K = kruskal_algorithm(G)

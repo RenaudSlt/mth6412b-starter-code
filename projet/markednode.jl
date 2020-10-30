@@ -31,34 +31,34 @@ function MarkedNode{T}(data_::T; name_::String="", min_weight_::Number=Inf) wher
 end
 
 """ Accesseur à l'attribut visited_ """
-is_visited(node::MarkedNode) = node.visited_
+is_visited(node::MarkedNode{T}) where T = node.visited_
 
 """ Accesseur à l'attribut min_weight_ """
-get_min_weight(node::MarkedNode) = node.min_weight_
+get_min_weight(node::MarkedNode{T}) where T = node.min_weight_
 
 """ Accesseur à l'attribut parent_ """
-get_parent(node::MarkedNode) = node.parent_
+get_parent(node::MarkedNode{T}) where T = node.parent_
 
 """ Mutateur de l'attribut visited_ (irréversible) """
-function set_visited!(node::MarkedNode)
+function set_visited!(node::MarkedNode{T}) where T
     node.visited_ = true
-    node
+    return node
 end
 
 """ Mutateur de l'attribut min_weight_ """
-function set_min_weight!(node::MarkedNode, weight::Number)
+function set_min_weight!(node::MarkedNode{T}, weight::Number) where T
     node.min_weight_ = max(0.0, weight)
-    node
+    return node
 end
 
 """ Mutateur de l'attribut parent_ """
 function set_parent!(node::MarkedNode{T}, parent::MarkedNode{T}) where T
     node.parent_ = parent
-    node
+    return node
 end
 
 """ Affichage du noeud """
-show(node::MarkedNode) = println("node $(get_name(node)) of minimum weight to tree $(get_min_weight(node))")
+show(node::MarkedNode{T}) where T = println("node $(get_name(node)) of minimum weight to tree $(get_min_weight(node))")
 
 """ Surcharge de `isless` pour comparer les attributs min_weight_ de deux MarkedNodes """
 isless(node1::MarkedNode{T}, node2::MarkedNode{T}) where T = isless(get_min_weight(node1), get_min_weight(node2))

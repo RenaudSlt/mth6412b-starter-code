@@ -20,8 +20,10 @@ end
 """ Constructeur :
     -Argument obligatoire : data_
     -Argument facultatif : name_  et parent_
-        name_ = "", par défaut
-        parent_ = nothing, par défaut
+        name_ = ""
+    -Initilisation
+        parent_ = nothing
+        rank_ = 0
 """
 function NodeTree{T}(data_::T; name_::String="", parent_::Union{NodeTree{T}, Nothing}=nothing, rank_::Int=0) where T
     return NodeTree(data_, name_, parent_, rank_)
@@ -47,10 +49,10 @@ end
 
 """ Modifie le rang du noeud en argument
 Input : 
-    -node : un NodeTree dont le rang sera modifié
-    -rank : le rang à affecter
+    1) node : un NodeTree dont le rang sera modifié
+    2) rank : le rang à affecter
 Output:
-    -le NodeTree node modifié
+    3) le NodeTree node modifié
 """
 function set_rank!(node::NodeTree{T}, rank::Int) where T
     node.rank_ = rank
@@ -58,23 +60,36 @@ function set_rank!(node::NodeTree{T}, rank::Int) where T
 end
 
 """Retourne le noeud racine d'une composante composante_connexe (NodeTree)
-    -La méthode est recursive. C'est-à-dire qu'on appelle la fonction jusqu'à ce qu'on atteigne
-    une racine (lorsque get_parent(node)==nothing).
+    
+    -Fonctionnement :
+        -La méthode est recursive. C'est-à-dire qu'on appelle la fonction jusqu'à ce qu'on atteigne
+        une racine (lorsque get_parent(node)==nothing).
+        -Par défaut, on effectue la compression, ce qui veut dire que l'on connecte tous les descendants d'une racine
+        sont l'enfant direct de cette racine.
 
-Input : 
-    -un NodeTree quelconque
-Output : 
-    -Si !(node_temp === nothing) => le noeud a une racine
-    -Si (node_temp === nothing) => le noeud est une racine
+    -Input : 
+        1) un NodeTree quelconque
+        2) Falcultatif : booléan compression : true => on applique la compression (par défaut), faux => aucune compression
+    -Output : 
+        1) Si !(node_temp === nothing) => le noeud a une racine
+        2) Si (node_temp === nothing) => le noeud est une racine
 """
-function get_root!(node::NodeTree{T}) where T 
-    if get_parent(node) === nothing  # Il est une racine
+function get_root!(node::NodeTree{T}; compression::Bool=true) where T 
+    
+    # Node est une racine
+    if get_parent(node) === nothing  
         return node 
     else
-        #get_root!(get_parent(node))                    # Standard
-        
-        set_parent!(node, get_root!(get_parent(node)))  # Avec compression des chemins
+
+        # Avec compression des chemins
+        if compression
+            set_parent!(node, get_root!(get_parent(node)))  
+        # Sans compression
+        else 
+            get_root!(get_parent(node))         
+        end
         return get_parent(node)
+        
     end
 end
 
