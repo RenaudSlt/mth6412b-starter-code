@@ -13,10 +13,19 @@ FileName = "gr17.tsp"     # lower diag row
 
 # Sauvegarde du chemin du fichier contenant le data
 working_directory = pwd()
-cd(joinpath("..", "instances", "stsp"))
+
+cd(joinpath(working_directory, "instances", "stsp"))
 data_dir = joinpath(pwd(), FileName)  # NOTE : devrait fonctionner avec Windows et Unix, cependant Unix pas testé!!! 
 cd(working_directory)  # retour au working directory
 
+# MAUVAIS MAIS FONCTION : ED
+#working_directory = pwd()
+#println(working_directory)
+#cd("instances\\stsp")
+#data_dir = joinpath(pwd(), FileName)  # NOTE : devrait fonctionner avec Windows et Unix, cependant Unix pas testé!!! 
+#cd(working_directory)  # retour au working directory
+
+#"C:\\Users\\Edward\\Desktop\\A20\\MTH6412B\\Projet\\mth6412b-starter-code\\instances\\stsp"
 
 # Nom et dimension
 headers_ = read_header(data_dir)
