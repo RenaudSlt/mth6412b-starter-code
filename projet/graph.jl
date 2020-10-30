@@ -84,8 +84,8 @@ end
 
 
 """ Allo """
-function get_edges_from_node(graph::Graph{T}, node::Node{T}) where T
-
+#function get_edges_from_node(graph::Graph{T}, node::Node{T}) where T
+function get_edges_from_node(graph::Graph{T}, node::AbstractNode{T}) where T
   sub_edges = Edge{T}[]
   for edge in get_edges(graph)
 
