@@ -13,7 +13,7 @@ mutable struct MarkedNode{T} <: AbstractNode{T}
     name_::String
     data_::T
     visited_::Bool
-    min_weight_::Float64
+    min_weight_::Number
     parent_::Union{MarkedNode{T},Nothing}
 end
 
@@ -23,12 +23,12 @@ end
         name_ = "", par défaut
         min_weight_ = Inf, par défaut
 """
-function MarkedNode(data::T; name::String="", min_weight::Float64=Inf) where T
-    MarkedNode(name, data, false, max(0.0, min_weight), nothing)
+function MarkedNode{T}(data_::T; name_::String="", min_weight_::Number=Inf) where T
+    MarkedNode(name_, data_, false, max(0.0, min_weight_), nothing)
 end
 
 """ Accesseur à l'attribut visited_ """
-get_visited(node::MarkedNode) = node.visited_
+is_visited(node::MarkedNode) = node.visited_
 
 """ Accesseur à l'attribut min_weight_ """
 get_min_weight(node::MarkedNode) = node.min_weight_
@@ -43,7 +43,7 @@ function set_visited!(node::MarkedNode)
 end
 
 """ Mutateur de l'attribut min_weight_ """
-function set_min_weight!(node::MarkedNode, weight::Float64)
+function set_min_weight!(node::MarkedNode, weight::Number)
     node.min_weight_ = max(0.0, weight)
     node
 end

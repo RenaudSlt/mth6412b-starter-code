@@ -81,3 +81,17 @@ function show(graph::Graph{T}) where T
     show(edge)
   end
 end
+
+
+""" Allo """
+function get_edges_from_node(graph::Graph{T}, node::Node{T}) where T
+
+  sub_edges = Edge{T}[]
+  for edge in get_edges(graph)
+
+    if (get_node1(edge) == node || get_node2(edge) == node)
+      push!(sub_edges, edge)
+    end
+  end
+  return sub_edges
+end

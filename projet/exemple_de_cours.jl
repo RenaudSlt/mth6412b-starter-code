@@ -2,6 +2,8 @@ include("node.jl")
 include("edge.jl")
 include("graph.jl")
 include("kruskal_algorithm.jl")
+include("prim_algorithm.jl")
+using Test
 
 # Créer le graphe
 G = Graph{Nothing}()
@@ -29,5 +31,24 @@ add_edge!( G, Edge{Nothing}(get_nodes(G)[5], get_nodes(G)[4], 9) )
 add_edge!( G, Edge{Nothing}(get_nodes(G)[6], get_nodes(G)[4], 14) )
 add_edge!( G, Edge{Nothing}(get_nodes(G)[6], get_nodes(G)[5], 10) )
 
+# Test get_edges_from node
+#sub_edges = get_edges_from_node(G, get_nodes(G)[1]) 
+#for edge in sub_edges
+#    println(edge)
+#end
+
 # Rouler l'algorithme de Kruskal
-arcs_minimaux, poids_minimal = kruskal_algorithm(G)
+arcs_minimaux_K, poids_minimal_K = kruskal_algorithm(G)
+
+# Rouler l'aglorithme de Prim
+arcs_minimaux_P, poids_minimal_P = prim_algorithm(G, get_nodes(G)[1])
+
+# Test
+
+#for edge in arcs_minimaux_P
+#  println(edge)
+#end
+
+println(poids_minimal_P==poids_minimal_K)
+
+@test poids_minimal_P==poids_minimal_K
