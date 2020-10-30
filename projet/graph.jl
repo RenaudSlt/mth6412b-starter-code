@@ -87,23 +87,21 @@ end
     -Retourne les arêtes qui sont associés à un noeud donné
     
     Input : noeud appartenant au graph 
-    Output :
+    Output : liste d'arêtes associés au noeud en argument
 """
-#function get_edges_from_node(graph::Graph{T}, node::Node{T}) where T
 function get_edges_from_node(graph::Graph{T}, node::AbstractNode{T}) where T
   
-  if !(node is get_nodes(graph))
+  if !(node in get_nodes(graph))
     @error("The node doesn't belong to the graph")
-  else
-    
-    sub_edges = Edge{T}[]
-    for edge in get_edges(graph)
-
-      if (get_node1(edge) == node || get_node2(edge) == node)
-        push!(sub_edges, edge)
-      end
-    end
-    return sub_edges
   end
 
+  sub_edges = Edge{T}[]
+  for edge in get_edges(graph)
+
+    if (get_node1(edge) == node || get_node2(edge) == node)
+      push!(sub_edges, edge)
+    end
+  end
+  return sub_edges
+  
 end
