@@ -91,20 +91,21 @@ array_marked_nodes = MarkedNode{Int}[]
 
 ### Exemple de cours : comparaison prim_algorithm et kruskal_algorithm ###
 arcs_minimaux_K, poids_minimal_K = kruskal_algorithm(G)
-arcs_minimaux_P, poids_minimal_P = prim_algorithm(G, get_nodes(G)[1])
+arcs_minimaux_P, poids_minimal_P = prim_algorithm(G)
 
 @test poids_minimal_P==poids_minimal_K
 
 
 
-### Exemples complets 
-files_name = ["bayg29.tsp", "gr17.tsp", "swiss42.tsp"]
+### Toutes les instances symétriques (sauf pa561)
 
 # Sauvegardes des chemin du fichier contenant le data
 working_directory = pwd()
 cd(joinpath(working_directory, "instances", "stsp"))
-data_directories = [joinpath(pwd(), file) for file in files_name ]
-cd(working_directory)  # retour au working directory
+files_name = readdir()
+filter!(e -> e ≠ "pa561.tsp", files_name) # Retrait de l'instance pa561.tsp qui est trop grande pour Kruskal
+data_directories = [joinpath(pwd(), file) for file in files_name]
+cd(working_directory) # retour au working directory
 
 # Noms et dimensions
 headers_ = [read_header(data_dir) for data_dir in data_directories ]
@@ -112,7 +113,7 @@ graph_names = [head_["NAME"] for head_ in headers_ ]
 graph_dimensioms = [parse(Int, head_["DIMENSION"]) for head_ in headers_ ]
 
 # Liste de graph
-graphs = [Graph{Nothing}(), Graph{Nothing}(), Graph{Nothing}()]
+graphs = [Graph{Nothing}() for i in 1:length(files_name)]
 for i = 1:length(graphs)
     set_name!(graphs[i], graph_names[i])
 end
@@ -124,20 +125,18 @@ for i = 1 :length(graphs)
     end
 end
 
-
 # Ajout des arêtes
 for i = 1:length(graphs)
-    edges_, weights_ = read_edges(headers_[i], data_directories[i]) 
-    for j in 1:length(edges_)
-        local_node1 = Node{Nothing}(nothing, string(edges_[j][1]))
-        local_node2 = Node{Nothing}(nothing, string(edges_[j][2]))
-        add_edge!(graphs[i], Edge{Nothing}(local_node1, local_node2, weights_[j]))
+    edges, weights = read_edges(headers_[i], data_directories[i]) 
+    for j in 1:length(edges)
+        local_node1 = Node{Nothing}(nothing, string(edges[j][1]))
+        local_node2 = Node{Nothing}(nothing, string(edges[j][2]))
+        add_edge!(graphs[i], Edge{Nothing}(local_node1, local_node2, weights[j]))
     end
 end
 
-@testset "multiple comparison of final weight (second output, hence the outer [2]) for kruskal and prim" begin
-        @test kruskal_algorithm(graphs[1])[2] == prim_algorithm(graphs[1], get_nodes(graphs[1])[1])[2]
-        @test kruskal_algorithm(graphs[2])[2] == prim_algorithm(graphs[2], get_nodes(graphs[2])[1])[2]
-        @test kruskal_algorithm(graphs[3])[2] == prim_algorithm(graphs[3], get_nodes(graphs[3])[1])[2]
-    end
-
+@testset "multiple comparison of final weight for kruskal and prim" begin
+for graph in graphs 
+  @test kruskal_algorithm(graph)[2] == prim_algorithm(graph)[2]
+end
+end
