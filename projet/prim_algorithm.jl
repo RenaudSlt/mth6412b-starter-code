@@ -19,7 +19,7 @@ include("edge.jl")
       1) Ensemble d'arêtes formant le recouvrement minimal 
       2) poids de l'arbre recouvrant minimal
 """
-function prim_algorithm(graph::Graph{T}, source::Node{T}) where T
+function prim_algorithm(graph::Graph{T}, source::Node{T}=get_nodes(graph)[1]) where T
     
     ### Initilisation
     
