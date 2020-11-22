@@ -11,8 +11,8 @@ include("prim_algorithm.jl")
 
 # Choix de l'instance
 #FileName = "bayg29.tsp"   # upper row
-FileName = "gr17.tsp"     # lower diag row
-#FileName = "swiss42.tsp"  # full matrix
+#FileName = "gr17.tsp"     # lower diag row
+FileName = "swiss42.tsp"  # full matrix
 
 # Sauvegarde du chemin du fichier contenant le data
 working_directory = pwd()
@@ -79,7 +79,7 @@ end
 # Test HK algorithm
 # Critère d'arrêt "period_length" "t_step" "sub_gradient"
 
-tour_graph, final_cost, optimal_tour_obtained, tour_obtained = hk_algorithm(G, "a", get_nodes(G)[1], 1.0, "period_length")  
+tour_graph, final_cost, optimal_tour_obtained, tour_obtained = hk_algorithm(G, "kruskal", get_nodes(G)[2], 1.0, "t_step")  
 #println("Tournée bon coût:")
 show(tour_graph)
 println(" ") #print("\n")

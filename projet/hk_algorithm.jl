@@ -12,11 +12,11 @@ include("kruskal_algorithm.jl")
 function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nodes(graph)[1], initial_step_size::Float64=1.0, stop_criterion::String="t_step") where T
 
 
-  if algo_MST != "kruskal" || algo_MST != "prim" 
+  if !(algo_MST == "kruskal" || algo_MST == "prim") 
     @error("Invalid input argument for algo_MST argument : ", algo_MST, "\n Possible String inputs are :\n prim \n kruskal")
   end
 
-  if stop_criterion != "t_step" || stop_criterion != "period_length" || stop_criterion != "sub_gradient"
+  if !(stop_criterion == "t_step" || stop_criterion == "period_length" || stop_criterion == "sub_gradient")
     @error("Invalid input argument for stop_criterion argument : ", stop_criterion,  "\n Possible String inputs are :\n t_step \n period_length \n sub_gradient")
   end
  
@@ -68,7 +68,7 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
 
     # Détermine le noeud special qui est enlevé du graph pour faire le MST et le noeud source pour partir l'algo MST
     #n_source = rand(1:n)
-    #source = get_nodes(graph_copy)[]
+    #source = get_nodes(graph_copy)[n_source]
 
     # Calcul d'un arbre de recouvrement minimal sur les noeuds {1,2,3,...,n}
     if algo_MST == "kruskal"
@@ -201,7 +201,7 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     period_counter += 1
     k += 1
 
-    println("iteration :", k , " period : ", period_length, " grand W: ", W)
+    #println("iteration :", k , " period : ", period_length, " t ", t , " grand W: ", W)
   end
 
 
