@@ -206,56 +206,51 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
 
 
   ### Sorti et post-processing 
+  
+  # On retrouve les coûts initiaux
+  for edge in get_edges(best_valid_one_tree)
+    cost_edge = get_weight(edge) - ( best_valid_π[get_index(get_node1(edge))] + best_valid_π[get_index(get_node2(edge))] )
+    set_weight!(edge, cost_edge)
+  end
 
   # Verification pour critere sur le pas et sur la période qu'une tournée a été obtenue
   if !sub_gradient_null
     tour_obtained = (get_degrees(best_valid_one_tree) .- 2 == zeros(n))
   end
 
-
   # POST-PROCESSING : du meilleur 1-tree valide (comportant seulement des degrés ∈ {-1,-0,1} ), qui n'est pas une tournée
   if !(tour_obtained)
-    
     # Si possibilité de post-processing le 1-tree pour obtenir une approximation de la tournée
-    if reconstruction_possible
+    if reconstruction_possible     
+      
+      v_before = get_degrees(best_valid_one_tree)
+      println("NOEUD AVANT PS ")
+      for i = 1:n
+        println("noeud ", i, " degree :", v_before[i]-2)
+      end
+      println(" ")
+      
+
       post_process_one_tree!(best_valid_one_tree, graph)
       tour_obtained_with_reconstruction = (get_degrees(best_valid_one_tree) .- 2 == zeros(n))
-      
-    end
 
-  end
-
-  # On retrouve les edges du graph initial
-  """
-  tour_edges = Edge{T}[]
-  for edge_graph in get_edges(graph)
-    for edge_tour in get_edges(best_valid_one_tree)
-      if (get_node1(edge_graph)==get_node1(edge_tour)) && (get_node2(edge_graph)==get_node2(edge_tour))
-        push!(tour_edges, edge_graph)
+      v_after = get_degrees(best_valid_one_tree)
+      println("NOEUD APRÈS PS ")
+      for i = 1:n
+        println("noeud ", i, " degree :", v_after[i]-2)
       end
+      println(" ")
+
     end
-  end
-  
 
-  final_cost = 0.0
-  for edge in tour_edges
-      final_cost += get_weight(edge)
   end
 
-  tour_graph = Graph("tour", get_nodes(graph), tour_edges)
-  return tour_graph, final_cost, tour_obtained, tour_obtained_with_reconstruction
-  """
-
-
-  tour_edges = Edge{T}[]
+  # On calcul le coût de la tournée ou du 1-tree
   final_cost = 0.0
   for edge in get_edges(best_valid_one_tree)
-      cost_edge = get_weight(edge) - ( best_valid_π[get_index(get_node1(edge))] + best_valid_π[get_index(get_node2(edge))] )
-      set_weight!(edge, cost_edge)
-      push!(tour_edges, edge)
-      final_cost += cost_edge
+      final_cost += get_weight(edge)
   end
-  tour_graph = Graph("tour", get_nodes(graph), tour_edges)
+  tour_graph = Graph("tour", get_nodes(best_valid_one_tree), get_edges(best_valid_one_tree))
 
   return best_valid_one_tree, final_cost, tour_obtained, tour_obtained_with_reconstruction
 

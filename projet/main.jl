@@ -44,8 +44,18 @@ for j in 1:length(edges_)
   idx1 = findfirst(x -> get_name(x)==node1_name, get_nodes(G))
   idx2 = findfirst(x -> get_name(x)==node2_name, get_nodes(G))
   
-  if get_nodes(G)[idx1] != get_nodes(G)[idx2]
-    add_edge!(G, Edge{Nothing}(get_nodes(G)[idx1], get_nodes(G)[idx2], weights_[j]))
+  flag_symetric = false
+  temp_edge = Edge{Nothing}(get_nodes(G)[idx1], get_nodes(G)[idx2], weights_[j])
+  for edge_in_G in get_edges(G)
+      if is_symetric(edge_in_G, temp_edge)
+        flag_symetric = true
+      end
+  end
+
+
+  # On évite les boucles et les arcs symétriques (NON-ORIENTÉ)
+  if (get_nodes(G)[idx1] != get_nodes(G)[idx2]) && !flag_symetric
+    add_edge!(G, temp_edge)
   end
 
 end

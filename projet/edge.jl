@@ -90,7 +90,9 @@ end
 
 """ Surcharge de l'operateur == """
 function ==(edge1::AbstractEdge{T}, edge2::AbstractEdge{T}) where T
-
   (get_node1(edge1)==get_node1(edge2) && get_node2(edge1)==get_node2(edge2) && get_weight(edge1)==get_weight(edge2) )
 end
 
+function is_symetric(edge1::AbstractEdge{T}, edge2::AbstractEdge{T}) where T
+  return (get_node1(edge1)==get_node2(edge2) && get_node2(edge1)==get_node1(edge2) )
+end

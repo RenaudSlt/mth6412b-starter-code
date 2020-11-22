@@ -187,8 +187,10 @@ function post_process_one_tree!(one_tree::Graph{T}, initial_graph::Graph{T}) whe
   v = get_degrees(one_tree) .- 2
   idx_ones = findall(x -> x == 1, v)
   idx_minus_ones = findall(x -> x == -1, v)
+  added_edges = Edge{T}[]
 
   while !isempty(idx_ones)
+    
     p = pop!(idx_ones)
     q = pop!(idx_minus_ones)
     node3 = get_nodes(one_tree)[p]  # un noeud de degré 3
@@ -206,13 +208,37 @@ function post_process_one_tree!(one_tree::Graph{T}, initial_graph::Graph{T}) whe
     # Trouver l'arête entre v et node1 dans le graphe initial et l'ajouter à one_tree
     for edge in get_edges(initial_graph)
       if (get_node1(edge) == v && get_node2(edge) == node1) || (get_node2(edge) == v && get_node1(edge) == node1)
+        
+        #flag_symetric = false
+        #for edge_in_added in added_edges
+        #  if is_symetric(edge, edge_in_added)
+        #    flag_symetric = true
+        #  end
+        #end
+
+        #if !flag_symetric
+        println("EDGE AJOUTÉ ")
+        show(edge)
+        println(" ")
+        #push!(added_edges, edge)
         add_edge!(one_tree, Edge{Nothing}(v, node1, get_weight(edge)))
+        #end    
+
       end
     end
 
     # Retirer l'arête entre node3 et v de one_tree
-    idx_edge_min = findfirst(x -> x == edge_min, get_edges(one_tree))
-    deleteat!(get_edges(one_tree), idx_edge_min)
+    for edge in get_edges(one_tree)
+      if (get_node1(edge) == v && get_node2(edge) == node3) || (get_node2(edge) == v && get_node1(edge) == node3)
+        println("EDGE DELETED ")
+        show(edge)
+        println(" ")
+        filter!(x-> x!=edge, get_edges(one_tree) )
+      end
+    end
+
+    #idx_edge_min = findfirst(x -> x == edge_min, get_edges(one_tree))
+    #deleteat!(get_edges(one_tree), idx_edge_min)
   end
 
   return one_tree
