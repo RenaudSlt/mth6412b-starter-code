@@ -34,7 +34,7 @@ function rsl_algorithm(graph::Graph{T}, algo::String, source::Node{T}=get_nodes(
 
   # Création et remplissage de la liste dans laquelle sont stockés les sommets dans l'ordre
   route_nodes = []
-  parcours_preordre(get_root(arbre_minimal[1]), route_nodes)
+  parcours_preordre(get_root!(arbre_minimal[1]), route_nodes)
 
   # On retrouve les arêtes correspondant aux sommets successifs de la route
   edges = get_edges(graph)
