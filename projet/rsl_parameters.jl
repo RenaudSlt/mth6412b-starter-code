@@ -47,8 +47,8 @@ for i = 1:length(graphs)
     temp_edge = Edge{Nothing}(get_nodes(graphs[i])[idx1], get_nodes(graphs[i])[idx2], weights[j])
 
     flag_symetric = false
-    # Swiss 42 est la seule instance avec des arêtes en double
-    if get_name(graphs[i]) == "swiss42"
+    # Swiss 42 et Bays29 sont les seules instances avec des arêtes en double
+    if get_name(graphs[i]) == "swiss42" || get_name(graphs[i]) == "bays29"
       for edge_in_G in get_edges(graphs[i])
           if is_symetric(edge_in_G, temp_edge)
             flag_symetric = true

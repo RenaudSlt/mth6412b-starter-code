@@ -3,9 +3,9 @@ include("edge.jl")
 include("graph.jl")
 include("read_stsp.jl")
 include("kruskal_algorithm.jl")
+include("prim_algorithm.jl")
 include("rsl_algorithm.jl")
 include("hk_algorithm.jl")
-include("prim_algorithm.jl")
 
 ### Se placer dans le répertoire 'mth6412b-starter-code' ###
 
@@ -47,8 +47,8 @@ for j in 1:length(edges_)
   temp_edge = Edge{Nothing}(get_nodes(G)[idx1], get_nodes(G)[idx2], weights_[j])
 
   flag_symetric = false
-  # Swiss 42 est la seule instance avec des arêtes en double
-  if get_name(G) == "swiss42"
+  # Swiss 42 et Bays29 sont les seules instances avec des arêtes en double
+  if get_name(G) == "swiss42" || get_name(G) == "bays29"
     for edge_in_G in get_edges(G)
         if is_symetric(edge_in_G, temp_edge)
           flag_symetric = true
