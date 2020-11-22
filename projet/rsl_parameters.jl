@@ -73,8 +73,8 @@ best_parameters_rsl = Dict("bayg29"=>["",0,Inf],"bays29"=>["",0,Inf],"brazil58"=
 
 """
 k = 3
-algo = best_parameters_rsl[get_name(graphs[k])][2]
-root = get_nodes(graphs[k])[best_parameters_rsl[get_name(graphs[k])][1]]
+algo = best_parameters_rsl[get_name(graphs[k])][1]
+root = get_nodes(graphs[k])[best_parameters_rsl[get_name(graphs[k])][2]]
 a,b, distance = rsl_algorithm(graphs[k], algo, root )
 println(distance)
 println("\n")
@@ -103,7 +103,7 @@ for i in [1,2,3,5,6,8,9,10,11,12,14]
   end
 end
 
-best_parameters_rsl = Dict("brazil58" => ["prim", 46, 28121],"gr17" => ["kruskal", 7, 2210],"bayg29" => ["kruskal", 17, 2014],"gr120" => [0, "", Inf],"swiss42" => ["kruskal", 32, 3182],"brg180" => [0, "", Inf],"pa561.tsp" => [0, "", Inf],"gr21" => ["prim", 13, 2968],"dantzig42" => ["prim", 4, 890],"fri26" => ["prim", 2, 1073],"hk48" => ["kruskal", 20, 13939],"gr48" => ["prim", 39, 6680],"gr24" => ["prim", 13, 1519],"bays29" => ["kruskal", 14, 4626])
+best_parameters_rsl = Dict("brazil58" => ["prim", 46, 28121],"gr17" => ["kruskal", 7, 2210],"bayg29" => ["kruskal", 17, 2014],"gr120" => ["kruskal", 104, 8982],"swiss42" => ["kruskal", 32, 1587],"brg180" => ["prim", 130, 75460],"pa561.tsp" => ["prim", 450, 3855],"gr21" => ["prim", 13, 2968],"dantzig42" => ["prim", 4, 890],"fri26" => ["prim", 2, 1073],"hk48" => ["kruskal", 20, 13939],"gr48" => ["prim", 39, 6680],"gr24" => ["prim", 13, 1519],"bays29" => ["kruskal", 14, 2313])
 
 # Pour les grandes instance (n>80), on test aléatoirement
 for i in [4,7,13]
