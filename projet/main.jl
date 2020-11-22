@@ -10,9 +10,23 @@ include("hk_algorithm.jl")
 ### Se placer dans le répertoire 'mth6412b-starter-code' ###
 
 # Choix de l'instance
+FileName = "gr17.tsp"     # lower diag row
 #FileName = "bayg29.tsp"   # upper row
-#FileName = "gr17.tsp"     # lower diag row
-FileName = "swiss42.tsp"  # full matrix
+#FileName = "swiss42.tsp"  # full matrix
+#FileName = "gr21.tsp"
+#FileName = "gr24.tsp"
+#FileName = "gr48.tsp"
+#FileName = "gr120.tsp"
+#FileName = "brazil58.tsp"
+#FileName = "brg180.tsp"
+#FileName = "dantzig42.tsp"
+#FileName = "fri26.tsp"
+#FileName = "hk48.tsp"
+#FileName = "bays29.tsp"
+#FileName = "pa561.tsp"
+
+
+
 
 # Sauvegarde du chemin du fichier contenant le data
 working_directory = pwd()
@@ -92,13 +106,20 @@ end
 # Test HK algorithm
 # Critère d'arrêt "period_length" "t_step" "sub_gradient"
 
-tour_graph, final_cost, optimal_tour_obtained, tour_obtained = hk_algorithm(G, "prim", get_nodes(G)[1], 1.0, "t_step")  
+
+
+best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>1950,"dantzig42"=>699,"fri26"=>937, "gr120"=>6942,"gr17"=>2085,"gr21"=>2707,"gr24"=>1272,"gr48"=>5046,"hk48"=>11461,"pa561.tsp"=>2763,"swiss42"=>1273)
+
+
+
+tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration = hk_algorithm(G, "kruskal", get_nodes(G)[1], 1.0, "sub_gradient")  
 #println("Tournée bon coût:")
 show(tour_graph)
 println(" ") #print("\n")
 println("Coût final : ", final_cost)
 println("Tournée obtenue : ", optimal_tour_obtained)
 println("Tournée obtenue avec POST-PROCESSING : ", tour_obtained)
+println("Arrêt avant max iteration : ", !max_iteration)
 
 v = get_degrees(tour_graph)
 for i = 1:nb_nodes(tour_graph)
