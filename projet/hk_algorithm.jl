@@ -20,8 +20,6 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     @error("Invalid input argument for stop_criterion argument : ", stop_criterion,  "\n Possible String inputs are :\n t_step \n period_length \n sub_gradient")
   end
  
-
-
   # Initialisation
   n = nb_nodes(graph)
   k = 0 
@@ -52,6 +50,9 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
   # en post-processing
   reconstruction_possible = false 
   tour_obtained_with_reconstruction = false
+
+  # Flag pour signaliser qu'aucune convergence est atteinte après un certain nombre d'itération
+  max_iteration_obtained = false
 
   
   # Initialisation des copies profonds pour ne pas modifier le graph passer en argument
@@ -167,6 +168,13 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
 
     end
     
+    # CONDITION D'ARRÊT SPÉCIAL : si aucune convergence est atteinte
+    if k >= 10^6
+      max_iteration_obtained = true
+      break
+    end
+
+
   
     ### Choix d'une taille de pas
 
@@ -201,7 +209,6 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     period_counter += 1
     k += 1
 
-    #println("iteration :", k , " period : ", period_length, " t ", t , " grand W: ", W)
   end
 
 
@@ -222,25 +229,8 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
   if !(tour_obtained)
     # Si possibilité de post-processing le 1-tree pour obtenir une approximation de la tournée
     if reconstruction_possible     
-      
-      v_before = get_degrees(best_valid_one_tree)
-      println("NOEUD AVANT PS ")
-      for i = 1:n
-        println("noeud ", i, " degree :", v_before[i]-2)
-      end
-      println(" ")
-      
-
       post_process_one_tree!(best_valid_one_tree, graph)
       tour_obtained_with_reconstruction = (get_degrees(best_valid_one_tree) .- 2 == zeros(n))
-
-      v_after = get_degrees(best_valid_one_tree)
-      println("NOEUD APRÈS PS ")
-      for i = 1:n
-        println("noeud ", i, " degree :", v_after[i]-2)
-      end
-      println(" ")
-
     end
 
   end
@@ -252,7 +242,7 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
   end
   tour_graph = Graph("tour", get_nodes(best_valid_one_tree), get_edges(best_valid_one_tree))
 
-  return best_valid_one_tree, final_cost, tour_obtained, tour_obtained_with_reconstruction
+  return best_valid_one_tree, final_cost, tour_obtained, tour_obtained_with_reconstruction, max_iteration_obtained
 
 
 end
