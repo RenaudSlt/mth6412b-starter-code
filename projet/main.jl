@@ -89,7 +89,7 @@ end
 # Test HK algorithm
 # Critère d'arrêt "period_length" "t_step" "sub_gradient"
 
-tour_graph, final_cost, optimal_tour_obtained, tour_obtained = hk_algorithm(G, "kruskal", get_nodes(G)[1], 1.0, "t_step")  
+tour_graph, final_cost, optimal_tour_obtained, tour_obtained = hk_algorithm(G, "prim", get_nodes(G)[1], 1.0, "t_step")  
 #println("Tournée bon coût:")
 show(tour_graph)
 println(" ") #print("\n")
