@@ -28,14 +28,17 @@ FileName = "gr120.tsp"
 #FileName = "swiss42.tsp"
 
 
-# Dictionnaire des meilleurs paramètres 
-best_parameters_rsl = Dict("brazil58" => ["prim", 46, 28121],"gr17" => ["kruskal", 7, 2210],"bayg29" => ["kruskal", 17, 2014],"gr120" => ["kruskal", 104, 8982],"swiss42" => ["kruskal", 32, 1587],"brg180" => ["prim", 130, 75460],"pa561.tsp" => ["prim", 450, 3855],"gr21" => ["prim", 13, 2968],"dantzig42" => ["prim", 4, 890],"fri26" => ["prim", 2, 1073],"hk48" => ["kruskal", 20, 13939],"gr48" => ["prim", 39, 6680],"gr24" => ["prim", 13, 1519],"bays29" => ["kruskal", 14, 2313])
-
-# Dictionnaires des tournées optimales
-best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>1950,"dantzig42"=>699,"fri26"=>937, "gr120"=>6942,"gr17"=>2085,"gr21"=>2707,"gr24"=>1272,"gr48"=>5046,"hk48"=>11461,"pa561.tsp"=>2763,"swiss42"=>1273)
 
 
 function main_rsl(FileName)
+
+  # Dictionnaire des meilleurs paramètres 
+  best_parameters_rsl = Dict("brazil58" => ["prim", 46, 28121],"gr17" => ["kruskal", 7, 2210],"bayg29" => ["kruskal", 17, 2014],"gr120" => ["kruskal", 104, 8982],"swiss42" => ["kruskal", 32, 1587],"brg180" => ["prim", 130, 75460],"pa561.tsp" => ["prim", 450, 3855],"gr21" => ["prim", 13, 2968],"dantzig42" => ["prim", 4, 890],"fri26" => ["prim", 2, 1073],"hk48" => ["kruskal", 20, 13939],"gr48" => ["prim", 39, 6680],"gr24" => ["prim", 13, 1519],"bays29" => ["kruskal", 14, 2313])
+
+  # Dictionnaires des tournées optimales
+  best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>1950,"dantzig42"=>699,"fri26"=>937, "gr120"=>6942,"gr17"=>2085,"gr21"=>2707,"gr24"=>1272,"gr48"=>5046,"hk48"=>11461,"pa561.tsp"=>2763,"swiss42"=>1273)
+
+
   # Sauvegarde du chemin du fichier contenant le data
   working_directory = pwd()
 
