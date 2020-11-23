@@ -80,6 +80,10 @@ for graph in graphs
     if graph_name == "gr17" || graph_name == "gr21" || graph_name == "fri26" 
         continue 
 
+    # Ce graph est trop long à runner : À TESTER DE MANIÈRE ISOLÉE
+    elseif graph_name == "pa561.tsp"
+        continue 
+
     elseif nb_nodes(graph) < 30
         for mst in ["prim", "kruskal"]
             for stop_criterion in ["t_step","period_length","sub_gradient"]
