@@ -196,7 +196,7 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     end
     
     # Condition d'arrêt spécial sur le nombre d'itération
-    if k >= 10000
+    if k >= 250
       max_iteration_obtained = true
       break
     end
