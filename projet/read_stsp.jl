@@ -1,5 +1,7 @@
 using Plots
 
+include("graph.jl")
+
 """Analyse un fichier .tsp et renvoie un dictionnaire avec les données de l'entête."""
 function read_header(filename::String)
 
@@ -237,5 +239,69 @@ end
 """Fonction de commodité qui lit un fichier stsp et trace le graphe."""
 function plot_graph(filename::String)
   graph_nodes, graph_edges = read_stsp(filename)
+
+  println(graph_nodes)
+  for edge in graph_edges
+    println(edge)
+  end
+
   plot_graph(graph_nodes, graph_edges)
+end
+
+
+
+"""Affiche un graphe et une tournée étant données un ensemble de noeuds et d'arêtes.
+
+Exemple :
+
+    graph_nodes, graph_edges = read_stsp("bayg29.tsp")
+    plot_graph(graph_nodes, graph_edges)
+    savefig("bayg29.pdf")
+"""
+function plot_graph_with_tour(nodes, edges, tour_edges)
+  fig = plot(legend=false)
+
+  # Liste des couples de villes qui forment la tournée
+  tour_edges_indices = []
+  for edge in tour_edges
+    k = get_index(get_node1(edge))
+    j = get_index(get_node2(edge))
+    push!(tour_edges_indices, [k,j])
+  end
+
+  # edge positions
+  for k = 1 : length(edges)
+    for j in edges[k]
+      # Si l'arête fait partie de la tournée, on l'affiche en rouge
+      if [k,j] in tour_edges_indices || [j,k] in tour_edges_indices
+        plot!([nodes[k][1], nodes[j][1]], [nodes[k][2], nodes[j][2]],
+            linewidth=1.5, alpha=1.0, color=:red)
+      else
+        plot!([nodes[k][1], nodes[j][1]], [nodes[k][2], nodes[j][2]],
+            linewidth=1.5, alpha=0.75, color=:lightgray)
+      end
+    end
+  end
+
+  # Affichage de la tournée
+  for couple1 in tour_edges_indices
+    k = couple1[1]
+    j = couple1[2]
+    plot!([nodes[k][1], nodes[j][1]], [nodes[k][2], nodes[j][2]],
+      linewidth=1.5, alpha=1.0, color=:red)
+  end
+
+  # node positions
+  xys = values(nodes)
+  x = [xy[1] for xy in xys]
+  y = [xy[2] for xy in xys]
+  scatter!(x, y)
+
+  fig
+end
+
+"""Fonction de commodité qui lit un fichier stsp et trace le graphe et une tournée."""
+function plot_graph_with_tour(filename::String, tour_edges)
+  graph_nodes, graph_edges = read_stsp(filename)
+  plot_graph_with_tour(graph_nodes, graph_edges, tour_edges)
 end
