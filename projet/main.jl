@@ -18,15 +18,12 @@ include("hk_algorithm.jl")
 #FileName = "gr48.tsp" ok
 #FileName = "gr120.tsp"
 #FileName = "brazil58.tsp"
-#FileName = "brg180.tsp"
+FileName = "brg180.tsp"
 #FileName = "dantzig42.tsp"
 #FileName = "fri26.tsp"
 #FileName = "hk48.tsp"
 #FileName = "bays29.tsp"
-FileName = "pa561.tsp"
-
-
-
+#FileName = "pa561.tsp"
 
 # Sauvegarde du chemin du fichier contenant le data
 working_directory = pwd()
@@ -82,13 +79,14 @@ best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>
 
 
 
-tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration = hk_algorithm(G, "prim", get_nodes(G)[1], 1.0, "t_step")  
+tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration, at_least_one_improvement = hk_algorithm(G, "prim", get_nodes(G)[6], 1.0, "t_step")  
 show(tour_graph)
 println(" ") 
 println("Coût final : ", final_cost)
 println("Tournée obtenue : ", optimal_tour_obtained)
 println("Tournée obtenue avec POST-PROCESSING : ", tour_obtained)
 println("Arrêt avant max iteration : ", !max_iteration)
+println("Au moins une amélioration : ", at_least_one_improvement)
 
 v = get_degrees(tour_graph)
 for i = 1:nb_nodes(tour_graph)

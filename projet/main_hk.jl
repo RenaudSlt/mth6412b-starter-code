@@ -31,13 +31,6 @@ include("hk_algorithm.jl")
 #FileName = "gr17.tsp"
 #FileName = "swiss42.tsp"
 
-
-
-
-
-
-
-
 function main_hk(FileName)
 
     # Dictionnaires des tournées optimales
@@ -103,6 +96,7 @@ function main_hk(FileName)
     
     tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration = hk_algorithm(G, best_algo, best_root, t, best_criteria)  
     
+    println(" ")
     println("Affichage de la tournée : ")
     show(tour_graph)
     println(" ")

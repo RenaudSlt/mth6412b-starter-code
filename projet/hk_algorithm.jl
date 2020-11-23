@@ -44,6 +44,7 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
   k = 0 
   π = zeros(n)
   best_valid_π = zeros(n)
+  best_π = zeros(n)
   v = zeros(n)
   v_prev = zeros(n)
   best_v = zeros(n)
@@ -73,10 +74,14 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
   # Flag pour signaliser qu'aucune convergence est atteinte après un certain nombre d'itération
   max_iteration_obtained = false
 
+  # Flag pour gérer les cas pathologiques qui ne convergent pas
+  at_least_one_imporvement = false
+
   # Initialisation des copies profonds pour ne pas modifier le graph passer en argument
   graph_copy = deepcopy(graph)
   best_one_tree = deepcopy(graph) 
   best_valid_one_tree = deepcopy(graph)
+  one_tree = deepcopy(graph)
 
   # Boucle principale
   while (sub_gradient_null==false && step_size_min_obtained==false && period_size_min_obtained==false )
@@ -138,7 +143,10 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
 
      # Amélioration du one-tree
     if w > w_prev
+
+      at_least_one_imporvement = true
       best_one_tree = one_tree
+      best_π = π
 
       v_valid, number_of_ones = v_score(v)
       # Si tous les degrés en absolu sont plus petit que 1 on sauvegarde ce one-tree 
@@ -188,7 +196,7 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     end
     
     # Condition d'arrêt spécial sur le nombre d'itération
-    if k >= 10000
+    if k >= 100000
       max_iteration_obtained = true
       break
     end
@@ -227,7 +235,6 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     # Mise à jour de k et de la période
     period_counter += 1
     k += 1
-
   end
 
 
@@ -256,11 +263,34 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
 
   # On calcul le coût de la tournée ou du 1-tree
   final_cost = 0.0
-  for edge in get_edges(best_valid_one_tree)
+
+  if tour_obtained || tour_obtained_with_reconstruction || reconstruction_possible
+    for edge in get_edges(best_valid_one_tree)
       final_cost += get_weight(edge)
+    end
+
+    return best_valid_one_tree, final_cost, tour_obtained, tour_obtained_with_reconstruction, max_iteration_obtained, at_least_one_imporvement
+  
+  elseif at_least_one_imporvement
+
+    for edge in get_edges(best_one_tree)
+      cost_edge = get_weight(edge) - ( best_π[get_index(get_node1(edge))] + best_π[get_index(get_node2(edge))] )
+      set_weight!(edge, cost_edge)
+    end
+
+    for edge in get_edges(best_one_tree)
+      final_cost += get_weight(edge)
+    end
+
+    return best_one_tree, final_cost, tour_obtained, tour_obtained_with_reconstruction, max_iteration_obtained, at_least_one_imporvement
+
+  else 
+    for edge in get_edges(one_tree)
+      final_cost += get_weight(edge)
+    end
+    return one_tree, final_cost, tour_obtained, tour_obtained_with_reconstruction, max_iteration_obtained, at_least_one_imporvement
   end
 
-  return best_valid_one_tree, final_cost, tour_obtained, tour_obtained_with_reconstruction, max_iteration_obtained
 
 
 end
