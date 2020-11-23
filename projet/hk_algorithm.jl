@@ -7,7 +7,27 @@ include("prim_algorithm.jl")
 include("kruskal_algorithm.jl")
 
 
-""" Algorithme de HK
+""" Algorithme de HK : basé sur les [1] [2] et [3]
+  Input :
+    1) graph : un graph complet
+    2) algo_MST : un choix d'algorithme pour une sub-routine qui détermine un arbre de recouvrement minimal (MST). Entrée valide : "prim" ou "kruskal"
+    3) source : un noeud source rattaché à graph. Ce noeud est utilisé pour la sub-routine MST. 
+    4) initial_step_size : un pas initial pour l'algorithme, qui est basée sur une recherche directe
+    5) stop_criterion : un critère d'arrêt basé sur soit le pas ("step_size"), la période ("period_length") ou le sub-gradient ("sub_gradient")
+  Output:
+    1) best_valid_one_tree : retourne le meilleur 1-tree. 
+    2) final_cost : la sommes des arêtes, qui appartiennent à 1), du graph initial  
+    3) tour_obtained : booléen qui indique si une tournée a été obtenue
+    4) tour_obtained_with_reconstruction : booléen qui indique si une tournée a été obtenue, mais à l'aide d'une étape de reconstruction***
+    5) max_iteration_obtained : booléen qui indique si le maximum d'itération laissez a été atteint
+
+    ***L'étape de post-processing reconstruit un 1-tree qui n'est pas une tournée, mais contient seulement des noeuds avec des degrés qui sont soit {-1,0,1}
+       (voir fonction post_process_one_tree! dans le fichier graph.jl)
+
+    [1] : The Traveling-Salesman Problem and Minimum Spanning Trees (Held et Karp)
+    [2] : The Traveling-Salesman Problem and Minimum Spanning Trees: Part II (Held et Karp)
+    [3] : An Effective Implementation of the Lin-Kernighan Traveling Salesman Heuristic (Helsgaun)
+    N.B. : la principale inspiration provient du papier [3]
 """
 function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nodes(graph)[1], initial_step_size::Float64=1.0, stop_criterion::String="t_step") where T
 
@@ -169,7 +189,7 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     end
     
     # CONDITION D'ARRÊT SPÉCIAL : si aucune convergence est atteinte
-    if k >= 10^6
+    if k >= 5000
       max_iteration_obtained = true
       break
     end

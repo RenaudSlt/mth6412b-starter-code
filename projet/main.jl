@@ -10,15 +10,15 @@ include("hk_algorithm.jl")
 ### Se placer dans le répertoire 'mth6412b-starter-code' ###
 
 # Choix de l'instance
-FileName = "gr17.tsp"     # lower diag row
-#FileName = "bayg29.tsp"   # upper row
-#FileName = "swiss42.tsp"  # full matrix
-#FileName = "gr21.tsp"
-#FileName = "gr24.tsp"
-#FileName = "gr48.tsp"
+#FileName = "gr17.tsp"     # lower diag row  ok
+#FileName = "bayg29.tsp"   # upper row  ok
+#FileName = "swiss42.tsp"  # full matrix ok
+#FileName = "gr21.tsp" ok
+#FileName = "gr24.tsp" ok
+#FileName = "gr48.tsp" ok
 #FileName = "gr120.tsp"
 #FileName = "brazil58.tsp"
-#FileName = "brg180.tsp"
+FileName = "brg180.tsp"
 #FileName = "dantzig42.tsp"
 #FileName = "fri26.tsp"
 #FileName = "hk48.tsp"
@@ -112,7 +112,7 @@ best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>
 
 
 
-tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration = hk_algorithm(G, "kruskal", get_nodes(G)[1], 1.0, "sub_gradient")  
+tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration = hk_algorithm(G, "prim", get_nodes(G)[1], 1.0, "t_step")  
 #println("Tournée bon coût:")
 show(tour_graph)
 println(" ") #print("\n")
