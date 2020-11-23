@@ -182,7 +182,7 @@ function deepcopy(graph::AbstractGraph{T}) where T
 end  
 
 
-""" Fonction utilité : reconstruire """
+""" Fonction utilité : construire uen tournée avec un one-tree dont les sommets sont de degré 1, 2 ou 3. """
 function post_process_one_tree!(one_tree::Graph{T}, initial_graph::Graph{T}) where T
   v = get_degrees(one_tree) .- 2
   idx_ones = findall(x -> x == 1, v)
