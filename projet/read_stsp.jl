@@ -275,7 +275,7 @@ function plot_graph_with_tour(nodes, edges, tour_edges)
       # Si l'arête fait partie de la tournée, on l'affiche en rouge
       if [k,j] in tour_edges_indices || [j,k] in tour_edges_indices
         plot!([nodes[k][1], nodes[j][1]], [nodes[k][2], nodes[j][2]],
-            linewidth=1.5, alpha=1.0, color=:red)
+            linewidth=1.5, alpha=1.0, color=:blue)
       else
         plot!([nodes[k][1], nodes[j][1]], [nodes[k][2], nodes[j][2]],
             linewidth=1.5, alpha=0.0, color=:white)
