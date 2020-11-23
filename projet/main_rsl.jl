@@ -101,7 +101,8 @@ function main_rsl(FileName)
   # Affichage de la tournée optimale si possible
   if GraphName in ["bayg29", "bays29", "dantzig42", "gr120", "pa561.tsp"]
     println("\nAffichage de la tournée optimale ...")
-    plot_graph_with_tour( string("instances/stsp/", FileName), route_edges ) # get_edges(best_one_tree)
+    plot_graph_with_tour( string("instances/stsp/", FileName), route_edges )
+    #savefig(string("projet/affichage_tournees/", "best_tour_RSL_", GraphName))
   end
 
 end

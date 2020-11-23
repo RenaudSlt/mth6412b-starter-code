@@ -278,17 +278,9 @@ function plot_graph_with_tour(nodes, edges, tour_edges)
             linewidth=1.5, alpha=1.0, color=:red)
       else
         plot!([nodes[k][1], nodes[j][1]], [nodes[k][2], nodes[j][2]],
-            linewidth=1.5, alpha=0.75, color=:lightgray)
+            linewidth=1.5, alpha=0.0, color=:white)
       end
     end
-  end
-
-  # Affichage de la tournée
-  for couple1 in tour_edges_indices
-    k = couple1[1]
-    j = couple1[2]
-    plot!([nodes[k][1], nodes[j][1]], [nodes[k][2], nodes[j][2]],
-      linewidth=1.5, alpha=1.0, color=:red)
   end
 
   # node positions
