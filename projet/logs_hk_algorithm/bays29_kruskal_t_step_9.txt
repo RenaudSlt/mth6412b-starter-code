@@ -1,0 +1,37 @@
+Degrés des noeuds :
+
+noeud 1 degree :0.0
+noeud 2 degree :0.0
+noeud 3 degree :0.0
+noeud 4 degree :0.0
+noeud 5 degree :0.0
+noeud 6 degree :0.0
+noeud 7 degree :0.0
+noeud 8 degree :0.0
+noeud 9 degree :0.0
+noeud 10 degree :0.0
+noeud 11 degree :0.0
+noeud 12 degree :0.0
+noeud 13 degree :0.0
+noeud 14 degree :0.0
+noeud 15 degree :0.0
+noeud 16 degree :0.0
+noeud 17 degree :0.0
+noeud 18 degree :0.0
+noeud 19 degree :0.0
+noeud 20 degree :0.0
+noeud 21 degree :0.0
+noeud 22 degree :0.0
+noeud 23 degree :0.0
+noeud 24 degree :0.0
+noeud 25 degree :0.0
+noeud 26 degree :0.0
+noeud 27 degree :0.0
+noeud 28 degree :0.0
+noeud 29 degree :0.0
+ 
+Coût final : 2152.0
+Tournée obtenue : false
+Tournée obtenue avec POST-PROCESSING : true
+Arrêt avant max iteration : true
+Au moins une amélioration : true
