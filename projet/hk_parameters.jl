@@ -109,39 +109,37 @@ end
 best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>1950,"dantzig42"=>699,"fri26"=>937, "gr120"=>6942,"gr17"=>2085,"gr21"=>2707,"gr24"=>1272,"gr48"=>5046,"hk48"=>11461,"pa561.tsp"=>2763,"swiss42"=>1273)
 
 # Paramètres des meilleures tournées trouvées : [Kruskal/Prim, node_index, t0, stop_criterion, tour_weight]
-best_parameters_hk = Dict("bayg29"=>["kruskal", 27, 1.0, "t_step", 1642],"bays29"=>["prim", 1, 1.0, "t_step", 2177],"brazil58"=>["prim", 1, 1.0, "t_step", 30750],"brg180"=>["", 0, 1.0, "", Inf],"dantzig42"=>["kruskal", 1, 1.0, "t_step", 757],"fri26"=>["kruskal", 1, 1.0, "t_step", 937], "gr120"=>["prim", 1, 1.0, "t_step", 9846],"gr17"=>["kruskal", 1, 1.0, "sub_gradient", 2085],"gr21"=>["prim", 1, 1.0, "t_step", 2707],"gr24"=>["prim", 24, 1.0, "t_step", 1278],"gr48"=>["kruskal", 1, 1.0, "t_step", 5705],"hk48"=>["prim", 1, 1.0, "", 11956],"pa561.tsp"=>["", 0, 1.0, "", Inf],"swiss42"=>["kruskal", 1, 1.0, "t_step", 1499])
+best_parameters_hk = Dict("bayg29"=>["kruskal", 27, 1.0, "t_step", 1642],"bays29"=>["prim", 9, 1.0, "t_step", 2063],"brazil58"=>["prim", 1, 1.0, "t_step", 30750],"brg180"=>["", 0, 1.0, "", Inf],"dantzig42"=>["kruskal", 40, 1.0, "t_step", 713],"fri26"=>["kruskal", 1, 1.0, "t_step", 937], "gr120"=>["prim", 1, 1.0, "t_step", 9846],"gr17"=>["kruskal", 1, 1.0, "sub_gradient", 2085],"gr21"=>["prim", 1, 1.0, "t_step", 2707],"gr24"=>["prim", 24, 1.0, "t_step", 1278],"gr48"=>["kruskal", 40, 1.0, "t_step", 5563],"hk48"=>["prim", 1, 1.0, "", 11956],"pa561.tsp"=>["", 0, 1.0, "", Inf],"swiss42"=>["kruskal", 25, 1.0, "t_step", 1258.0])
 
 
-# graphs[1] : bayg29 
-# graphs[2] : bays29
+# graphs[1] : bayg29 : DONE
+# graphs[2] : bays29 : DONE
 # graphs[3] : brazil58
 # graphs[4] : brg180 : très lourd
-# graphs[5] : dantzig42
-# graphs[6] : fri26 : OKAY, deja optimisé
-# graphs[7] : gr120
-# graphs[8] : gr17 : OKAY, deja optimisé
-# graphs[9] : gr21 : OKAY, deja optimisé
-# graphs[10] : gr24 : OKAY
-# graphs[11] : gr48
-# graphs[12] : hk48
+# graphs[5] : dantzig42 : DONE
+# graphs[6] : fri26 : DONE, deja optimisé
+# graphs[7] : gr120 
+# graphs[8] : gr17 : DONE, deja optimisé
+# graphs[9] : gr21 : DONE, deja optimisé
+# graphs[10] : gr24 : DONE
+# graphs[11] : gr48 : DONE
+# graphs[12] : hk48 : DONE
 # graphs[13] : pa561.tsp : très lourd
-# graphs[14] : swiss42
+# graphs[14] : swiss42 : DONE
 
-
-for graph in [graphs[2]]
-
-    min = Inf # meilleure tournée à date
+for graph in [graphs[11]]
+    
+    # Meilleure tournée à date
+    min = Inf 
     graph_name = get_name(graph)
     println(graph_name)
     println(best_parameters_hk[graph_name])
-    #continue
 
     # Optimalité atteinte pour ces trois instances, aucune search nécessaire
     if graph_name == "gr17" || graph_name == "gr21" || graph_name == "fri26" 
         continue 
 
     # Ces graphs sont très long à résoudre : À TESTER DE MANIÈRE ISOLÉE
-    #elseif graph_name == "pa561.tsp" || graph_name == "brg180"
     elseif graph_name == "pa561.tsp"    
         continue 
 
@@ -156,7 +154,6 @@ for graph in [graphs[2]]
                         if optimal_tour_obtained || tour_obtained
                             if final_cost < min
                                 min = final_cost
-                                #["prim", 1, 1.0, "t_step", 1646]
                                 best_parameters_hk[graph_name][1] = mst
                                 best_parameters_hk[graph_name][2] = get_index(node)
                                 best_parameters_hk[graph_name][3] = 1.0
@@ -172,8 +169,10 @@ for graph in [graphs[2]]
 
     # On enlève sub_gradient comme critère d'arrêt, puis on prend un essai juste les noeuds pairs comme source
     elseif nb_nodes(graph) >= 30 && nb_nodes(graph) < 60
-        for mst in ["prim", "kruskal"]
-            for stop_criterion in ["t_step","period_length"]
+        #for mst in ["prim", "kruskal"]
+        for mst in ["kruskal"]  
+            #for stop_criterion in ["t_step","period_length"]
+            for stop_criterion in ["t_step"]
                 for (idx,node) in enumerate(get_nodes(graph))
                     # On test un noeud sur 5
                     if idx==1 || idx%5==0
