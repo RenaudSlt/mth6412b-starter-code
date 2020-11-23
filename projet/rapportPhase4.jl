@@ -174,11 +174,88 @@ md"Afin de rendre le parcours des graphes ainsi que l'attribution des poids des 
 # ╔═╡ 3c43d020-2dc0-11eb-32fb-3dce99e8a82c
 display("node.jl",14,18)
 
+# ╔═╡ 8bdf1090-2de3-11eb-3b1d-f52441296075
+md"### Choix du nœud spécial"
+
+# ╔═╡ aa9268c0-2de3-11eb-29d9-7d8d005cbb06
+md"Dans l'article de Keld Helsgaun : *An Effective Implementation of the Lin-Kernighan Traveling Salesman Heuristic*, le nœud spécial, c’est-à-dire celui qui est enlevé avant de chercher un arbre de recouvrement minimal, n’est pas le nœud 1. Ce nœud est choisi à chaque itération de la façon suivante :
+* on trouve un arbre de recouvrement sur tout le graphe,
+* on prend comme nœud spécial un nœud feuille (i.e. de degré 1) qui maximise le poids de sa seconde arête de poids minimale
+
+C’est cette méthode du choix du nœud spécial que nous avons implémentée au sein de la fonction `hk_algorithm()`."
+
+# ╔═╡ be746fa0-2de3-11eb-23b1-2f6e3808f034
+display("hk_algorithm.jl",106,129)
+
+# ╔═╡ c3f74380-2de3-11eb-0099-9b9d009a6f01
+md"### Méthode de mise à jour du pas."
+
+# ╔═╡ ce9a0ac0-2de3-11eb-1a0f-09334552d408
+md"Après avoir fait quelques essais avec un pas constant \\(t=t^0\\) et un pas tel que \\(t^k=t^0/k\\), nous avons choisi la méthode de mise à jour du pas recommandée dans l’article de K. Helsgaun.
+
+Elle consiste à garder un \\(t\\) constant pendant une certaine *période*, puis à diviser \\(t\\) et la durée de la période suivante par 2, avec quelques exceptions en fonction du résultat :
+* à la première période et tant que le résultat est amélioré (i.e. \\(w(π^k)>w(π^{k+1})\\)), le pas double
+* à la dernière itération avant la fin d’une période, si \\(w(π^k)>w(π^{k+1})\\), alors le pas n’est pas diminué et la période est doublée
+
+La période initiale est de \\(n/2\\) comme dans l’article. 
+
+Étant donné que le pas double à la première période tant que le résultat est amélioré, nous pensons que le pas initial se mettra “automatiquement” à l’échelle du problème. Par conséquent, afin de réduire le nombre de paramètres à ajuster, nous avons choisi \\(t^0=1\\) comme dans l’article et de ne pas jouer sur ce paramètre pour le reste du projet. "
+
+# ╔═╡ d80a1e60-2de3-11eb-3933-39d09bb73450
+display("hk_algorithm.jl",206,238)
+
+# ╔═╡ dd992740-2de3-11eb-3418-4d3a16dcdc03
+md"### Critère d’arrêt"
+
+# ╔═╡ ecedb6c0-2de3-11eb-1b5e-0d4336988e17
+md"Il y a plusieurs critères d’arrêt, dont certains sont ajustables. On note \\(v^k:=d^k-2\\) où \\(d^k\\) est le vecteur des degrés des nœuds du 1-arbre à l’itération \\(k\\).
+
+Le premier critère d’arrêt est évidemment l’optimalité de la tournée obtenue. Si le 1-arbre est une tournée (i.e. \\(v^k=0\\)), alors c’est une tournée optimale et l’algorithme s’arrête.
+
+En pratique, obtenir l’optimalité est rare. Nous avons laissé en option deux autres critères d’arrêt : la période utilisée dans la mise à jour du pas \\(t\\) est égale à 0, et le pas \\(t\\) lui-même est inférieur à \\(10^{-10}\\). Le 1-arbre obtenu après que l’un de ces critères a été satisfait n’est pas une tournée, il faut donc le transformer en tournée quand c’est possible. Pour cela, nous avons créé une fonction `post_process_one_tree()` qui peut transformer un 1-arbre donc les nœuds sont tous de degré 1, 2 ou 3 en tournée (nous avons nommé un tel 1-arbre un 1-arbre *valide*). Cette fonction procède de la façon suivante :
+* on fait l’hypothèse qu’il y a autant de nœuds de degré 1 que de nœuds de degré 3,
+* on choisit un nœud de degré 3, puis on sélectionne une arête incidente à ce nœud \\(e\\) de poids minimale ($\ast$),
+* on ajout l’arête \\(e’\\) entre l’autre extrémité de \\(e\\) et un nœud de degré 1,
+* on retire \\(e\\) du 1-arbre
+
+Lorsque l’un des deux critères d’arrêt est satisfait, on renvoie le 1-arbre valide qui a conduit à la meilleure valeur de \\(w(π^k)\\).
+
+($\ast$) nous nous sommes rendus compte trop tard qu’il aurait en fait fallu non pas sélectionner l’arête \\(e\\) de poids minimal, mais l’arête \\(e\\) telle que \\(e’\\) soit de poids minimal.
+ 
+
+Voici la fonction `post_process_one_tree()` du fichier `graph.jl` :"
+
+# ╔═╡ f06466f0-2de3-11eb-01bf-a5038f50c4a4
+display("graph.jl",186,224)
+
+# ╔═╡ f52375a0-2de3-11eb-3fe2-fd41d26556be
+md"Pour résumer, dans notre fonction `hk_algorithm()` :
+* si `stop_criterion == \"sub_gradient\"`, on s’arrête quand on a une tournée optimale 
+* si `stop_criterion == \"t_step\"`, on s’arrête quand \\(t<10^{-10}\\) est on renvoie soit le meilleur 1-arbre valide transformé en tournée si possible, soit le meilleur 1-arbre (au sens de \\(w(π^k)\\) tel quel, qui n’est pas une tournée
+* si `stop_criterion == \"period_length\"`, on s’arrête quand la période est nulle et on renvoie la même chose qu’au critère précédent
+
+Enfin, si au bout d’un certain nombre d’itérations (10 000), aucun des critères d’arrêt n’est satisfait, alors l’algorithme s’arrête et renvoie un 1-arbre qui n’est pas une tournée."
+
 # ╔═╡ 67f8df72-2dc6-11eb-3439-dfaf17b5e75a
-md"### Implémentation de l'algorithme RSL"
+md"### Implémentation de l'algorithme HK"
 
 # ╔═╡ 88aebe60-2dc6-11eb-35f7-4181463daab7
+md"Suite à ce qui a été dit plus haut, les paramètres notre implémentation de l'algorithme HK sont :
+* l’algorithme de recouvrement (Kruskal ou Prim),
+* le choix du nœud racine,
+* le critère d’arrêt
 
+Notre implémentation se trouve dans le fichier `hk_algorithm.jl` ci-dessous. La fonction `hk_algorithm()` renvoie cinq éléments :
+* `one_tree` : le 1-arbre obtenu,
+* `final_cost` : le poids de cet 1-arbre,
+* `tour_obtained` : un booléen qui est vrai si le 1-arbre est une tournée,
+* `tour_obtained_with_reconstruction` : un booléen qui est vrai s’il y a eu besoin de faire appel à la fonction `post_process_one_tree()` ou non,
+* `max_iteration_obtained` : un booléen qui est vrau si le nombre maximum d’itération a été atteint,
+* `at_least_one_improvement` ” : un booléen qui est vrai s’il y a eu au moins une amélioration de \\(w(π^k)\\) au cours de l’algorithme"
+
+
+# ╔═╡ 13f30860-2de4-11eb-0f44-6b63d1fb93bc
+display("hk_algorithm.jl")
 
 # ╔═╡ 96f852b0-2132-11eb-24f0-ff3b19e64821
 md"## Ajustement des paramètres"
@@ -193,11 +270,11 @@ Pour les instances de taille inférieure à 100 (toutes sauf br180, gr120 et pa5
 
 Pour les deux instances br180 et gr120, nous avons testé les deux algorithmes de recouvrement mais étant donné la lenteur de notre implémentation de la méthode Kruskal et le grand nombre de nœuds nous n'avons pas essayé de prendre chaque nœud comme racine avec la méthode Kruskal.\
 Afin de choisir judicieusement les nœuds les plus prometteurs, nous avons essayé sur les petites instances de trouver une relation entre le choix du nœud racine et la valeur de la tournée, ce qui nous aurait permis d'utiliser cette relation pour les grandes instances. Pour cela nous avons tracé le poids de la tournée obtenue en fonction de la somme et de la variance des poids des arêtes incidentes au nœud racine. Cela n'a pas porté ses fruits car on ne distingue aucune tendance sur ces tracés (voir dossier `relation_racine_resultat_rsl` à la racine si besoin).\
-Ainsi, pour les instances br180 et gr120 avec la méthode Kruskal, nous avons finalement essayé respectivement un nœud sur 10 et un nœud sur 8 (et tous les nœuds avec la méthode Prim).
+Ainsi, pour les instances br180 et gr120 avec la méthode Kruskal, nous avons finalement essayé respectivement un nœud sur dix et un nœud sur huit (et tous les nœuds avec la méthode Prim).
 
 Pour la plus grande instance pa561, la méthode Kruskal est exclue puisqu'on n'obtient pas de résultat en temps raisonnable. Nous avons donc essayé un nœud sur 50 avec la méthode Prim.
 
-La recherche des meilleurs paramètres pour chaque instance se fait dans le fichier `rsl_parameters.jl` qui n'est pas affiché dans ce rapport. Les résultats ont été sauvegardés dans un dictionnaire (ci-dessous) contenant pour chaque instance les meilleures paramètres et le poids de la meilleure tournée obtenue."
+La recherche des meilleurs paramètres pour chaque instance se fait dans le fichier `rsl_parameters.jl` qui n'est pas affiché dans ce rapport. Les résultats ont été sauvegardés dans le dictionnaire ci-dessous contenant pour chaque instance les meilleures paramètres et le poids de la meilleure tournée obtenue."
 
 # ╔═╡ 7202e8f0-2da1-11eb-2667-0507b4c9c2c3
 md"
@@ -222,7 +299,13 @@ md"
 md"### Paramètres de l'algorithme HK"
 
 # ╔═╡ 94404480-2d9c-11eb-2d52-4bedd4fe1804
+md"Les trois paramètres à ajuster dans notre implémentation de l'algorithme HK sont la méthode de recherche d'un arbre de recouvrement minimal (Kruskal ou Prim), le sommet privilégié (la racine), et le critère d'arrêt. L'exploration des valeurs de ces trois paramètres a dépendu de la taille de l'instance.
 
+* pour les instances de taille inférieure à 30, on essaie les méthodes Kruskal et Prim, les trois critères d'arrêt (tournée optimale, \\(t\\) petit et période nulle), et un nœud sur trois comme nœud racine
+* pour les instances de taille inférieure comprise entre 30 et 60, on essaie les méthodes Kruskal et Prim, seulement deux critères d'arrêt (\\(t\\) petit et période nulle), et un nœud sur cinq comme nœud racine
+* pour les instances de taille supérieure à 60, on essaie seulement la méthode Prim, les deux mêmes critères d'arrêt, et un nœud sur dix comme nœud racine
+
+La recherche des meilleurs paramètres pour chaque instance se fait dans le fichier hk_parameters.jl qui n'est pas affiché dans ce rapport. Les résultats ont aussi été sauvegardés dans le dictionnaire ci-dessous."
 
 # ╔═╡ 979e7dc0-2132-11eb-3b7f-6de3a5e098e7
 md"## Résultats"
@@ -365,14 +448,25 @@ md"### Résultats globaux"
 # ╟─9a467930-2d9c-11eb-0d2e-272a0f9bd4f6
 # ╟─d1f749e0-2dbf-11eb-2d60-a9b5574e11ce
 # ╠═3c43d020-2dc0-11eb-32fb-3dce99e8a82c
+# ╟─8bdf1090-2de3-11eb-3b1d-f52441296075
+# ╟─aa9268c0-2de3-11eb-29d9-7d8d005cbb06
+# ╠═be746fa0-2de3-11eb-23b1-2f6e3808f034
+# ╟─c3f74380-2de3-11eb-0099-9b9d009a6f01
+# ╟─ce9a0ac0-2de3-11eb-1a0f-09334552d408
+# ╠═d80a1e60-2de3-11eb-3933-39d09bb73450
+# ╟─dd992740-2de3-11eb-3418-4d3a16dcdc03
+# ╟─ecedb6c0-2de3-11eb-1b5e-0d4336988e17
+# ╟─f06466f0-2de3-11eb-01bf-a5038f50c4a4
+# ╟─f52375a0-2de3-11eb-3fe2-fd41d26556be
 # ╟─67f8df72-2dc6-11eb-3439-dfaf17b5e75a
-# ╠═88aebe60-2dc6-11eb-35f7-4181463daab7
+# ╟─88aebe60-2dc6-11eb-35f7-4181463daab7
+# ╠═13f30860-2de4-11eb-0f44-6b63d1fb93bc
 # ╟─96f852b0-2132-11eb-24f0-ff3b19e64821
 # ╟─7ac87e00-2d9c-11eb-3edb-49862d16f37c
 # ╟─93942600-2d9c-11eb-1bbf-cb067b1b2b0a
 # ╟─7202e8f0-2da1-11eb-2667-0507b4c9c2c3
 # ╟─903ee080-2d9c-11eb-22f9-194f1ce83ccf
-# ╠═94404480-2d9c-11eb-2d52-4bedd4fe1804
+# ╟─94404480-2d9c-11eb-2d52-4bedd4fe1804
 # ╟─979e7dc0-2132-11eb-3b7f-6de3a5e098e7
 # ╟─83401920-2da2-11eb-357c-8f1d3f8bf278
 # ╟─01f2ade0-2da4-11eb-0d7c-4952127893e2
