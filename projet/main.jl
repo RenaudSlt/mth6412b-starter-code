@@ -79,7 +79,7 @@ best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>
 
 
 
-tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration, at_least_one_improvement = hk_algorithm(G, "prim", get_nodes(G)[1], 1.0, "t_step")  
+tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration, at_least_one_improvement = hk_algorithm(G, "prim", get_nodes(G)[50], 1.0, "t_step")  
 show(tour_graph)
 println(" ") 
 println("Coût final : ", final_cost)

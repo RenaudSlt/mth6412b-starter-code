@@ -7,10 +7,6 @@ include("prim_algorithm.jl")
 include("rsl_algorithm.jl")
 include("hk_algorithm.jl")
 
-
-
-
-
 ### Se placer dans le répertoire 'mth6412b-starter-code' ###
 
 # Choix de l'instance
@@ -37,7 +33,7 @@ function main_hk(FileName)
     best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>1950,"dantzig42"=>699,"fri26"=>937, "gr120"=>6942,"gr17"=>2085,"gr21"=>2707,"gr24"=>1272,"gr48"=>5046,"hk48"=>11461,"pa561.tsp"=>2763,"swiss42"=>1273)
 
     # Dictionnaire des meilleurs paramètres 
-    best_parameters_hk = Dict("bayg29"=>["prim", 1, 1.0, "t_step", 1646],"bays29"=>["", 0, 1.0, "", Inf],"brazil58"=>["prim", 1, 1.0, "t_step", 30750],"brg180"=>["", 0, 1.0, "", Inf],"dantzig42"=>["kruskal", 1, 1.0, "t_step", 757],"fri26"=>["kruskal", 1, 1.0, "t_step", 937], "gr120"=>["prim", 1, 1.0, "t_step", 9846],"gr17"=>["kruskal", 1, 1.0, "sub_gradient", 2085],"gr21"=>["prim", 1, 1.0, "t_step", 2707],"gr24"=>["prim", 1, 1.0, "t_step", 1490],"gr48"=>["kruskal", 1, 1.0, "t_step", 5705],"hk48"=>["prim", 1, 1.0, "", 11956],"pa561.tsp"=>["", 0, 1.0, "", Inf],"swiss42"=>["kruskal", 1, 1.0, "t_step", 1499])
+    best_parameters_hk = Dict("bayg29"=>["kruskal", 27, 1.0, "t_step", 1642],"bays29"=>["prim", 9, 1.0, "t_step", 2063],"brazil58"=>["prim", 1, 1.0, "t_step", 30750],"brg180"=>["", 0, 1.0, "", Inf],"dantzig42"=>["kruskal", 40, 1.0, "t_step", 713],"fri26"=>["kruskal", 1, 1.0, "t_step", 937], "gr120"=>["prim", 1, 1.0, "t_step", 9846],"gr17"=>["kruskal", 1, 1.0, "sub_gradient", 2085],"gr21"=>["prim", 1, 1.0, "t_step", 2707],"gr24"=>["prim", 24, 1.0, "t_step", 1278],"gr48"=>["kruskal", 40, 1.0, "t_step", 5563],"hk48"=>["prim", 1, 1.0, "", 11956],"pa561.tsp"=>["", 0, 1.0, "", Inf],"swiss42"=>["kruskal", 25, 1.0, "t_step", 1258.0])
 
     # Sauvegarde du chemin du fichier contenant le data
     working_directory = pwd()
@@ -111,7 +107,7 @@ function main_hk(FileName)
 
 
     # Affichage de la tournée optimale si possible
-    if GraphName in ["bayg29", "bays29", "dantzig42", "gr120", "pa561.tsp"]
+    if GraphName in ["bayg29", "bays29", "dantzig42", "gr120"]
         println("\nAffichage de la tournée optimale ...")
         plot_graph_with_tour( string("instances/stsp/", FileName), get_edges(tour_graph) ) 
     end
