@@ -100,11 +100,20 @@ function main_hk(FileName)
     best_root = get_nodes(G)[best_parameters_hk[GraphName][2]]
     t0 = 1
     best_criteria = best_parameters_hk[GraphName][4]
+    
     tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration = hk_algorithm(G, best_algo, best_root, t, best_criteria)  
     
-    println("meilleurs paramètres : ", best_parameters_hk[GraphName][1], " avec comme noeud racine ", best_parameters_hk[GraphName][2])
-    println("résultat : ", route_weight)
-    println("écart relatif avec une tournée optimale : ", round(100*(best_parameters_hk[GraphName][3] - best_distances[GraphName]) / best_distances[GraphName], digits=2), "%")
+    println("Affichage de la tournée : ")
+    show(tour_graph)
+    println(" ")
+    println("Coût final : ", final_cost)
+    println("Tournée obtenue : ", optimal_tour_obtained)
+    println("Tournée obtenue avec POST-PROCESSING : ", tour_obtained)
+    println("Arrêt avant max iteration : ", !max_iteration)
+    println(" ")
+    println("Meilleurs paramètres : ", best_parameters_hk[GraphName][1], " avec comme noeud racine ", best_parameters_hk[GraphName][2])
+    println("Résultat : ", route_weight)
+    println("Écart relatif avec une tournée optimale : ", round(100*(best_parameters_hk[GraphName][3] - best_distances[GraphName]) / best_distances[GraphName], digits=2), "%")
 
 
     # Affichage de la tournée optimale si possible
