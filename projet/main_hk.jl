@@ -21,7 +21,7 @@ include("hk_algorithm.jl")
 #FileName = "brg180.tsp"
 #FileName = "dantzig42.tsp"
 #FileName = "fri26.tsp"
-FileName = "gr120.tsp"
+#FileName = "gr120.tsp"
 #FileName = "gr17.tsp"
 #FileName = "gr21.tsp"
 #FileName = "gr24.tsp"
@@ -100,9 +100,9 @@ function main_hk(FileName)
     best_criteria = best_parameters_hk[GraphName][4]
     tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration = hk_algorithm(G, best_algo, best_root, t, best_criteria)  
     
-    println("meilleurs paramètres : ", best_parameters_hk[GraphName][1], " avec comme noeud racine ", best_parameters_rsl[GraphName][2])
+    println("meilleurs paramètres : ", best_parameters_hk[GraphName][1], " avec comme noeud racine ", best_parameters_hk[GraphName][2])
     println("résultat : ", route_weight)
-    println("écart relatif avec une tournée optimale : ", round(100*(best_parameters_rsl[GraphName][3] - best_distances[GraphName]) / best_distances[GraphName], digits=2), "%")
+    println("écart relatif avec une tournée optimale : ", round(100*(best_parameters_hk[GraphName][3] - best_distances[GraphName]) / best_distances[GraphName], digits=2), "%")
 
 
     # Affichage de la tournée optimale si possible
@@ -110,7 +110,6 @@ function main_hk(FileName)
         println("\nAffichage de la tournée optimale ...")
         plot_graph_with_tour( string("instances/stsp/", FileName), get_edges(tour_graph) ) 
     end
-
 
 
 end

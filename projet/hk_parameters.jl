@@ -72,12 +72,18 @@ best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>
 best_parameters_hk = Dict("bayg29"=>["prim", 1, 1.0, "t_step", 1646],"bays29"=>["", 0, 1.0, "", Inf],"brazil58"=>["prim", 1, 1.0, "t_step", 30750],"brg180"=>["", 0, 1.0, "", Inf],"dantzig42"=>["kruskal", 1, 1.0, "t_step", 757],"fri26"=>["kruskal", 1, 1.0, "t_step", 937], "gr120"=>["prim", 1, 1.0, "t_step", 9846],"gr17"=>["kruskal", 1, 1.0, "sub_gradient", 2085],"gr21"=>["prim", 1, 1.0, "t_step", 2707],"gr24"=>["prim", 1, 1.0, "t_step", 1490],"gr48"=>["kruskal", 1, 1.0, "t_step", 5705],"hk48"=>["prim", 1, 1.0, "", 11956],"pa561.tsp"=>["", 0, 1.0, "", Inf],"swiss42"=>["kruskal", 1, 1.0, "t_step", 1499])
 
 
-for graph in graphs[7]
+for graph in graphs
     
-    if nb_nodes(graph) < 30
+    graph_name = get_name(graph)
+
+    # Optimalité atteinte pour ces trois instances, aucune search nécessaire
+    if graph_name == "gr17" || graph_name == "gr21" || graph_name == "fri26" 
+        continue 
+
+    elseif nb_nodes(graph) < 30
         for mst in ["prim", "kruskal"]
             for stop_criterion in ["t_step","period_length","sub_gradient"]
-                for (idx,node) in enumerate(get_nodes(graph)) # WARNING DELETE!
+                for (idx,node) in enumerate(get_nodes(graph)) 
                     print_result(graph, mst, stop_criterion, node)
                 end
             end 
