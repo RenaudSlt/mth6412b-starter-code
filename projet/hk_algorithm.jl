@@ -31,11 +31,10 @@ include("kruskal_algorithm.jl")
 """
 function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nodes(graph)[1], initial_step_size::Float64=1.0, stop_criterion::String="t_step") where T
 
-
+  # On vérifie que les arguments de type String sont corrects
   if !(algo_MST == "kruskal" || algo_MST == "prim") 
     @error("Invalid input argument for algo_MST argument : ", algo_MST, "\n Possible String inputs are :\n prim \n kruskal")
   end
-
   if !(stop_criterion == "t_step" || stop_criterion == "period_length" || stop_criterion == "sub_gradient")
     @error("Invalid input argument for stop_criterion argument : ", stop_criterion,  "\n Possible String inputs are :\n t_step \n period_length \n sub_gradient")
   end
@@ -51,7 +50,7 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
   w = 0
   W = -Inf
   
-  # Initialisation pour le pas
+  # Initialisation pour le pas et la période
   t = initial_step_size
   period_length = fld(n,2)  # partie entière de n/2
   period_counter = 0
@@ -74,7 +73,6 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
   # Flag pour signaliser qu'aucune convergence est atteinte après un certain nombre d'itération
   max_iteration_obtained = false
 
-  
   # Initialisation des copies profonds pour ne pas modifier le graph passer en argument
   graph_copy = deepcopy(graph)
   best_one_tree = deepcopy(graph) 
@@ -98,7 +96,7 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
       minimal_edges, minimal_weight, minimal_subtree = prim_algorithm(graph_copy, source)
     end
 
-    ### Heuristique article
+    ### Heuristique article [3]
     
     # Étape 1 : on récolte toute les feuilles de l'arbre de recouvrement 
     root = get_root!(minimal_subtree[1])
@@ -156,8 +154,10 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
 
     ### CRITÈRE ARRÊT
 
-    # CRITÈRE ARRÊT
+    # Critère d'arrêt sur le sub-gradient
     if stop_criterion == "sub_gradient"
+
+      # Condition d'arrêt
       if v == zeros(n)
         sub_gradient_null = true
         tour_obtained = true
@@ -167,19 +167,18 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
         break
       end
 
-    # CRITÈRE ARRÊT sur le pas
+    # Critère d'arrêt sur le pas
     elseif stop_criterion == "t_step"
       
       # Condition arrêt
-      #if t <= 10*eps(Float64) 
       if t <= 10^(-10)
         step_size_min_obtained = true
         break
       end
       
-    # CRITÈRE ARRÊT sur la période
+    # Critère d'arrêt sur la période
     elseif stop_criterion == "period_length"
-      #println(period_length)
+      
       # Condition arrêt
       if period_length == 0
         period_size_min_obtained = true
@@ -188,14 +187,12 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
 
     end
     
-    # CONDITION D'ARRÊT SPÉCIAL : si aucune convergence est atteinte
-    if k >= 5000
+    # Condition d'arrêt spécial sur le nombre d'itération
+    if k >= 10000
       max_iteration_obtained = true
       break
     end
 
-
-  
     ### Choix d'une taille de pas
 
     # Fin de la période 
@@ -210,6 +207,8 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
         if first_period_exception
           first_period_exception = false
         end
+
+      # Si amélioration on double la période
       else 
         period_length = 2*period_length
       end
@@ -240,7 +239,7 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     set_weight!(edge, cost_edge)
   end
 
-  # Verification pour critere sur le pas et sur la période qu'une tournée a été obtenue
+  # Verification pour critère sur le pas et sur la période qu'une tournée a été obtenue
   if !sub_gradient_null
     tour_obtained = (get_degrees(best_valid_one_tree) .- 2 == zeros(n))
   end
@@ -260,7 +259,6 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
   for edge in get_edges(best_valid_one_tree)
       final_cost += get_weight(edge)
   end
-  tour_graph = Graph("tour", get_nodes(best_valid_one_tree), get_edges(best_valid_one_tree))
 
   return best_valid_one_tree, final_cost, tour_obtained, tour_obtained_with_reconstruction, max_iteration_obtained
 
@@ -268,7 +266,15 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
 end
 
 
-""" Fonction utilité sur les degrées du vecteur v """
+""" Fonction utilité pour la reconstruction en post-processing 
+    -On calcule le degré du vecteur v et on retourne si aucun noeud, en absolu, a un degré supérieur à 1. 
+    Input:
+      -vecteur v de l'algorithme HK
+    Output:
+      -valid : vrai si si aucun noeud, en absolu, a un degré supérieur à 1
+      -number_of ones : le nombre de 1
+
+"""
 function v_score(v::Vector{Float64})
   number_of_ones = 0
   valid = true

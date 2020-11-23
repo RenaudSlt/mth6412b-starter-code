@@ -21,7 +21,6 @@ mutable struct Graph{T} <: AbstractGraph{T}
   name_::String
   nodes_::Vector{Node{T}}
   edges_::Vector{Edge{T}}
-  #matrix_::Array{Float64,2}
 end
 
 # on présume que tous les graphes dérivant d'AbstractGraph
@@ -30,7 +29,6 @@ end
 """Constructeur supplémentaire : 
     -Implémentation équivalente : Graph{T}() where T = Graph("", Array{Node{T}}(undef,0), Array{Edge{T}}(undef,0))
 """
-#Graph{T}() where T = Graph("", Node{T}[], Edge{T}[], Array{Float64,2}(undef,1,1) )
 Graph{T}() where T = Graph("", Node{T}[], Edge{T}[])
 
 """Affecte le nom du graph : fonction à utiliser avec le constructeur supplémentaire """
@@ -87,7 +85,7 @@ function show(graph::Graph{T}) where T
 end
 
 
-""" Fonction d'utilité : supporte la fonction prime_algorithm
+""" Fonction d'utilité : supporte la fonction prime_algorithm et l'algorithme HK
     -Retourne les arêtes qui sont associés à un noeud donné
     
     Input : noeud appartenant au graph 
@@ -110,9 +108,11 @@ function get_edges_from_node(graph::Graph{T}, node::AbstractNode{T}) where T
   
 end
 
-""" Fonction d'utilité : supporte la fonction prime_algorithm
-    
-    Hypothèse : on a déjà les edges et les noeuds....
+""" Construction d'une matrice d'adjacence à partir d'un graph
+    Input : 
+      -un graph non-orienté
+    Output :
+      -une matrice d'adjacence
 """
 function build_matrix!(G::Graph{T}) where T
 
@@ -132,38 +132,39 @@ function build_matrix!(G::Graph{T}) where T
         end
     end
     
-    G.matrix_ = matrix
-    return G
+    return matrix
 end
 
-"""Accède à la matrix du graphe."""
-get_matrix(graph::AbstractGraph{T}) where T = graph.matrix_
 
-""" Fonction d'utilité pour l'algorithme HK :
-      -allo123
-"""
+""" Supprime un noeud et les arêtes adjacentes à un graph non-orienté"""
 function remove_node_from_graph!(graph::AbstractGraph{T}, node::Node{T}) where T
- 
-  # Copy des arêtes et vecteur des arêtes enlevés
-  #copy_edges = deepcopy(get_edges(graph))
-  #removed_edges = Edge{T}[]
-
   # Soutraction du noeud
   filter!(x -> x ≠ node, get_nodes(graph))
   # Soustraction des arêtes
   filter!(x -> !(get_node1(x)==node || get_node2(x)==node), get_edges(graph) )
-
 end
 
 
+""" Fonction utilité pour l'algorithme HK (voir fichier hk_algorithm) :
+    -Modification des coûts des arêtes à partir d'un vecteur qui attribue 
+     des valeurs à chaque noeud du graph
+     
+    Input:
+      -un graph non-orienté
+      -un vecteur de taille du nombre de noeuds du graph
+
+"""
 function update_weights!(graph::AbstractGraph{T}, π::Vector{Float64}) where T
     for edge in get_edges(graph)
         set_weight!( edge, get_weight(edge) +  π[get_index(get_node1(edge))]  + π[get_index(get_node2(edge))] )
     end
 end
 
-""" Fonction utilité : degree algorithme HK
-      Madonna123
+""" Fonction utilité pour l'algorithme HK (voir fichier hk_algorithm) :
+    Input:
+      -Un graph non-orienté contenant des arêtes et des noeuds
+    Output:
+      -Un vecteur contenant le degré de chaque noeud 
 """
 function get_degrees(graph::AbstractGraph{T}) where T
 
@@ -190,7 +191,7 @@ function post_process_one_tree!(one_tree::Graph{T}, initial_graph::Graph{T}) whe
   added_edges = Edge{T}[]
 
   while !isempty(idx_ones)
-    
+
     p = pop!(idx_ones)
     q = pop!(idx_minus_ones)
     node3 = get_nodes(one_tree)[p]  # un noeud de degré 3
@@ -208,28 +209,16 @@ function post_process_one_tree!(one_tree::Graph{T}, initial_graph::Graph{T}) whe
     # Trouver l'arête entre v et node1 dans le graphe initial et l'ajouter à one_tree
     for edge in get_edges(initial_graph)
       if (get_node1(edge) == v && get_node2(edge) == node1) || (get_node2(edge) == v && get_node1(edge) == node1)
-         
-        #println("EDGE AJOUTÉ ")
-        #show(edge)
-        #println(" ")
-        #push!(added_edges, edge)
         add_edge!(one_tree, Edge{Nothing}(v, node1, get_weight(edge)))
-
       end
     end
 
     # Retirer l'arête entre node3 et v de one_tree
     for edge in get_edges(one_tree)
       if (get_node1(edge) == v && get_node2(edge) == node3) || (get_node2(edge) == v && get_node1(edge) == node3)
-        #println("EDGE DELETED ")
-        #show(edge)
-        #println(" ")
         filter!(x-> x!=edge, get_edges(one_tree) )
       end
     end
-
-    #idx_edge_min = findfirst(x -> x == edge_min, get_edges(one_tree))
-    #deleteat!(get_edges(one_tree), idx_edge_min)
   end
 
   return one_tree

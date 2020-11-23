@@ -18,12 +18,12 @@ include("hk_algorithm.jl")
 #FileName = "gr48.tsp" ok
 #FileName = "gr120.tsp"
 #FileName = "brazil58.tsp"
-FileName = "brg180.tsp"
+#FileName = "brg180.tsp"
 #FileName = "dantzig42.tsp"
 #FileName = "fri26.tsp"
 #FileName = "hk48.tsp"
 #FileName = "bays29.tsp"
-#FileName = "pa561.tsp"
+FileName = "pa561.tsp"
 
 
 
@@ -76,36 +76,6 @@ for j in 1:length(edges_)
   end
 
 end
-
-# Affichage du graphe
-#show(G)
-
-# Algorithme de Kruskal
-#kruskal_algorithm(G)
-
-# Algorithme de Prim
-#noeuds, poids, noeuds_marques = prim_algorithm(G)
-
-#source = 4
-#villes1, trajets1, distance1 = rsl_algorithm(G, "kruskal", get_nodes(G)[source])
-#villes2, trajets2, distance2 = rsl_algorithm(G, "prim", get_nodes(G)[source])
-
-#println("\nDistance K : ", distance1)
-#println("\nDistance P : ", distance2)
-
-
-# Test construire matrix
-#build_matrix!(G)
-#print(get_matrix(G))
-
-# Test enlever noeud et les aretes adjacentes
-#remove_node_from_graph(G, node=get_nodes(G)[2])
-#show(G)
-#node = get_nodes(G)[1]
-
-# Test HK algorithm
-# Critère d'arrêt "period_length" "t_step" "sub_gradient"
-
 
 
 best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>1950,"dantzig42"=>699,"fri26"=>937, "gr120"=>6942,"gr17"=>2085,"gr21"=>2707,"gr24"=>1272,"gr48"=>5046,"hk48"=>11461,"pa561.tsp"=>2763,"swiss42"=>1273)

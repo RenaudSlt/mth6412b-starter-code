@@ -124,7 +124,15 @@ function popfirst!(nodes::Vector{MarkedNode{T}}) where T
   return min_node
 end
 
-""" Fonction utilité """
+""" Fonction utilité pour l'algorithme HK (voir fichier hk_algorithm.jl) 
+    -La fonction récusrive retourne les feuilles d'une arbre 
+
+    Input:
+        -un noeud de l'arbre
+        -une liste qui ajoute les feuilles au fur des appels récurifs
+    Ouput:
+        -la liste leaves_array remplit avec les feuilles de l'arbre associé à node
+"""
 function get_leaves!(node::MarkedNode{T}, leaves_array::Array{MarkedNode{T}}) where T
 
     if isempty(get_children(node))
