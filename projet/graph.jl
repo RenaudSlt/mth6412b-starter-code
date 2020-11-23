@@ -84,7 +84,6 @@ function show(graph::Graph{T}) where T
   end
 end
 
-
 """ Fonction d'utilité : supporte la fonction prime_algorithm et l'algorithme HK
     -Retourne les arêtes qui sont associés à un noeud donné
     

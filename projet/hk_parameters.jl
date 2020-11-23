@@ -8,6 +8,44 @@ include("kruskal_algorithm.jl")
 include("prim_algorithm.jl")
 include("hk_algorithm.jl")
 
+
+""" Fonction d'utilité pour enregistrer les résultats dans un fichier .txt"""
+function log_hk(graph, mst, stop_criterion, node)
+    
+    # On construit le nom du fichier .txt
+    node_index = get_index(node)
+    graph_name = get_name(graph)
+    file_name = string(graph_name, "_", mst, "_", stop_criterion, "_", node_index, ".txt")
+
+    # On lance la fonction 
+    tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration, at_least_one_improvement = hk_algorithm(graph, mst, node, 1.0, stop_criterion)  
+    
+    
+    # On se déplace dans le fichier pour les logs pour enregistrer les résultats, puis on revient au working directory
+    cd("projet")
+    cd("logs_hk_algorithm")
+
+
+    file = open(file_name, "w")
+    #show(tour_graph)
+    v = get_degrees(tour_graph)
+    println(file, "Degrés des noeuds :\n")
+    for i = 1:nb_nodes(tour_graph)
+        println(file, "noeud ", i, " degree :", v[i]-2)
+    end
+    
+    println(file, " ") #print("\n")
+    println(file, "Coût final : ", final_cost)
+    println(file, "Tournée obtenue : ", optimal_tour_obtained)
+    println(file, "Tournée obtenue avec POST-PROCESSING : ", tour_obtained)
+    println(file, "Arrêt avant max iteration : ", !max_iteration)
+    println(file, "Au moins une amélioration : ", at_least_one_improvement)
+    close(file)
+    cd("..")
+    cd("..")
+end
+
+
 ### Se placer dans le répertoire 'mth6412b-starter-code ###
 
 # Sauvegardes des chemin du fichier contenant le data
@@ -69,60 +107,60 @@ end
 best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>1950,"dantzig42"=>699,"fri26"=>937, "gr120"=>6942,"gr17"=>2085,"gr21"=>2707,"gr24"=>1272,"gr48"=>5046,"hk48"=>11461,"pa561.tsp"=>2763,"swiss42"=>1273)
 
 # Paramètres des meilleures tournées trouvées : [Kruskal/Prim, node_index, t0, stop_criterion, tour_weight]
-best_parameters_hk = Dict("bayg29"=>["prim", 1, 1.0, "t_step", 1646],"bays29"=>["", 0, 1.0, "", Inf],"brazil58"=>["prim", 1, 1.0, "t_step", 30750],"brg180"=>["", 0, 1.0, "", Inf],"dantzig42"=>["kruskal", 1, 1.0, "t_step", 757],"fri26"=>["kruskal", 1, 1.0, "t_step", 937], "gr120"=>["prim", 1, 1.0, "t_step", 9846],"gr17"=>["kruskal", 1, 1.0, "sub_gradient", 2085],"gr21"=>["prim", 1, 1.0, "t_step", 2707],"gr24"=>["prim", 1, 1.0, "t_step", 1490],"gr48"=>["kruskal", 1, 1.0, "t_step", 5705],"hk48"=>["prim", 1, 1.0, "", 11956],"pa561.tsp"=>["", 0, 1.0, "", Inf],"swiss42"=>["kruskal", 1, 1.0, "t_step", 1499])
+best_parameters_hk = Dict("bayg29"=>["prim", 1, 1.0, "t_step", 1646],"bays29"=>["prim", 1, 1.0, "t_step", 2177],"brazil58"=>["prim", 1, 1.0, "t_step", 30750],"brg180"=>["", 0, 1.0, "", Inf],"dantzig42"=>["kruskal", 1, 1.0, "t_step", 757],"fri26"=>["kruskal", 1, 1.0, "t_step", 937], "gr120"=>["prim", 1, 1.0, "t_step", 9846],"gr17"=>["kruskal", 1, 1.0, "sub_gradient", 2085],"gr21"=>["prim", 1, 1.0, "t_step", 2707],"gr24"=>["prim", 1, 1.0, "t_step", 1490],"gr48"=>["kruskal", 1, 1.0, "t_step", 5705],"hk48"=>["prim", 1, 1.0, "", 11956],"pa561.tsp"=>["", 0, 1.0, "", Inf],"swiss42"=>["kruskal", 1, 1.0, "t_step", 1499])
 
+#graphs[8] = gr17
 
 for graph in graphs
-    
     graph_name = get_name(graph)
-
+    println(graph_name)
+    continue
     # Optimalité atteinte pour ces trois instances, aucune search nécessaire
-    if graph_name == "gr17" || graph_name == "gr21" || graph_name == "fri26" 
+    #if graph_name == "gr17" || graph_name == "gr21" || graph_name == "fri26" 
+    if  graph_name == "gr21" || graph_name == "fri26"   
         continue 
 
-    # Ce graph est trop long à runner : À TESTER DE MANIÈRE ISOLÉE
-    elseif graph_name == "pa561.tsp"
+    # Ces graphs sont très long à résoudre : À TESTER DE MANIÈRE ISOLÉE
+    #elseif graph_name == "pa561.tsp" || graph_name == "brg180"
+    elseif graph_name == "pa561.tsp"    
         continue 
 
     elseif nb_nodes(graph) < 30
         for mst in ["prim", "kruskal"]
             for stop_criterion in ["t_step","period_length","sub_gradient"]
                 for (idx,node) in enumerate(get_nodes(graph)) 
-                    print_result(graph, mst, stop_criterion, node)
+                    # On test un noeud sur 3
+                    if idx==1 || idx%3==0
+                        log_hk(graph, mst, stop_criterion, node)
+                        #continue
+                    end
                 end
             end 
         end
 
     # On enlève sub_gradient comme critère d'arrêt, puis on prend un essai juste les noeuds pairs comme source
-    elseif nb_nodes(graphs[i]) >= 30 && nb_nodes(graphs[i]) < 100
+    elseif nb_nodes(graph) >= 30 && nb_nodes(graph) < 60
         for mst in ["prim", "kruskal"]
             for stop_criterion in ["t_step","period_length"]
                 for (idx,node) in enumerate(get_nodes(graph))
-                    if idx==1 || idx%2==0
-                        print_result(graph, mst, stop_criterion, node)
+                    # On test un noeud sur 5
+                    if idx==1 || idx%5==0
+                        log_hk(graph, mst, stop_criterion, node)
+                        #continue
                     end
                 end
             end
         end
 
     # On enlève sub_gradient comme critère d'arrêt et on enlève kruskal comme MST, puis on essaie un noeud sur 4
-    elseif nb_nodes(graphs[i]) > 100 && nb_nodes(graphs[i]) < 500
+    elseif nb_nodes(graph) > 100 
         mst = "prim"
         for stop_criterion in ["t_step","period_length"]
             for (idx,node) in enumerate(get_nodes(graph))
-                if idx==1 || idx%4==0
-                    print_result(graph, mst, stop_criterion, node)
-                end
-            end
-        end
-    
-    # On enlève sub_gradient comme critère d'arrêt et on enlève kruskal comme MST, puis on essaie un noeud sur 8
-    else
-        mst = "prim"
-        for stop_criterion in ["t_step","period_length"]
-            for (idx,node) in enumerate(get_nodes(graph))
-                if idx==1 || idx%8==0
-                    print_result(graph, mst, stop_criterion, node)
+                # On teste un noeud sur 10
+                if idx==1 || idx%10==0
+                    log_hk(graph, mst, stop_criterion, node)
+                    #continue
                 end
             end
         end
@@ -131,27 +169,3 @@ for graph in graphs
 
 end
 
-""" Fonction d'utilité pour enregistrer les résultats dans un fichier .txt"""
-function print_result(graph, mst, stop_criterion, node)
-    
-    # On construit le nom du fichier .txt
-    node_index = get_index(node)
-    graph_name = get_name(graph)
-    file_name = string(graph_name, "_", mst, "_", stop_criterion, "_", node_index, ".txt")
-
-    # On lance la fonction 
-    tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration = hk_algorithm(graph, mst, node, 1.0, stop_criterion)  
-    
-    
-    # On se déplace dans le fichier pour les logs pour enregistrer les résultats, puis on revient au working directory
-    cd("logs_hk_algorithm")
-    file = open(file_name, "w")
-    show(tour_graph)
-    println(" ") #print("\n")
-    println("Coût final : ", final_cost)
-    println("Tournée obtenue : ", optimal_tour_obtained)
-    println("Tournée obtenue avec POST-PROCESSING : ", tour_obtained)
-    println("Arrêt avant max iteration : ", !max_iteration)
-    close(file)
-    cd("..")
-end
