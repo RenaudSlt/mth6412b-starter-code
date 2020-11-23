@@ -18,12 +18,12 @@ include("hk_algorithm.jl")
 #FileName = "gr48.tsp" ok
 #FileName = "gr120.tsp"
 #FileName = "brazil58.tsp"
-#FileName = "brg180.tsp"
+FileName = "brg180.tsp"
 #FileName = "dantzig42.tsp"
 #FileName = "fri26.tsp"
 #FileName = "hk48.tsp"
 #FileName = "bays29.tsp"
-FileName = "pa561.tsp"
+#FileName = "pa561.tsp"
 
 # Sauvegarde du chemin du fichier contenant le data
 working_directory = pwd()

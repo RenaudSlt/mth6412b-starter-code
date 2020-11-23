@@ -196,7 +196,7 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     end
     
     # Condition d'arrêt spécial sur le nombre d'itération
-    if k >= 500
+    if k >= 3000
       max_iteration_obtained = true
       break
     end
@@ -235,9 +235,14 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     # Mise à jour de k et de la période
     period_counter += 1
     k += 1
+
+    #if k%5 == 0
+    #  println("iteration k: ", k, " t step: ", t, " grand W: ", W, )
+    #end
+
   end
 
-
+ 
   ### Sorti et post-processing 
   
   # On retrouve les coûts initiaux
