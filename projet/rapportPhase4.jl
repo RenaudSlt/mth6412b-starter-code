@@ -166,6 +166,18 @@ md" On voit que l'inégalité n'est pas respectée pour les instances `bays29`, 
 md"## Algorithme HK"
 
 # ╔═╡ 9a467930-2d9c-11eb-0d2e-272a0f9bd4f6
+md"### Ajout de l'attribut `index` aux nœuds"
+
+# ╔═╡ d1f749e0-2dbf-11eb-2d60-a9b5574e11ce
+md"Afin de rendre le parcours des graphes ainsi que l'attribution des poids des arêtes plus efficaces, nous avons ajouté l'attribut `index_` à la structure `Node`. Dans le contexte de ce projet, le nom du nœud est égal à son index - au type de donnée près (`String` ou `Int`) - mais cela permettra dans un cadre plus général de retrouver un nœud par son index. Cette modification a été motivée par la nécessité de mettre à jour les poids des arêtes suivant la formule \\(c(i,j)+π(i)+π(j)\\), mais nous aurions pu la faire à une phase ultérieure."
+
+# ╔═╡ 3c43d020-2dc0-11eb-32fb-3dce99e8a82c
+display("node.jl",14,18)
+
+# ╔═╡ 67f8df72-2dc6-11eb-3439-dfaf17b5e75a
+md"### Implémentation de l'algorithme RSL"
+
+# ╔═╡ 88aebe60-2dc6-11eb-35f7-4181463daab7
 
 
 # ╔═╡ 96f852b0-2132-11eb-24f0-ff3b19e64821
@@ -318,7 +330,7 @@ md"### Résultats globaux"
 # ╠═6a686500-2132-11eb-0a1a-6d0bc5b501a9
 # ╠═284f3500-2da7-11eb-01bb-8b18721a7ff8
 # ╟─8a7ab0ee-2132-11eb-27b6-e14b6729fc3b
-# ╠═b1f6e040-2132-11eb-1c11-23ed2e7b6541
+# ╟─b1f6e040-2132-11eb-1c11-23ed2e7b6541
 # ╟─1277a8e0-2134-11eb-039a-5ff5e9101f4a
 # ╟─a7a6775e-2135-11eb-15ec-61a5327c4948
 # ╟─0f27cfb0-2136-11eb-0dd8-09e166004a49
@@ -350,7 +362,11 @@ md"### Résultats globaux"
 # ╟─084df880-2150-11eb-0811-9365c0f2147c
 # ╟─31516ea0-2151-11eb-2fec-6122b537a0fa
 # ╟─92b578e0-2132-11eb-013e-d5292e2a9796
-# ╠═9a467930-2d9c-11eb-0d2e-272a0f9bd4f6
+# ╟─9a467930-2d9c-11eb-0d2e-272a0f9bd4f6
+# ╟─d1f749e0-2dbf-11eb-2d60-a9b5574e11ce
+# ╠═3c43d020-2dc0-11eb-32fb-3dce99e8a82c
+# ╟─67f8df72-2dc6-11eb-3439-dfaf17b5e75a
+# ╠═88aebe60-2dc6-11eb-35f7-4181463daab7
 # ╟─96f852b0-2132-11eb-24f0-ff3b19e64821
 # ╟─7ac87e00-2d9c-11eb-3edb-49862d16f37c
 # ╟─93942600-2d9c-11eb-1bbf-cb067b1b2b0a
