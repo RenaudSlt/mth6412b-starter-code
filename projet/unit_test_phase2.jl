@@ -1,7 +1,7 @@
 using Test
 
 include("node.jl")
-include("nodeTree.jl")
+include("nodetree.jl")
 include("edge.jl")
 
 node_1 = Node("1", nothing)

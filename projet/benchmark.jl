@@ -1,5 +1,3 @@
-
-
 include("node.jl")
 include("edge.jl")
 include("graph.jl")

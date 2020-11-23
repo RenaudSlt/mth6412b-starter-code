@@ -1,6 +1,6 @@
 include("graph.jl")
 include("node.jl")
-include("nodeTree.jl")
+include("nodetree.jl")
 include("markednode.jl")
 include("edge.jl")
 include("prim_algorithm.jl")
