@@ -3,7 +3,6 @@ include("node.jl")
 import Base.show
 import Base.popfirst!
 import Base.isless
-#import Base.isempty
 
 """Type représentant un noeud marqué avec une structure d'arbre : structure utile pour prim_algorithm.jl
     - L'attribut min_weight_  contient le poids de l'arête de poids minimal connectant le noeud au sous-arbre
