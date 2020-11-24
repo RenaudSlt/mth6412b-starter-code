@@ -33,7 +33,6 @@ function main_hk(FileName)
     best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>1950,"dantzig42"=>699,"fri26"=>937, "gr120"=>6942,"gr17"=>2085,"gr21"=>2707,"gr24"=>1272,"gr48"=>5046,"hk48"=>11461,"pa561.tsp"=>2763,"swiss42"=>1273)
 
     # Dictionnaire des meilleurs paramètres 
-    #best_parameters_hk = Dict("bayg29"=>["kruskal", 27, 1.0, "t_step", 1662],"bays29"=>["prim", 9, 1.0, "t_step", 2048],"brazil58"=>["prim", 1, 1.0, "t_step", 30750],"brg180"=>["", 0, 1.0, "", Inf],"dantzig42"=>["prim", 40, 1.0, "t_step", 727],"fri26"=>["kruskal", 1, 1.0, "t_step", 937], "gr120"=>["prim", 1, 1.0, "t_step", 9846],"gr17"=>["kruskal", 1, 1.0, "sub_gradient", 2085],"gr21"=>["prim", 1, 1.0, "t_step", 2707],"gr24"=>["prim", 24, 1.0, "t_step", 1278],"gr48"=>["kruskal", 40, 1.0, "t_step", 5563],"hk48"=>["prim", 1, 1.0, "t_step", 11956],"pa561.tsp"=>["", 0, 1.0, "", Inf],"swiss42"=>["kruskal", 5, 1.0, "t_step", 1273.0])
     best_parameters_hk = Dict("bayg29"=>["kruskal", 27, 1.0, "t_step", 1662],"bays29"=>["prim", 9, 1.0, "t_step", 2048],"brazil58"=>["prim", 1, 1.0, "t_step", 30750],"brg180"=>["", 0, 1.0, "", Inf],"dantzig42"=>["prim", 20, 1.0, "t_step", 803.0],"fri26"=>["kruskal", 1, 1.0, "t_step", 937], "gr120"=>["prim", 1, 1.0, "t_step", 9846],"gr17"=>["kruskal", 1, 1.0, "sub_gradient", 2085],"gr21"=>["prim", 1, 1.0, "t_step", 2707],"gr24"=>["prim", 24, 1.0, "t_step", 1278],"gr48"=>["kruskal", 40, 1.0, "t_step", 5563],"hk48"=>["prim", 1, 1.0, "t_step", 11956],"pa561.tsp"=>["", 0, 1.0, "", Inf],"swiss42"=>["kruskal", 5, 1.0, "t_step", 1273.0])
 
 
@@ -85,7 +84,7 @@ function main_hk(FileName)
         end
     end
 
-    println("ALGORITHME HK\n")
+        println("ALGORITHME HK\n")
         println("instance : ", GraphName)
         best_algo = best_parameters_hk[GraphName][1]
         best_root = get_nodes(G)[best_parameters_hk[GraphName][2]]
@@ -111,7 +110,7 @@ function main_hk(FileName)
         if GraphName in ["bayg29", "bays29", "dantzig42", "gr120"]
             println("\nAffichage de la tournée optimale ...")
             plot_graph_with_tour( string("instances/stsp/", FileName), get_edges(tour_graph) ) 
-            savefig(string("projet/affichage_tournees/", "best_tour_HK_", GraphName))
+            #savefig(string("projet/affichage_tournees/", "best_tour_HK_", GraphName))
         end
 
 end
