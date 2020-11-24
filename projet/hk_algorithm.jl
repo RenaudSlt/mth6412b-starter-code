@@ -90,10 +90,6 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     update_weights!(graph_copy, t.*( (0.7 .* v) + (0.3 .* v_prev )))
     π = π + t.*( (0.7 .* v) + (0.3 .* v_prev ))
 
-    # Détermine le noeud special qui est enlevé du graph pour faire le MST et le noeud source pour partir l'algo MST
-    #n_source = rand(1:n)
-    #source = get_nodes(graph_copy)[n_source]
-
     # Calcul d'un arbre de recouvrement minimal sur les noeuds {1,2,3,...,n}
     if algo_MST == "kruskal"
       minimal_edges, minimal_weight, minimal_subtree = kruskal_by_prim(graph_copy, source)
@@ -196,7 +192,7 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     end
     
     # Condition d'arrêt spécial sur le nombre d'itération
-    if k >= 250
+    if k >= 100000
       max_iteration_obtained = true
       break
     end
@@ -235,10 +231,6 @@ function hk_algorithm(graph::Graph{T}, algo_MST::String, source::Node{T}=get_nod
     # Mise à jour de k et de la période
     period_counter += 1
     k += 1
-
-    #if k%5 == 0
-    #  println("iteration k: ", k, " t step: ", t, " grand W: ", W, )
-    #end
 
   end
 
