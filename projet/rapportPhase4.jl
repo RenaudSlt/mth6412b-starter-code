@@ -307,6 +307,28 @@ md"Les trois paramètres à ajuster dans notre implémentation de l'algorithme H
 
 La recherche des meilleurs paramètres pour chaque instance se fait dans le fichier hk_parameters.jl qui n'est pas affiché dans ce rapport. Les résultats ont aussi été sauvegardés dans le dictionnaire ci-dessous."
 
+# ╔═╡ 2702277e-2de7-11eb-02b2-77c2d8d661e8
+md"
+`best_parameters_hk = Dict(`\
+`\"bayg29\"=>[\"kruskal\", 27, 1.0, \"t_step\", 1642],`\
+`\"bays29\"=>[\"prim\", 9, 1.0, \"t_step\", 2063],`\
+`\"brazil58\"=>[\"prim\", 1, 1.0, \"t_step\", 30750],`\
+`\"brg180\"=>[\"\", 0, 1.0, \"\", Inf],`\
+`\"dantzig42\"=>[\"kruskal\", 40, 1.0, \"t_step\", 713],`\
+`\"fri26\"=>[\"kruskal\", 1, 1.0, \"t_step\", 937],`\
+`\"gr120\"=>[\"prim\", 1, 1.0, \"t_step\", 9846],`\
+`\"gr17\"=>[\"kruskal\", 1, 1.0, \"sub_gradient\", 2085],`\
+`\"gr21\"=>[\"prim\", 1, 1.0, \"t_step\", 2707],`\
+`\"gr24\"=>[\"prim\", 24, 1.0, \"t_step\", 1278],`\
+`\"gr48\"=>[\"kruskal\", 40, 1.0, \"t_step\", 5563],`\
+`\"hk48\"=>[\"prim\", 1, 1.0, \"t_step\", 11956],`\
+`\"pa561.tsp\"=>[\"\", 0, 1.0, \"\", Inf],`\
+`\"swiss42\"=>[\"kruskal\", 5, 1.0, \"t_step\", 1273.0])`
+"
+
+# ╔═╡ f31c1010-2de7-11eb-3b35-614c676ea8d2
+md"Les instances brg180 et pa561 n'ont pas de paramètres ni de meilleure valeurs car nous n'avons pas trouvé de solution pour ces instances avec notre implémentation."
+
 # ╔═╡ 979e7dc0-2132-11eb-3b7f-6de3a5e098e7
 md"## Résultats"
 
@@ -397,13 +419,80 @@ display_img("best_tour_RSL_gr120.png")
 md"### Résultats de l'algorithme HK"
 
 # ╔═╡ 58759b70-2d9d-11eb-1f5c-e929ff2c16ce
+md"Voici les erreurs relatives avec une tournée optimale pour chaque instance :"
 
+# ╔═╡ a0d1d1de-2de8-11eb-061e-a560d62f9472
+md"
+`bayg29 : 2.00%`\
+`bays29 : 2.13%`\
+`brazil58 : 21.10%`\
+`brg180 : N/A`\
+`dantzig42 : 2.00%`\
+`fri26 : 0.0%`\
+`gr120 : 42.20%`\
+`gr17 : 0.0%`\
+`gr21 : 0.0%`\
+`gr24 : 0.47%`\
+`gr48 : 10.25%`\
+`hk48 : 4.32%`\
+`pa561 : N/A`\
+`swiss42 : 0.0%`
+"
+
+# ╔═╡ ecfe3f40-2de8-11eb-3734-81d37b07e9ae
+md"**bayg29**"
+
+# ╔═╡ 0472e2c0-2de9-11eb-027a-1304625fdaf0
+display_img("best_tour_HK_bayg29.png")
+
+# ╔═╡ eeab04e0-2de8-11eb-282e-99dca1389726
+md"**bays29**"
+
+# ╔═╡ 0589f810-2de9-11eb-2234-af423e508367
+display_img("best_tour_HK_bays29.png")
+
+# ╔═╡ ef735dee-2de8-11eb-211a-5d32e9ada64d
+md"**dantzig42**"
+
+# ╔═╡ 07c82840-2de9-11eb-05ec-b39df62d44c4
+display_img("best_tour_HK_dantzig42.png")
+
+# ╔═╡ f0134770-2de8-11eb-2515-fbead553c137
+md"**gr120**"
+
+# ╔═╡ 090b0880-2de9-11eb-21e7-dd623ef9925c
+display_img("best_tour_HK_gr120.png")
 
 # ╔═╡ 4b32ade0-2d9d-11eb-2fe1-b75b74680b94
 md"### Résultats globaux"
 
 # ╔═╡ 6ee624f0-2132-11eb-28da-8decd97e4ffc
+md"Voici les meilleures erreurs relatives avec une tournée optimale pour chaque instance, avec entre parenthèses le meilleur algorithme :"
 
+# ╔═╡ ee17d020-2de9-11eb-29b5-018af91a0ff0
+md"
+`bayg29 : 2.0% (HK)`\
+`bays29 : 2.13% (HK)`\
+`brazil58 : 10.73% (RSL)`\
+`brg180 : 3769.74% (RSL)`\
+`dantzig42 : 2.00% (HK)`\
+`fri26 : 0.0% (HK)`\
+`gr120 : 29.39% (RSL)`\
+`gr17 : 0.0% (HK)`\
+`gr21 : 0.0% (HK)`\
+`gr24 : 0.47% (HK)`\
+`gr48 : 10.25% (HK)`\
+`hk48 : 4.32% (HK)`\
+`pa561 : 39.52% (RSL)`\
+`swiss42 : 0.0% (HK)`
+"
+
+# ╔═╡ d62b1670-2de9-11eb-08ec-0fc6dc442c02
+md"Finalement, on peut dire que seule l'instance br180 n'a pas été résolue. On n'obtient pas de résultat satisfaisant avec l'algorithme RSL et pas de résultat du tout avec l'algorithme HK.
+
+On a trouvé une tournée optimale pour quatre instances : fr126, gr17, gr21 et swiss42.
+
+Les instances résolues sans avoir trouvée une tournée optimale donnent une erreur relative comprise entre 0.47% et 39.52%."
 
 # ╔═╡ Cell order:
 # ╟─cc7ea210-2130-11eb-2b97-8523da844f3e
@@ -467,6 +556,8 @@ md"### Résultats globaux"
 # ╟─7202e8f0-2da1-11eb-2667-0507b4c9c2c3
 # ╟─903ee080-2d9c-11eb-22f9-194f1ce83ccf
 # ╟─94404480-2d9c-11eb-2d52-4bedd4fe1804
+# ╟─2702277e-2de7-11eb-02b2-77c2d8d661e8
+# ╟─f31c1010-2de7-11eb-3b35-614c676ea8d2
 # ╟─979e7dc0-2132-11eb-3b7f-6de3a5e098e7
 # ╟─83401920-2da2-11eb-357c-8f1d3f8bf278
 # ╟─01f2ade0-2da4-11eb-0d7c-4952127893e2
@@ -485,6 +576,17 @@ md"### Résultats globaux"
 # ╟─a1bee50e-2da8-11eb-2031-099d7cc7473f
 # ╟─53a8a910-2da8-11eb-1bcd-d38b469da024
 # ╟─4a519cb0-2d9d-11eb-3f6b-ad1e2dcb6a58
-# ╠═58759b70-2d9d-11eb-1f5c-e929ff2c16ce
+# ╟─58759b70-2d9d-11eb-1f5c-e929ff2c16ce
+# ╟─a0d1d1de-2de8-11eb-061e-a560d62f9472
+# ╟─ecfe3f40-2de8-11eb-3734-81d37b07e9ae
+# ╠═0472e2c0-2de9-11eb-027a-1304625fdaf0
+# ╟─eeab04e0-2de8-11eb-282e-99dca1389726
+# ╠═0589f810-2de9-11eb-2234-af423e508367
+# ╟─ef735dee-2de8-11eb-211a-5d32e9ada64d
+# ╠═07c82840-2de9-11eb-05ec-b39df62d44c4
+# ╟─f0134770-2de8-11eb-2515-fbead553c137
+# ╠═090b0880-2de9-11eb-21e7-dd623ef9925c
 # ╟─4b32ade0-2d9d-11eb-2fe1-b75b74680b94
-# ╠═6ee624f0-2132-11eb-28da-8decd97e4ffc
+# ╟─6ee624f0-2132-11eb-28da-8decd97e4ffc
+# ╟─ee17d020-2de9-11eb-29b5-018af91a0ff0
+# ╟─d62b1670-2de9-11eb-08ec-0fc6dc442c02
