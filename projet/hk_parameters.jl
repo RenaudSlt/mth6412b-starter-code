@@ -125,9 +125,9 @@ best_parameters_hk = Dict("bayg29"=>["kruskal", 27, 1.0, "t_step", 1642],"bays29
 # graphs[11] : gr48 : DONE
 # graphs[12] : hk48 : DONE
 # graphs[13] : pa561.tsp : très lourd
-# graphs[14] : swiss42 : DONE
+# graphs[14] : swiss42 : DONE, déjà optimisé 
 
-for graph in [graphs[11]]
+for graph in [graphs[7]]
     
     # Meilleure tournée à date
     min = Inf 
@@ -136,7 +136,7 @@ for graph in [graphs[11]]
     println(best_parameters_hk[graph_name])
 
     # Optimalité atteinte pour ces trois instances, aucune search nécessaire
-    if graph_name == "gr17" || graph_name == "gr21" || graph_name == "fri26" 
+    if graph_name == "gr17" || graph_name == "gr21" || graph_name == "fri26" || graph_name == "swiss42"
         continue 
 
     # Ces graphs sont très long à résoudre : À TESTER DE MANIÈRE ISOLÉE
@@ -171,8 +171,7 @@ for graph in [graphs[11]]
     elseif nb_nodes(graph) >= 30 && nb_nodes(graph) < 60
         #for mst in ["prim", "kruskal"]
         for mst in ["kruskal"]  
-            #for stop_criterion in ["t_step","period_length"]
-            for stop_criterion in ["t_step"]
+            for stop_criterion in ["t_step","period_length"]
                 for (idx,node) in enumerate(get_nodes(graph))
                     # On test un noeud sur 5
                     if idx==1 || idx%5==0
@@ -198,7 +197,8 @@ for graph in [graphs[11]]
     # On enlève sub_gradient comme critère d'arrêt et on enlève kruskal comme MST, puis on essaie un noeud sur 4
     elseif nb_nodes(graph) > 100 
         mst = "prim"
-        for stop_criterion in ["t_step","period_length"]
+        for stop_criterion in ["t_step"]
+        #for stop_criterion in ["t_step","period_length"]
             for (idx,node) in enumerate(get_nodes(graph))
                 # On teste un noeud sur 10
                 if idx==1 || idx%10==0

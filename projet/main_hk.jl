@@ -90,7 +90,7 @@ function main_hk(FileName)
     t0 = 1
     best_criteria = best_parameters_hk[GraphName][4]
     
-    tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration = hk_algorithm(G, best_algo, best_root, t, best_criteria)  
+    tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration = hk_algorithm(G, best_algo, best_root, t0, best_criteria)  
     
     println(" ")
     println("Affichage de la tournée : ")
