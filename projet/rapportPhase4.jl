@@ -234,7 +234,7 @@ md"Pour résumer, dans notre fonction `hk_algorithm()` :
 * si `stop_criterion == \"t_step\"`, on s’arrête quand \\(t<10^{-10}\\) est on renvoie soit le meilleur 1-arbre valide transformé en tournée si possible, soit le meilleur 1-arbre (au sens de \\(w(π^k)\\) tel quel, qui n’est pas une tournée
 * si `stop_criterion == \"period_length\"`, on s’arrête quand la période est nulle et on renvoie la même chose qu’au critère précédent
 
-Enfin, si au bout d’un certain nombre d’itérations (10 000), aucun des critères d’arrêt n’est satisfait, alors l’algorithme s’arrête et renvoie un 1-arbre qui n’est pas une tournée."
+Enfin, si au bout d’un certain nombre d’itérations (100 000), aucun des critères d’arrêt n’est satisfait, alors l’algorithme s’arrête et renvoie un 1-arbre qui n’est pas une tournée."
 
 # ╔═╡ 67f8df72-2dc6-11eb-3439-dfaf17b5e75a
 md"### Implémentation de l'algorithme HK"
@@ -305,16 +305,16 @@ md"Les trois paramètres à ajuster dans notre implémentation de l'algorithme H
 * pour les instances de taille inférieure comprise entre 30 et 60, on essaie les méthodes Kruskal et Prim, seulement deux critères d'arrêt (\\(t\\) petit et période nulle), et un nœud sur cinq comme nœud racine
 * pour les instances de taille supérieure à 60, on essaie seulement la méthode Prim, les deux mêmes critères d'arrêt, et un nœud sur dix comme nœud racine
 
-La recherche des meilleurs paramètres pour chaque instance se fait dans le fichier hk_parameters.jl qui n'est pas affiché dans ce rapport. Les résultats ont aussi été sauvegardés dans le dictionnaire ci-dessous."
+La recherche des meilleurs paramètres pour chaque instance se fait dans le fichier hk_parameters.jl qui n'est pas affiché dans ce rapport. Les résultats ont aussi été sauvegardés dans le dictionnaire ci-dessous (la valeur 1.0 correspond au \\(t^0\\) laissé constant)."
 
 # ╔═╡ 2702277e-2de7-11eb-02b2-77c2d8d661e8
 md"
 `best_parameters_hk = Dict(`\
-`\"bayg29\"=>[\"kruskal\", 27, 1.0, \"t_step\", 1642],`\
-`\"bays29\"=>[\"prim\", 9, 1.0, \"t_step\", 2063],`\
-`\"brazil58\"=>[\"prim\", 1, 1.0, \"t_step\", 30750],`\
+`\"bayg29\"=>[\"kruskal\", 27, 1.0, \"t_step\", 1662],`\
+`\"bays29\"=>[\"prim\", 9, 1.0, \"t_step\", 2048],`\
+`\"brazil58\"=>[\"prim\", 1, 1.0, \"t_step\", 26652],`\
 `\"brg180\"=>[\"\", 0, 1.0, \"\", Inf],`\
-`\"dantzig42\"=>[\"kruskal\", 40, 1.0, \"t_step\", 713],`\
+`\"dantzig42\"=>[\"prim\", 20, 1.0, \"t_step\", 803],`\
 `\"fri26\"=>[\"kruskal\", 1, 1.0, \"t_step\", 937],`\
 `\"gr120\"=>[\"prim\", 1, 1.0, \"t_step\", 9846],`\
 `\"gr17\"=>[\"kruskal\", 1, 1.0, \"sub_gradient\", 2085],`\
@@ -327,7 +327,7 @@ md"
 "
 
 # ╔═╡ f31c1010-2de7-11eb-3b35-614c676ea8d2
-md"Les instances brg180 et pa561 n'ont pas de paramètres ni de meilleure valeurs car nous n'avons pas trouvé de solution pour ces instances avec notre implémentation."
+md"Les instances brg180 et pa561 n'ont pas de paramètres ni de meilleure valeur car nous n'avons pas trouvé de solution pour ces instances avec notre implémentation."
 
 # ╔═╡ 979e7dc0-2132-11eb-3b7f-6de3a5e098e7
 md"## Résultats"
@@ -335,25 +335,27 @@ md"## Résultats"
 # ╔═╡ 83401920-2da2-11eb-357c-8f1d3f8bf278
 md"Les résultats présentés dans cette section sont les erreurs relatives avec une tournée optimale et l'affichage des tournées obtenues quand cela est possible.
 
-**Ces résultats sont reproductibles grâce aux fichiers `main_rsl.jl` et `main_hk.jl`.**
+**Ces résultats sont reproductibles grâce au fichier `main_tsp.jl`.**
 
-Pour cela, il faut :
+Pour reproduire les résultats avec le meilleur algorithme pour une instance donnée, il faut :
 * ouvrir un REPL et se placer dans le dossier `mth6412b-starter-code`,
-* entrer la commande `include(\"projet/main_rsl.jl\")` (pour RSL, sinon `main_hk.jl`),
-* entrer la commande `main_rsl(\"gr24.tsp\")` (pour l'instance gr24)
+* entrer la commande `include(\"projet/main_tsp.jl\")`,
+* entrer la commande `main_tsp(\"gr24.tsp\",\"best\")` (pour l'instance gr24)
 
-Ainsi, l'algorithme RSL va s'exécuter sur l'instance gr24 avec les meilleurs paramètres retenus dans le dictionnaires `best_parameters_rsl`.
+Ainsi, le meilleur algorithme pour cette instance va s'exécuter avec les meilleurs paramètres retenus. Pour retrouver les résultats respectifs des algorithmes RSL ou HK, il faut remplacer l'argument `\"best\"` par `\"rsl\"` ou `\"hk\"`. 
 
-Le résultat s'affiche comme suit :"
+
+Après avoir affiché le graphe tournée, le résultat s'affiche comme suit :"
 
 # ╔═╡ 01f2ade0-2da4-11eb-0d7c-4952127893e2
 md"
-`ALGORITHME RSL`
-
-`instance : gr24`\
-`meilleurs paramètres : prim avec comme noeud racine 13`\
-`résultat : 1519`\
-`écart relatif avec une tournée optimale : 19.42%`
+`Coût final : 1314.00`\
+`Tournée obtenue avant POST-PROCESSING : false`\
+`Tournée obtenue avec POST-PROCESSING : true`\
+`Arrêt avant max iteration : true`\
+\
+`Meilleurs paramètres : prim avec comme noeud racine 24 et comme critère d'arrêt t_step`\
+`Écart relatif avec une tournée optimale : 3.3%`
 "
 
 # ╔═╡ 6adc21b0-2da4-11eb-08ab-f53337b83688
@@ -423,21 +425,28 @@ md"Voici les erreurs relatives avec une tournée optimale pour chaque instance :
 
 # ╔═╡ a0d1d1de-2de8-11eb-061e-a560d62f9472
 md"
-`bayg29 : 2.00%`\
-`bays29 : 2.13%`\
-`brazil58 : 21.10%`\
+`bayg29 : 3.23%`\
+`bays29 : 1.39%`\
+`brazil58 : 4.95%`\
 `brg180 : N/A`\
-`dantzig42 : 2.00%`\
+`dantzig42 : 14.88%`\
 `fri26 : 0.0%`\
-`gr120 : 42.20%`\
+`gr120 : 41.83%`\
 `gr17 : 0.0%`\
 `gr21 : 0.0%`\
-`gr24 : 0.47%`\
+`gr24 : 3.3%`\
 `gr48 : 10.25%`\
 `hk48 : 4.32%`\
 `pa561 : N/A`\
 `swiss42 : 0.0%`
 "
+
+# ╔═╡ 4229c640-2dfa-11eb-0bf0-a56eec1e7219
+md"Pour les quatre instances fr126, gr17, gr21 et swiss42, on trouve une tournée optimale.
+
+Pour les quatre instances brazil58, gr120, brg180 et pa561, le nombre maximal d'itérations est atteint, et on trouve une tournée pour brazil58 et gr120.
+
+Pour les instances restantes, le critère d'arrêt est la taille de la période ou du pas, et on trouve une tournée."
 
 # ╔═╡ ecfe3f40-2de8-11eb-3734-81d37b07e9ae
 md"**bayg29**"
@@ -471,16 +480,16 @@ md"Voici les meilleures erreurs relatives avec une tournée optimale pour chaque
 
 # ╔═╡ ee17d020-2de9-11eb-29b5-018af91a0ff0
 md"
-`bayg29 : 2.0% (HK)`\
-`bays29 : 2.13% (HK)`\
+`bayg29 : 3.23% (HK)`\
+`bays29 : 1.39% (HK)`\
 `brazil58 : 10.73% (RSL)`\
 `brg180 : 3769.74% (RSL)`\
-`dantzig42 : 2.00% (HK)`\
+`dantzig42 : 14.88% (HK)`\
 `fri26 : 0.0% (HK)`\
 `gr120 : 29.39% (RSL)`\
 `gr17 : 0.0% (HK)`\
 `gr21 : 0.0% (HK)`\
-`gr24 : 0.47% (HK)`\
+`gr24 : 3.3% (HK)`\
 `gr48 : 10.25% (HK)`\
 `hk48 : 4.32% (HK)`\
 `pa561 : 39.52% (RSL)`\
@@ -492,7 +501,7 @@ md"Finalement, on peut dire que seule l'instance br180 n'a pas été résolue. O
 
 On a trouvé une tournée optimale pour quatre instances : fr126, gr17, gr21 et swiss42.
 
-Les instances résolues sans avoir trouvée une tournée optimale donnent une erreur relative comprise entre 0.47% et 39.52%."
+Les instances résolues sans avoir trouvé une tournée optimale donnent une erreur relative comprise entre 0.47% et 39.52%."
 
 # ╔═╡ Cell order:
 # ╟─cc7ea210-2130-11eb-2b97-8523da844f3e
@@ -536,13 +545,13 @@ Les instances résolues sans avoir trouvée une tournée optimale donnent une er
 # ╟─92b578e0-2132-11eb-013e-d5292e2a9796
 # ╟─9a467930-2d9c-11eb-0d2e-272a0f9bd4f6
 # ╟─d1f749e0-2dbf-11eb-2d60-a9b5574e11ce
-# ╠═3c43d020-2dc0-11eb-32fb-3dce99e8a82c
+# ╟─3c43d020-2dc0-11eb-32fb-3dce99e8a82c
 # ╟─8bdf1090-2de3-11eb-3b1d-f52441296075
 # ╟─aa9268c0-2de3-11eb-29d9-7d8d005cbb06
-# ╠═be746fa0-2de3-11eb-23b1-2f6e3808f034
+# ╟─be746fa0-2de3-11eb-23b1-2f6e3808f034
 # ╟─c3f74380-2de3-11eb-0099-9b9d009a6f01
 # ╟─ce9a0ac0-2de3-11eb-1a0f-09334552d408
-# ╠═d80a1e60-2de3-11eb-3933-39d09bb73450
+# ╟─d80a1e60-2de3-11eb-3933-39d09bb73450
 # ╟─dd992740-2de3-11eb-3418-4d3a16dcdc03
 # ╟─ecedb6c0-2de3-11eb-1b5e-0d4336988e17
 # ╟─f06466f0-2de3-11eb-01bf-a5038f50c4a4
@@ -578,14 +587,15 @@ Les instances résolues sans avoir trouvée une tournée optimale donnent une er
 # ╟─4a519cb0-2d9d-11eb-3f6b-ad1e2dcb6a58
 # ╟─58759b70-2d9d-11eb-1f5c-e929ff2c16ce
 # ╟─a0d1d1de-2de8-11eb-061e-a560d62f9472
+# ╟─4229c640-2dfa-11eb-0bf0-a56eec1e7219
 # ╟─ecfe3f40-2de8-11eb-3734-81d37b07e9ae
-# ╠═0472e2c0-2de9-11eb-027a-1304625fdaf0
+# ╟─0472e2c0-2de9-11eb-027a-1304625fdaf0
 # ╟─eeab04e0-2de8-11eb-282e-99dca1389726
-# ╠═0589f810-2de9-11eb-2234-af423e508367
+# ╟─0589f810-2de9-11eb-2234-af423e508367
 # ╟─ef735dee-2de8-11eb-211a-5d32e9ada64d
-# ╠═07c82840-2de9-11eb-05ec-b39df62d44c4
+# ╟─07c82840-2de9-11eb-05ec-b39df62d44c4
 # ╟─f0134770-2de8-11eb-2515-fbead553c137
-# ╠═090b0880-2de9-11eb-21e7-dd623ef9925c
+# ╟─090b0880-2de9-11eb-21e7-dd623ef9925c
 # ╟─4b32ade0-2d9d-11eb-2fe1-b75b74680b94
 # ╟─6ee624f0-2132-11eb-28da-8decd97e4ffc
 # ╟─ee17d020-2de9-11eb-29b5-018af91a0ff0
