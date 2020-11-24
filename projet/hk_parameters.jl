@@ -127,7 +127,7 @@ best_parameters_hk = Dict("bayg29"=>["kruskal", 27, 1.0, "t_step", 1642],"bays29
 # graphs[13] : pa561.tsp : très lourd
 # graphs[14] : swiss42 : DONE, déjà optimisé 
 
-for graph in [graphs[7]]
+for graph in [graphs[5]]
     
     # Meilleure tournée à date
     min = Inf 
@@ -170,8 +170,9 @@ for graph in [graphs[7]]
     # On enlève sub_gradient comme critère d'arrêt, puis on prend un essai juste les noeuds pairs comme source
     elseif nb_nodes(graph) >= 30 && nb_nodes(graph) < 60
         #for mst in ["prim", "kruskal"]
-        for mst in ["kruskal"]  
-            for stop_criterion in ["t_step","period_length"]
+        for mst in ["prim"]  
+            #for stop_criterion in ["t_step","period_length"]
+            for stop_criterion in ["t_step"]
                 for (idx,node) in enumerate(get_nodes(graph))
                     # On test un noeud sur 5
                     if idx==1 || idx%5==0
