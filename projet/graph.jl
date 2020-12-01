@@ -1,4 +1,5 @@
 using LinearAlgebra
+using Random
 include("node.jl")
 include("edge.jl")
 import Base.show
@@ -203,6 +204,20 @@ function post_process_one_tree!(one_tree::Graph{T}, initial_graph::Graph{T}) whe
       edge_min = popfirst!(edges)
     end
 
+    # Cas dans lequel la modification entraine des tournées indépendantes
+    one_tree_is_connected = is_connected(one_tree, initial_graph, node3, node1, edge_min)
+    # S'il reste des arêtes incidentes à node3, on prend la suivante
+    if !one_tree_is_connected && !isempty(edges)
+      edge_min = popfirst!(edges)
+    # S'il ne reste pas d'arêtes incidentes à node3, on recommence en mélangeant les éléments de idx_ones
+    elseif !one_tree_is_connected && isempty(edges)
+      push!(idx_ones, p)
+      push!(idx_minus_ones, q)
+      shuffle!(idx_ones)
+      continue
+    end
+
+
     # Trouver le noeud à l'autre bout de edge_min (i.e. pas node3)
     v = (node3 == get_node1(edge_min)) ? get_node2(edge_min) : get_node1(edge_min)
     # Trouver l'arête entre v et node1 dans le graphe initial et l'ajouter à one_tree
@@ -221,4 +236,71 @@ function post_process_one_tree!(one_tree::Graph{T}, initial_graph::Graph{T}) whe
   end
 
   return one_tree
+end
+
+""" Fonction d'utilité de post_process_one_tree qui s'assure qu'on ne créé pas un graphe non connexe """
+function is_connected(one_tree, initial_graph, node3, node1, edge_min)
+  
+  one_tree_copy = deepcopy(one_tree)
+  # Partie où l'on fait la transformation prescrite par node3, node1 et edge_min (comme dans post_process_one_tree!())
+  # Trouver le noeud à l'autre bout de edge_min (i.e. pas node3)
+  v = (node3 == get_node1(edge_min)) ? get_node2(edge_min) : get_node1(edge_min)
+  # Trouver l'arête entre v et node1 dans le graphe initial et l'ajouter à one_tree_copy
+  for edge in get_edges(initial_graph)
+    if (get_node1(edge) == v && get_node2(edge) == node1) || (get_node2(edge) == v && get_node1(edge) == node1)
+      add_edge!(one_tree_copy, Edge{Nothing}(v, node1, get_weight(edge)))
+    end
+  end
+
+  # Retirer l'arête entre node3 et v de one_tree_copy
+  for edge in get_edges(one_tree_copy)
+    if (get_node1(edge) == v && get_node2(edge) == node3) || (get_node2(edge) == v && get_node1(edge) == node3)
+      filter!(x-> x!=edge, get_edges(one_tree_copy) )
+    end
+  end
+  
+  # Partie où l'on s'assure que one_tree_copy est connexe
+  ensembles = []
+  for edge in get_edges(one_tree_copy)
+    node1 = get_index(get_node1(edge))
+    node2 = get_index(get_node2(edge))
+    node1_found = false
+    node2_found = false
+    index_ens_node1 = 0
+    index_ens_node2 = 0
+    # On trouve les ensembles qui contiennent node1 et node 2
+    for i in 1:length(ensembles)
+      if node1 in ensembles[i]
+        node1_found = true
+        index_ens_node1 = i
+      end
+      if node2 in ensembles[i]
+        node2_found = true
+        index_ens_node2 = i
+      end
+    end
+    
+    # Si node1 et node2 sont déjà dans des ensembles
+    if node1_found && node2_found
+      # Si node1 et node2 ne sont dans les mêmes ensembles, on fusionne ces ensembles
+      if index_ens_node1 != index_ens_node2
+        ensembles[index_ens_node1] = vcat(ensembles[index_ens_node1], ensembles[index_ens_node2])
+        deleteat!(ensembles, index_ens_node2)
+      end
+    # Si seulement node1 est dans un ensemble, on ajoute node2 à ce même ensemble
+    elseif node1_found
+      push!(ensembles[index_ens_node1], node2)
+    # Et réciproquement
+    elseif node2_found
+      push!(ensembles[index_ens_node2], node1)
+    # Si aucun noeud n'est dans un ensemble, on en créé un nouveau
+    else
+      push!(ensembles, [node1,node2])
+    end
+  end
+  
+  if length(ensembles) == 1
+    return true
+  end
+  return false 
 end
