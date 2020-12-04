@@ -67,7 +67,7 @@ function kruskal_algorithm(graph::Graph{T}) where T
             # Ajout du poids dans le poids total
             weight += get_weight(edge_min)
             
-            # Union via le rang : TODO rajouté détail 
+            # Union via le rang
             rank1 = get_rank(get_root!(tree_node1;compression=compress))
             rank2 = get_rank(get_root!(tree_node2;compression=compress))
             if rank1 > rank2

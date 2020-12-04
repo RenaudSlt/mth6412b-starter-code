@@ -48,7 +48,7 @@ function prim_algorithm(graph::Graph{T}, source::Node{T}=get_nodes(graph)[1]) wh
     ### Algorithme ###
     edges_graph_min = Edge{T}[]
     weight_min = 0
-    while  !isempty(marked_nodes_queue)
+    while !isempty(marked_nodes_queue)
     
       # On retire le noeud ayant le plus petit weight et on l'ajoute aux noeuds appartenant au sous-arbre (visited_nodes)
       u = popfirst!(marked_nodes_queue)

@@ -6,17 +6,18 @@ include("kruskal_algorithm.jl")
 include("prim_algorithm.jl")
 include("rsl_algorithm.jl")
 include("hk_algorithm.jl")
+include("timeit.jl")
 
 ### Se placer dans le répertoire 'mth6412b-starter-code' ###
 
 # Choix de l'instance
-#FileName = "gr17.tsp"     # lower diag row  ok
+FileName = "gr17.tsp"     # lower diag row  ok
 #FileName = "bayg29.tsp"   # upper row  ok
 #FileName = "swiss42.tsp"  # full matrix ok
 #FileName = "gr21.tsp" ok
 #FileName = "gr24.tsp" ok
 #FileName = "gr48.tsp" ok
-FileName = "gr120.tsp"
+#FileName = "gr120.tsp"
 #FileName = "brazil58.tsp"
 #FileName = "brg180.tsp"
 #FileName = "dantzig42.tsp"
@@ -38,12 +39,12 @@ GraphName = headers_["NAME"]
 dim = parse(Int, headers_["DIMENSION"])
 
 # Création du graphe vide
-G = Graph{Nothing}()
+G = Graph{Int}()
 set_name!(G, GraphName)
 
 # Ajout des noeuds (le champ data est égal à nothing)
 for i in 1:dim
-  add_node!(G, Node{Nothing}(nothing, name_=string(i), index_=i))
+  add_node!(G, Node{Int}(i, name_=string(i), index_=i))
 end
 
 # Ajout des arêtes
@@ -55,7 +56,7 @@ for j in 1:length(edges_)
   idx1 = findfirst(x -> get_name(x)==node1_name, get_nodes(G))
   idx2 = findfirst(x -> get_name(x)==node2_name, get_nodes(G))
   
-  temp_edge = Edge{Nothing}(get_nodes(G)[idx1], get_nodes(G)[idx2], weights_[j])
+  temp_edge = Edge{Int}(get_nodes(G)[idx1], get_nodes(G)[idx2], weights_[j])
 
   flag_symetric = false
   # Swiss 42 et Bays29 sont les seules instances avec des arêtes en double
@@ -74,10 +75,8 @@ for j in 1:length(edges_)
 
 end
 
-
+"""
 best_distances = Dict("bayg29"=>1610,"bays29"=>2020,"brazil58"=>25395,"brg180"=>1950,"dantzig42"=>699,"fri26"=>937, "gr120"=>6942,"gr17"=>2085,"gr21"=>2707,"gr24"=>1272,"gr48"=>5046,"hk48"=>11461,"pa561.tsp"=>2763,"swiss42"=>1273)
-
-
 
 tour_graph, final_cost, optimal_tour_obtained, tour_obtained, max_iteration, at_least_one_improvement = hk_algorithm(G, "prim", get_nodes(G)[1], 1.0, "t_step")  
 show(tour_graph)
@@ -92,4 +91,26 @@ v = get_degrees(tour_graph)
 for i = 1:nb_nodes(tour_graph)
   println("noeud ", i, " degree :", v[i]-2)
 end
+"""
 
+
+#timeit(kruskal_algorithm, G; nruns=10)
+#timeit(prim_algorithm, G; nruns=10)
+
+route_nodes, route_edges, route_weight = rsl_algorithm(G, "kruskal", get_nodes(G)[2])
+
+# Permuter jusqu'à obtenir le noeud voulu en premier
+first_node = 11
+while get_data(route_nodes[1]) != first_node
+  global route_nodes
+  println("\n")
+  for node in route_nodes
+    show(node)
+  end
+  route_nodes = vcat(route_nodes[2:end], route_nodes[1])
+end
+
+println("\n VF")
+for node in route_nodes
+  show(node)
+end

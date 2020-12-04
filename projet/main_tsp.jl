@@ -78,7 +78,8 @@ function main_tsp(FileName, algo)
 
     # Dictionnaire des meilleurs paramètres pour hk 
     best_parameters_hk = Dict("bayg29"=>["kruskal", 27, 1.0, "t_step", 1662],"bays29"=>["prim", 9, 1.0, "t_step", 2048],"brazil58"=>["prim", 1, 1.0, "t_step", 26652],"brg180"=>["", 0, 1.0, "", Inf],"dantzig42"=>["prim", 20, 1.0, "t_step", 803.0],"fri26"=>["kruskal", 1, 1.0, "t_step", 937], "gr120"=>["prim", 1, 1.0, "t_step", 9846],"gr17"=>["kruskal", 1, 1.0, "sub_gradient", 2085],"gr21"=>["prim", 1, 1.0, "t_step", 2707],"gr24"=>["prim", 24, 1.0, "t_step", 1314.0],"gr48"=>["kruskal", 40, 1.0, "t_step", 5563],"hk48"=>["prim", 1, 1.0, "t_step", 11956],"pa561.tsp"=>["", 0, 1.0, "", Inf],"swiss42"=>["kruskal", 5, 1.0, "t_step", 1273.0])
-    best_parameters_hk["dantzig42"]=["prim", 1, 1.0, "t_step", 803.0]
+    #best_parameters_hk["dantzig42"]=["prim", 1, 1.0, "t_step", 803.0]
+    #best_parameters_hk["pa561.tsp"]=["prim", 1, 1.0, "t_step", Inf]
     # Dictionnaires des meilleurs paramètres pour rsl
     best_parameters_rsl = Dict("brazil58" => ["prim", 46, 28121],"gr17" => ["kruskal", 7, 2210],"bayg29" => ["kruskal", 17, 2014],"gr120" => ["kruskal", 104, 8982],"swiss42" => ["kruskal", 32, 3182],"brg180" => ["prim", 130, 75460],"pa561.tsp" => ["prim", 450, 3855],"gr21" => ["prim", 13, 2968],"dantzig42" => ["prim", 4, 890],"fri26" => ["prim", 2, 1073],"hk48" => ["kruskal", 20, 13939],"gr48" => ["prim", 39, 6680],"gr24" => ["prim", 13, 1519],"bays29" => ["kruskal", 14, 4626])
 
@@ -173,6 +174,9 @@ function main_tsp(FileName, algo)
         println("résultat : ", route_weight)
         println("écart relatif avec une tournée optimale : ", round(100*(route_weight - best_distances[GraphName]) / best_distances[GraphName], digits=2), "%")
 
+        for node in route_nodes
+            show(node)
+        end
 
         # Affichage de la tournée optimale si possible
         if GraphName in ["bayg29", "bays29", "dantzig42", "gr120"]
