@@ -31,6 +31,9 @@ function MarkedNode{T}(data_::T; name_::String="", min_weight_::Number=Inf) wher
     MarkedNode(name_, data_, false, max(0.0, min_weight_), nothing, MarkedNode{T}[])
 end
 
+""" Accesseur à l'attribut data_ """
+get_data(node::MarkedNode{T}) where T = node.data_
+
 """ Accesseur à l'attribut visited_ """
 is_visited(node::MarkedNode{T}) where T = node.visited_
 
@@ -44,7 +47,7 @@ get_parent(node::MarkedNode{T}) where T = node.parent_
 get_children(node::MarkedNode{T}) where T = node.children_
 
 """ Renvoie la racine du noeud """
-function get_root!(node::MarkedNode{T}) where T  # WARNING : il manquait un point exclamation
+function get_root!(node::MarkedNode{T}) where T
     # Node est une racine
     if get_parent(node) === nothing  
         return node 
@@ -52,6 +55,12 @@ function get_root!(node::MarkedNode{T}) where T  # WARNING : il manquait un poin
     else 
         get_root!(get_parent(node))        
     end
+end
+
+""" Mutateur de l'attribut data_ """
+function set_data!(node::MarkedNode{T}, data::Any) where T
+    node.data_ = data
+    return node
 end
 
 """ Mutateur de l'attribut visited_ (irréversible) """
@@ -98,7 +107,7 @@ function remove_child!(node::MarkedNode{T}, child::MarkedNode{T}) where T
 end
 
 """ Affichage du noeud """
-show(node::MarkedNode{T}) where T = println("node $(get_name(node)) of minimum weight to tree $(get_min_weight(node))")
+show(node::MarkedNode{T}) where T = println("node $(get_name(node)) of minimum weight to tree $(get_min_weight(node)) and data $(get_data(node))")
 
 """ Surcharge de `isless` pour comparer les attributs min_weight_ de deux MarkedNodes """
 isless(node1::MarkedNode{T}, node2::MarkedNode{T}) where T = isless(get_min_weight(node1), get_min_weight(node2))
