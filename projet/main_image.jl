@@ -108,6 +108,7 @@ function main_image(FileName::String, algo::String, root_number::Union{String,In
       push!(tour, get_data(node))
     end
     # Suppression de l'éventuel outlier
+    # (Patch d'un problème non résolu : parfois un 602e élément aberrant est ajouté au vecteur)
     for i in 1:length(tour)
       if tour[i]>601
         deleteat!(tour, i)
