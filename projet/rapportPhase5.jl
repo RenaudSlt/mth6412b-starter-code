@@ -75,19 +75,19 @@ display("main_image.jl",106,109)
 md"Puis on effectue une permutation circulaire jusqu'à obtenir le nœud \\(0\\) en premier."
 
 # ╔═╡ 1a476a60-35b6-11eb-08aa-033ec1291a7d
-display("main_image.jl",118,120)
+display("main_image.jl",119,121)
 
 # ╔═╡ 45009c40-35b6-11eb-2fe6-01ace5b72ae4
 md"On sauvegarde ensuite le tour grâce à la fonction `write_tour()` dans le dossier `/reconstructed_tours` que nous avons créé dans le dossier `/shredder-julia/tsp`."
 
 # ╔═╡ 767bd8c0-35b6-11eb-09f9-8b681c0c1220
-display("main_image.jl",127,128)
+display("main_image.jl",128,129)
 
 # ╔═╡ 7e674830-35b6-11eb-2201-9f307c974d30
 md"On reconstruit et sauvegarde enfin l'image dans le dossier `/reconstructed` grâce à la fonction `reconstruct_picture()`."
 
 # ╔═╡ 8af082b0-35b6-11eb-2ddd-3503c6ec7a99
-display("main_image.jl",131,133)
+display("main_image.jl",132,134)
 
 # ╔═╡ c3378dd0-35b6-11eb-056f-2315754cfc80
 md"Voici le fichier complet `main_image.jl`."
@@ -137,6 +137,7 @@ Comme nous l'avons évoqué plus haut, les tournées qui ont les meilleurs poids
 
 \
 
+Nous n'avons pas utilisé la dernière version de la fonction `compare_pixels()` du fichier `tools.jl` (où les UInt8 sont convertis en Float64) car cela aurait peut-être changé nos meilleurs paramètres et nous n'avions plus le temps d'en trouver de nouveaux. Toutefois, sur un seul essai, la nouvelle version n'a pas changé le résultat.
 "
 
 # ╔═╡ 0dca4000-35c5-11eb-2d05-c141cd6a0f92
@@ -259,6 +260,15 @@ md"Image la plus fidèle, obtenue avec (`algo=\"prim\",root_number=20`)  et de p
 # ╔═╡ cbf9fa50-35cc-11eb-3155-4dc381c2fced
 display_img("tokyo-skytree-aerial.png", "visual")
 
+# ╔═╡ 9d397390-3d78-11eb-14bf-ab4e865c8e18
+md"
+
+\
+
+On constate que les deux écueils visibles dans la reconstruction des images sont d'une part les discontinuités, et d'autre part l'effet miroir : l'image est parfois refletée totalement ou en partie. C'est justement parfois une discontinuité qui occasionne un effet miroir puisque l'image est dans bon sens avant la discontuinuité et dans le mauvais après, ou inversement.
+
+À part cela, nous avons trouvé les reconstructions étonnament précises compte tenu des performances de l'algorithme RSL à la phase 4."
+
 # ╔═╡ Cell order:
 # ╟─dd9976d0-34b1-11eb-2d7e-69e0b2b25c6b
 # ╟─b049828e-34b3-11eb-29d2-03d09f5041d5
@@ -320,3 +330,4 @@ display_img("tokyo-skytree-aerial.png", "visual")
 # ╟─7f224e40-35cb-11eb-1ddd-736b3850c716
 # ╟─00254a60-35c7-11eb-01d1-2d9f41fe8d05
 # ╟─cbf9fa50-35cc-11eb-3155-4dc381c2fced
+# ╟─9d397390-3d78-11eb-14bf-ab4e865c8e18
